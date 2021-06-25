@@ -1,4 +1,4 @@
-package coreClasses;
+package coreObjects;
 
 import java.util.ArrayList;
 
@@ -14,6 +14,8 @@ public class Deck {
 	
 	/** String for the name of this deck **/
 	private String name;
+	/** String for the description of a deck **/
+	private String description;
 	/** ArrayList containing the cards for this deck **/
 	private ArrayList<FlashCard> cards = new ArrayList<FlashCard>();
 	/** int for the date of creation of this deck **/
@@ -25,8 +27,9 @@ public class Deck {
 	 * @param name String for the name of a deck
 	 * @param dateOfCreation int for the date of creation of a deck
 	 */
-	Deck(String name, int dateOfCreation){
+	Deck(String name, String description, int dateOfCreation){
 		this.name = name;
+		this.description = description;
 		this.dateOfCreation = dateOfCreation;
 	}
 	
@@ -74,6 +77,14 @@ public class Deck {
 		return this.cards;
 	}
 	
+	/** Getter method for the description of a deck
+	 * 
+	 * @return String for the description of a deck
+	 */
+	public String getDescription() {
+		return this.description;
+	}
+	
 	/** Method that returns the size of a deck. 
 	 * Again borrows functionality from ArrayList, as this will often be called
 	 * and is cleaner than Deck.getCards.size()
@@ -84,11 +95,19 @@ public class Deck {
 		return cards.size();
 	}
 	
-	/** Setter method for the name of a deck
+	/** Setter method for the name of a Deck
 	 * 
 	 * @param name String for the name of a deck to be set
 	 */
 	public void setName(String name) {
 		this.name = name;
+	}
+	
+	/** Setter method for the description of a Deck
+	 * 
+	 * @param description String for the description to be set
+	 */
+	public void setDescription(String description) {
+		this.description = description;
 	}
 }
