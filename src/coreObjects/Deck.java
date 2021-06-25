@@ -66,7 +66,7 @@ public class Deck {
 	 * @return int for the date of creation of a deck
 	 */
 	public int getDateOfCreation() {
-		return this.dateOfCreation;
+		return dateOfCreation;
 	}
 	
 	/** Getter method for the cards of deck
@@ -74,7 +74,7 @@ public class Deck {
 	 * @return ArrayList<FlashCard> representation of the flash cards that a deck has
 	 */
 	public ArrayList<FlashCard> getCards() {
-		return this.cards;
+		return cards;
 	}
 	
 	/** Getter method for the description of a deck
@@ -82,7 +82,7 @@ public class Deck {
 	 * @return String for the description of a deck
 	 */
 	public String getDescription() {
-		return this.description;
+		return description;
 	}
 	
 	/** Method that returns the size of a deck. 
