@@ -1,4 +1,4 @@
-package CoreClasses;
+package coreClasses;
 
 public class SortCards {
 

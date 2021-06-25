@@ -1,4 +1,4 @@
-package CoreClasses;
+package coreClasses;
 
 import java.util.ArrayList;
 
