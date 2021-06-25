@@ -1,4 +1,4 @@
-package coreClasses;
+package coreObjects;
 
 /** Represents a FlashCard
  * 
@@ -16,7 +16,6 @@ public class FlashCard {
 	private String backText;
 	/** int for the date of creation **/
 	private int dateOfCreation;
-	
 	
 	/** Constructor for a FlashCard object 
 	 * 
