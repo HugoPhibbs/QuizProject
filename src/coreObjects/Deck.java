@@ -29,7 +29,7 @@ public class Deck {
 	 * @param name String for the name of a deck
 	 * @param dateOfCreation int for the date of creation of a deck
 	 */
-	Deck(String name, String description, int dateOfCreation){
+	public Deck(String name, String description, int dateOfCreation){
 		this.name = name;
 		this.description = description;
 		this.dateOfCreation = dateOfCreation;
