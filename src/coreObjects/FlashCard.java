@@ -57,7 +57,7 @@ public class FlashCard {
 	 * @return boolean value if a FlashCard is new or not
 	 */
 	public boolean isNew() {
-		return nextReviewDate == null;
+		return (nextReviewDate == null);
 	}
 	
 	/** Determines if an object is equal to this FlashCard object. 

@@ -84,12 +84,17 @@ public class Deck {
 	 * This ensures that new cards are in random order, but cards that are due are always added to be
 	 * quizzed. 
 	 * 
+	 * Returned ArrayList has format [initialStack, againStack, finalStack].
+	 * 
+	 * New cards are added both to the initial card stack and the final card stack.
+	 * 
 	 * @param maxNewCards int for the max number of new cards that a user wants to see
 	 * @param currentDate LocalDate object for the current date
-	 * @return ArrayList<FlashCard> for the cards to be quizzed on
+	 * @return ArrayList<ArrayList<FlashCard>> table containing the cards to be quizzed on
 	 */
-	public ArrayList<FlashCard> cardsToQuiz(int maxNewCards, LocalDate currentDate){
-		ArrayList<FlashCard> cardsToQuiz = new ArrayList<FlashCard>();
+	public ArrayList<ArrayList<FlashCard>> cardsToQuiz(int maxNewCards, LocalDate currentDate){
+		
+		ArrayList<ArrayList<FlashCard>> cardsToQuiz = createCardsToQuizTable();
 		
 		Collections.shuffle(cards);
 		int newCardsAdded = 0;
@@ -97,12 +102,27 @@ public class Deck {
 		for (FlashCard flashCard: cards) {
 			if (flashCard.isNew() && newCardsAdded < maxNewCards) {
 				// Card is new, and added new cards is less than max
-				cardsToQuiz.add(flashCard);
+				// Add to inital stack and final stack
+				cardsToQuiz.get(0).add(flashCard);
+				cardsToQuiz.get(2).add(flashCard);
 				newCardsAdded += 1;
 			}
 		    else if (flashCard.isDue(currentDate)) {
-				cardsToQuiz.add(flashCard);
+				cardsToQuiz.get(0).add(flashCard);
 			}
+		}
+		return cardsToQuiz;
+	}
+	
+	/** Fills an ArrayList with 3 rows of ArrayList<FlashCard>, and returns it.
+	 *  Used locally by cardsToQuiz(int, LocalDate)
+	 * 
+	 * @return ArrayList<ArrayList<FlashCard>> table for cards to quiz
+	 */
+	private ArrayList<ArrayList<FlashCard>> createCardsToQuizTable() {
+		ArrayList<ArrayList<FlashCard>> cardsToQuiz = new ArrayList<ArrayList<FlashCard>>();
+		for (int i = 0; i < 3; i++) {
+			cardsToQuiz.add(new ArrayList<FlashCard>());
 		}
 		return cardsToQuiz;
 	}

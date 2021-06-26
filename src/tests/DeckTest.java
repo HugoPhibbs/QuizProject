@@ -48,16 +48,17 @@ class DeckTest {
 		testDeck1.setCards(new ArrayList<FlashCard>(Arrays.asList(testCardArray1)));
 		
 		// Test with a deck with more than max new cards
-		ArrayList<FlashCard> cardsToQuiz = testDeck1.cardsToQuiz(3, LocalDate.of(2021, 6, 26));
-		assertEquals(5, cardsToQuiz.size());
+		ArrayList<ArrayList<FlashCard>> cardsToQuiz = testDeck1.cardsToQuiz(3, LocalDate.of(2021, 6, 26));
+		assertEquals(5, cardsToQuiz.get(0).size());
+		assertEquals(3, cardsToQuiz.get(2).size());
 		
 		// Test with a deck with no new cards
 		FlashCard[] testCardArray2 = {testCard1, testCard2, testCard6};
 		testDeck1.setCards(new ArrayList<FlashCard>(Arrays.asList(testCardArray2)));
-		assertEquals(2, testDeck1.cardsToQuiz(5, LocalDate.of(2021, 6, 26)).size());
-		
+		assertEquals(2, testDeck1.cardsToQuiz(5, LocalDate.of(2021, 6, 26)).get(0).size());
+	
 		// Test with an empty deck
 		Deck testDeck2 = new Deck("", "", null);
-		assertEquals(0, testDeck2.cardsToQuiz(5, null).size());
+		assertEquals(0, testDeck2.cardsToQuiz(5, null).get(0).size());
 	}
 }
