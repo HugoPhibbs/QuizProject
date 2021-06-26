@@ -1,5 +1,6 @@
 package coreObjects;
 
+import java.time.LocalDate; 
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -7,7 +8,7 @@ import java.util.Collections;
  * 
  * @author Hugo Phibbs 
  * @author Tom Berry
- * @version 25/6/21
+ * @version 26/6/21
  * @since 25/6/21
  * 
  */
@@ -54,15 +55,18 @@ public class Deck {
 		cards.remove(flashCard);
 	}
 	
-	/** Returns the cards that a user is to be quizzed on
+	/** Returns the cards that a user is to be quizzed on. Shuffles the deck before choosing new cards. 
+	 * This ensures that new cards are in random order, but cards that are due are always added to be
+	 * quizzed. 
 	 * 
 	 * @param maxNewCards int for the max number of new cards that a user wants to see
 	 * @return ArrayList<FlashCard> for the cards to be quizzed on
 	 */
 	public ArrayList<FlashCard> cardsToQuiz(int maxNewCards){
 		ArrayList<FlashCard> cardsToQuiz = new ArrayList<FlashCard>();
-		// Shuffle the cards in this deck
+		
 		Collections.shuffle(cards);
+		LocalDate currentDate = LocalDate.now();
 		int newCardsAdded = 0;
 		for (FlashCard flashCard: cards) {
 			if (flashCard.getNextReviewDate() == null && newCardsAdded <= maxNewCards) {
@@ -70,7 +74,7 @@ public class Deck {
 				cardsToQuiz.add(flashCard);
 				newCardsAdded += 1;
 			}
-		    else if (flashCard.isDue()) {
+		    else if (flashCard.isDue(currentDate)) {
 				cardsToQuiz.add(flashCard);
 			}
 		}
