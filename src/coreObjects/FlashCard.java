@@ -34,10 +34,11 @@ public class FlashCard {
 	 * Always returns false if a card hasnt been seen. As this functionality is
 	 * already covered in Deck.cardsToQuiz(int)
 	 * 
+	 * @param currentDate LocalDate object for the current date
 	 * @return boolean for if a card should be quizzed or not
 	 */
 	public boolean isDue(LocalDate currentDate) {
-		if (nextReviewDate == null) {
+		if (this.isNew()) {
 			// Card is new
 			return false;
 		}
@@ -49,6 +50,40 @@ public class FlashCard {
 			// Card is over due
 			return (currentDate.isAfter(nextReviewDate));
 		}
+	}
+	
+	/** Method that determines if a FlashCard is new or not- i.e. hasn't been seen before
+	 * 
+	 * @return boolean value if a FlashCard is new or not
+	 */
+	public boolean isNew() {
+		return nextReviewDate == null;
+	}
+	
+	/** Determines if an object is equal to this FlashCard object. 
+	 * If the object is an instance of a FlashCard, then it compares
+	 * the front and back text with this FlashCard.
+	 * Used when adding a flashcard to a deck to make sure effectively
+	 * duplicate FlashCards aren't added to the same deck
+	 */
+	@Override
+	public boolean equals(Object object) {
+		if (object instanceof FlashCard) {
+			FlashCard flashCard = (FlashCard) object;
+			return (flashCard.getFrontText().equals(this.getFrontText()) && 
+					flashCard.getBackText().equals(this.getBackText()));
+		}
+		else {
+			return false;
+		}
+	}
+	
+	/** Returns a String representation of a FlashCard object
+	 * 
+	 */
+	@Override
+	public String toString() {
+		return String.format("FlashCard has: Front: %s; Back: %s", frontText, backText);
 	}
 	
 	/** Getter method for the front text of a flash card
