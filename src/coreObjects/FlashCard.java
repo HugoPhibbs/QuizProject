@@ -1,32 +1,55 @@
 package coreObjects;
 
+import java.time.LocalDate;
+
 /** Represents a FlashCard
  * 
  * @author Hugo Phibbs
  * @author Tom Berry
- * @version 25/6/21
+ * @version 26/6/21
  * @since 25/6/21
  *
  */
 public class FlashCard {
 	
-	/** String for the front text of a flash card **/
+	/** String for the front text of a flash card */
 	private String frontText;
-	/** String for the back text of a flash card **/
+	/** String for the back text of a flash card */
 	private String backText;
-	/** int for the date of creation **/
-	private int dateOfCreation;
+	/** LocalDate for the next review date of this flashcard */
+	private LocalDate nextReviewDate = null;
+	
 	
 	/** Constructor for a FlashCard object 
 	 * 
 	 * @param frontText String for the front text of a flash card
 	 * @param backText String for the back text of a flash card
-	 * @param dateOfCreation int for the date of creation of a flash card
 	 */
-	FlashCard(String frontText, String backText, int dateOfCreation){
+	FlashCard(String frontText, String backText){
 		this.frontText = frontText;
 		this.backText = backText;
-		this.dateOfCreation = dateOfCreation;
+	}
+	
+	/** Method to decide if this card is due to be be quizzed.
+	 * Always returns false if a card hasnt been seen. As this functionality is
+	 * already covered in Deck.cardsToQuiz(int)
+	 * 
+	 * @return boolean for if a card should be quizzed or not
+	 */
+	public boolean isDue() {
+		LocalDate currentDate = LocalDate.now();
+		if (nextReviewDate == null) {
+			// Card is new
+			return false;
+		}
+		else if (currentDate.equals(nextReviewDate)) {
+			// Card is due
+			return true;
+		}
+		else {
+			// Card is over due
+			return (currentDate.isAfter(nextReviewDate));
+		}
 	}
 	
 	/** Getter method for the front text of a flash card
@@ -45,12 +68,20 @@ public class FlashCard {
 		return backText;
 	}
 	
-	/** Getter method for the date of creation of a flash card
+	/** Getter method for the next review date of a flash card
 	 * 
-	 * @return int for the date of creation of a flash card
+	 * @return LocalDate for the next review date of a flash card
 	 */
-	public int getDateOfCreation() {
-		return dateOfCreation;
+	public LocalDate getNextReviewDate() {
+		return nextReviewDate;
+	}
+	
+	/** Setter method for the next review date of a flash card
+	 * 
+	 * @param nextReviewDate LocalDate for the next review date to be set
+	 */
+	public void setNextReviewDate(LocalDate nextReviewDate) {
+		this.nextReviewDate = nextReviewDate;
 	}
 	
 	/** Setter method for the front text of a flash card
@@ -68,5 +99,5 @@ public class FlashCard {
 	public void setBackText(String backText) {
 		this.backText = backText;
 	}
-
+	
 }
