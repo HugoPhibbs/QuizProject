@@ -1,5 +1,8 @@
 package coreLogic;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
+
 import coreObjects.*;
 
 public class FlashCardQuiz {
@@ -11,10 +14,12 @@ public class FlashCardQuiz {
 		this.deck = deck;
 	}
 
-	public void startQuiz() {
+	public void startQuiz(int maxNewCards) {
 		// TODO implement
 		
 		// Starts a quiz 
+		LocalDate currentDate = LocalDate.now();
+		ArrayList<ArrayList<FlashCard>> cardsToQuiz = deck.cardsToQuiz(maxNewCards, currentDate);
 	}
 	
 	public void endQuiz() {
@@ -23,7 +28,7 @@ public class FlashCardQuiz {
 		// Ends a quiz
 	}
 	
-	private void nextFLashCard() {
+	private void nextFlashCard() {
 		// TODO implement
 		
 		// Handles request of next card, after either "AGAIN" or "OK" was pressed
