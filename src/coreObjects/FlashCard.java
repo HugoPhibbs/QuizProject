@@ -25,7 +25,7 @@ public class FlashCard {
 	 * @param frontText String for the front text of a flash card
 	 * @param backText String for the back text of a flash card
 	 */
-	FlashCard(String frontText, String backText){
+	public FlashCard(String frontText, String backText){
 		this.frontText = frontText;
 		this.backText = backText;
 	}
@@ -36,8 +36,7 @@ public class FlashCard {
 	 * 
 	 * @return boolean for if a card should be quizzed or not
 	 */
-	public boolean isDue() {
-		LocalDate currentDate = LocalDate.now();
+	public boolean isDue(LocalDate currentDate) {
 		if (nextReviewDate == null) {
 			// Card is new
 			return false;
