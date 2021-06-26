@@ -1,6 +1,7 @@
 package coreObjects;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 /** Represents a Deck. Contains FlashCard objects
  * 
@@ -53,6 +54,39 @@ public class Deck {
 		cards.remove(flashCard);
 	}
 	
+	/** Returns the cards that a user is to be quizzed on
+	 * 
+	 * @param maxNewCards int for the max number of new cards that a user wants to see
+	 * @return ArrayList<FlashCard> for the cards to be quizzed on
+	 */
+	public ArrayList<FlashCard> cardsToQuiz(int maxNewCards){
+		ArrayList<FlashCard> cardsToQuiz = new ArrayList<FlashCard>();
+		// Shuffle the cards in this deck
+		Collections.shuffle(cards);
+		int newCardsAdded = 0;
+		for (FlashCard flashCard: cards) {
+			if (flashCard.getNextReviewDate() == null && newCardsAdded <= maxNewCards) {
+				// Card is new, and added new cards is less than max
+				cardsToQuiz.add(flashCard);
+				newCardsAdded += 1;
+			}
+		    else if (flashCard.isDue()) {
+				cardsToQuiz.add(flashCard);
+			}
+		}
+		return cardsToQuiz;
+	}
+	
+	/** Method that returns the size of a deck. 
+	 * Again borrows functionality from ArrayList, as this will often be called
+	 * and is cleaner than Deck.getCards.size()
+	 * 
+	 * @return int for the size of deck
+	 */
+	public int size() {
+		return cards.size();
+	}
+	
 	/** Getter method for the name of a deck
 	 * 
 	 * @return String for the name of deck
@@ -83,16 +117,6 @@ public class Deck {
 	 */
 	public String getDescription() {
 		return description;
-	}
-	
-	/** Method that returns the size of a deck. 
-	 * Again borrows functionality from ArrayList, as this will often be called
-	 * and is cleaner than Deck.getCards.size()
-	 * 
-	 * @return int for the size of deck
-	 */
-	public int size() {
-		return cards.size();
 	}
 	
 	/** Setter method for the name of a Deck
