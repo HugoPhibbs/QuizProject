@@ -18,6 +18,8 @@ public class FlashCard {
 	private String backText;
 	/** LocalDate for the next review date of this flashcard */
 	private LocalDate nextReviewDate = null;
+	/** int for the number of times this card has been reviewed */
+	private int timesReviewed = 0;
 	
 	
 	/** Constructor for a FlashCard object 
@@ -39,7 +41,6 @@ public class FlashCard {
 	 */
 	public boolean isDue(LocalDate currentDate) {
 		if (this.isNew()) {
-			// Card is new
 			return false;
 		}
 		else if (currentDate.equals(nextReviewDate)) {
@@ -78,6 +79,41 @@ public class FlashCard {
 		}
 	}
 	
+	/** Sets the next review date of a flash card based on
+	 *  how many times that it has been seen
+	 * Intervals between reviews gradually increase in size. 
+	 * 
+	 * Called once a quiz ends. 
+	 * 
+	 */
+	public void updateNextReviewDate() {
+		// The interval for this card next to be seen in a quiz
+		int reviewInterval = 0;
+		switch (timesReviewed) {
+		case 0:
+			reviewInterval = 1;
+			break;
+		case 2:
+			reviewInterval = 3;
+			break;
+		case 3:
+			reviewInterval = 5;
+			break;
+		case 4:
+			reviewInterval = 8;
+			break;
+		case 5:
+			reviewInterval = 14;
+			break;
+		case 6:
+			// Reviewed adequete number of times, no more reviews needed. 
+			// Set review date for practically infinite days from now ~ 10 years
+			reviewInterval = 3000;
+		}
+		nextReviewDate = nextReviewDate.plusDays(reviewInterval);
+		timesReviewed += 1;
+	}
+	
 	/** Returns a String representation of a FlashCard object
 	 * 
 	 */
@@ -102,12 +138,20 @@ public class FlashCard {
 		return backText;
 	}
 	
+	
 	/** Getter method for the next review date of a flash card
 	 * 
 	 * @return LocalDate for the next review date of a flash card
 	 */
 	public LocalDate getNextReviewDate() {
 		return nextReviewDate;
+	}
+	
+	/** Getter method for the number of times this card has been 
+	 * reviewed
+	 */
+	public int getTimesReviewed() {
+		return timesReviewed;
 	}
 	
 	/** Setter method for the next review date of a flash card
@@ -132,6 +176,14 @@ public class FlashCard {
 	 */
 	public void setBackText(String backText) {
 		this.backText = backText;
+	}
+	
+	/** Setter method for the number of times this flash card has been reviewed
+	 * 
+	 * @param timesReviewed int for the number of times to be set
+	 */
+	public void setTimesReviewed(int timesReviewed) {
+		this.timesReviewed = timesReviewed;
 	}
 	
 }
