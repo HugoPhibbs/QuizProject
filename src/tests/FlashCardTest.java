@@ -20,6 +20,7 @@ class FlashCardTest {
 		FlashCard testCard1 = new FlashCard("", "");
 		FlashCard testCard2 = new FlashCard("", "");
 		FlashCard testCard3 = new FlashCard("", "");
+		FlashCard testCard4 = new FlashCard("", "");
 		
 		LocalDate testDueDate1 = LocalDate.of(2021, 6, 25);
 		testCard1.setNextReviewDate(testDueDate1);
@@ -32,9 +33,30 @@ class FlashCardTest {
 		
 		LocalDate testCurrentDate = LocalDate.of(2021, 6, 25);
 		
+		// Due date is equal to current date
 		assertEquals(true, testCard1.isDue(testCurrentDate));
+		// Due date is after current date
 		assertEquals(false, testCard2.isDue(testCurrentDate));
+		// Due date is before to current date
 		assertEquals(true, testCard3.isDue(testCurrentDate));
+		// Flash card is new, doesn't have a due date
+		assertEquals(false, testCard4.isDue(testCurrentDate));
+	}
+	
+	@SuppressWarnings("unlikely-arg-type")
+	@Test
+	public void equalsTest() {
+		FlashCard testCard1 = new FlashCard("A", "B");
+		FlashCard testCard2 = new FlashCard("A", "B");
+		FlashCard testCard3 = new FlashCard("A", "A");
+		FlashCard testCard4 = new FlashCard("B", "A");
+		String testString = new String("");
+		
+		assertEquals(true, testCard1.equals(testCard2));
+		assertEquals(false, testCard2.equals(testCard3));
+		assertEquals(false, testCard2.equals(testCard4)); 
+		// Test with a different object type
+		assertEquals(false, testCard3.equals(testString));
 	}
 }
  	
