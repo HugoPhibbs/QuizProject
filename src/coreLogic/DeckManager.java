@@ -48,9 +48,6 @@ public class DeckManager {
 	 * @return boolean for if a deck with name deckName was removed.
 	 */
 	public boolean removeDeck(String deckName) {
-		// TODO implement
-		// Removes a deck from with the given name
-		// returns boolean if the deck was removed or not
 		Deck foundDeck = findDeck(deckName);
 		return (deckCollection.remove(foundDeck));
 	}
@@ -69,18 +66,22 @@ public class DeckManager {
 		return null;
 	}
 	
-	/** Renames a deck with name deckName with a new name
+	/** Renames a deck with name deckName with a new name.
+	 * Checks if a deck already exists with the name newDeckName.
 	 * 
 	 * @param deckName String for the name of the Deck to be renamed
 	 * @param newDeckName String for the new name of a deck
 	 * @return boolean if a deck with deckName was found or not, 
-	 * @throws InvalidNameException if newDeckName isn't valid
+	 * @throws IllegalArgumentException if newDeckName isn't valid
 	 */
 	public boolean renameDeck(String deckName, String newDeckName) {
 		// TODO implement throwing of InvalidNameException
 		Deck foundDeck = findDeck(deckName);
 		if (foundDeck == null) {
 			return false;
+		}
+		else if (containsDeck(newDeckName)) {
+			throw new IllegalArgumentException("New name is the same as a pre-existing deck!");
 		}
 		else {
 			foundDeck.setName(newDeckName);
