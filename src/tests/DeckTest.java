@@ -23,7 +23,7 @@ class DeckTest {
 		FlashCard testCard1 = new FlashCard("A", "B");
 		FlashCard testCard2 = new FlashCard("A", "B");
 		
-		Deck testDeck = new Deck("", "", null);
+		Deck testDeck = new Deck("testName", "", null);
 		// Test normally
 		assertEquals(true, testDeck.addCard(testCard1));
 		// Test with a duplicate card already in deck
@@ -44,7 +44,7 @@ class DeckTest {
 		FlashCard testCard7 = new FlashCard("M", "N");
 		FlashCard[] testCardArray1 = {testCard1, testCard2,testCard3,  testCard4, testCard5, testCard6, testCard7};
 		
-		Deck testDeck1 = new Deck("", "", null);
+		Deck testDeck1 = new Deck("testName", "", null);
 		testDeck1.setCards(new ArrayList<FlashCard>(Arrays.asList(testCardArray1)));
 		
 		// Test with a deck with more than max new cards
@@ -58,7 +58,15 @@ class DeckTest {
 		assertEquals(2, testDeck1.cardsToQuiz(5, LocalDate.of(2021, 6, 26)).get(0).size());
 	
 		// Test with an empty deck
-		Deck testDeck2 = new Deck("", "", null);
+		Deck testDeck2 = new Deck("testName", "", null);
 		assertEquals(0, testDeck2.cardsToQuiz(5, null).get(0).size());
+	}
+	
+	@Test
+	public void setNameTest() {
+		
+		Deck testDeck1 = new Deck("testName", "", null);
+		// Check that it throws an error with an invalid name
+		assertThrows(IllegalArgumentException.class, () -> {testDeck1.setName("G  erman");});
 	}
 }
