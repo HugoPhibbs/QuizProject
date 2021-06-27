@@ -1,9 +1,10 @@
 package coreLogic;
 
-import java.time.LocalDate;
+import java.time.LocalDate; 
 import java.util.ArrayList;
 
-import coreObjects.*;
+import coreObjects.Deck;
+import coreObjects.FlashCard;
 
 /** Represents a flash card quiz
  * 
