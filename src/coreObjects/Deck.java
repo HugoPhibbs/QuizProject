@@ -1,6 +1,6 @@
 package coreObjects;
 
-import java.time.LocalDate; 
+import java.time.LocalDate;  
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -32,7 +32,7 @@ public class Deck {
 	 * @param dateOfCreation int for the date of creation of a deck
 	 */
 	public Deck(String name, String description, LocalDate dateOfCreation){
-		this.name = name;
+		setName(name); // Checks for valid name
 		this.description = description;
 		this.dateOfCreation = dateOfCreation;
 	}
@@ -45,7 +45,7 @@ public class Deck {
 		return String.format("Deck has name: %s, containing %d cards", name, this.size());
 	}
 	
-	/** Determines if two deck objects are equal to each other. 
+	/** Determines if two Deck objects are equal to each other. 
 	 * Checks if their name and size are equal.
 	 * 
 	 */
@@ -59,13 +59,15 @@ public class Deck {
 		return false;
 	}
 	
-	/** Method for adding a card to a deck
+	/** Adds a card to a deck. 
+	 * Will not add a FlashCard to a deck if a FlashCard with same front and back text
+	 * as the new flashCard is the same.
 	 * 
 	 * @param flashCard FlashCard object to be added to a deck
 	 * @returns boolean if a flashCard was added or not
 	 */
 	public boolean addCard(FlashCard flashCard) {
-		if (this.contains(flashCard)) {
+		if (!contains(flashCard)) {
 			return (cards.add(flashCard));
 		}
 		else {
@@ -182,9 +184,11 @@ public class Deck {
 		return description;
 	}
 	
-	/** Setter method for the name of a Deck
+	/** Setter method for the name of a Deck. 
+	 * Checks if a name is valid before setting. 
 	 * 
 	 * @param name String for the name of a deck to be set
+	 * @throws IllegalArgumentException if name isnt' valid, see CheckValidInput.nameIsValid(String)
 	 */
 	public void setName(String newName) {
 		if (!CheckValidInput.nameIsValid(newName)) {
