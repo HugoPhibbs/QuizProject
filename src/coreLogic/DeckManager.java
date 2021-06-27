@@ -1,5 +1,6 @@
 package coreLogic;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 import coreObjects.Deck;
@@ -16,11 +17,13 @@ import coreObjects.FlashCard;
  */
 public class DeckManager {
 	
+	/** ArrayList<Deck> containing the decks of this DeckManager */
 	private ArrayList<Deck> deckCollection = new ArrayList<Deck>();
 	
-	public DeckManager() {
-		
-	}
+	/** Constructor for a DeckManager object
+	 * 
+	 */
+	public DeckManager() {}
 	
 	/** Adds a deck to the collection of a DeckManager
 	 * Only adds a deck if a deck with the same name doesn't already
@@ -52,7 +55,8 @@ public class DeckManager {
 		return (deckCollection.remove(foundDeck));
 	}
 	
-	/** Finds the deck with the given name deckName. 
+	/** Finds the deck with the given name deckName. Used internally for CRUD
+	 * operations. 
 	 * 
 	 * @param deckName String for the name of the deck that is requested
 	 * @return Deck with the name deckName, otherwise returns null
@@ -67,29 +71,57 @@ public class DeckManager {
 	}
 	
 	/** Renames a deck with name deckName with a new name.
-	 * Checks if a deck already exists with the name newDeckName.
+	 * 
+	 * Checks if deckName is appropriate, throws an Exception if not.
 	 * 
 	 * @param deckName String for the name of the Deck to be renamed
 	 * @param newDeckName String for the new name of a deck
-	 * @return boolean if a deck with deckName was found or not, 
-	 * @throws IllegalArgumentException if newDeckName isn't valid
+	 * @return boolean true if deck was renamed.
+	 * @throws IllegalArgumentException if deckName doesn't belong to a deck
+	 * in this colection or newDeckName isn't valid
 	 */
 	public boolean renameDeck(String deckName, String newDeckName) {
-		// TODO implement throwing of InvalidNameException
-		Deck foundDeck = findDeck(deckName);
-		if (foundDeck == null) {
-			return false;
+		if (!containsDeck(deckName)) {
+			throw new IllegalArgumentException("Deck with given name doesn't exist in this collection!");
 		}
 		else if (containsDeck(newDeckName)) {
-			throw new IllegalArgumentException("New name is the same as a pre-existing deck!");
+			throw new IllegalArgumentException("New name is the same name as a pre-existing deck!");
 		}
 		else {
+			Deck foundDeck = findDeck(deckName);
 			foundDeck.setName(newDeckName);
 			return true;
 		}
 	}
 	
+	/** Creates a new deck with a name deckName and the given description
+	 * then adds this new Deck to the collection of this DeckManager.  
+	 * 
+	 * Checks if the deckName is appropriate, throws an exception if not. 
+	 * 
+	 * @param deckName String for the new name of a Deck to be created
+	 * @param description String for the description of a new Deck
+	 * @return boolean true if deck was created and added to the DeckManager collection
+	 * @throws IllegalArgumentExceptionn if a deck with deckName already exists in the collection
+	 * or deckName isn't valid as per CheckValidInput.nameIsValid(String)
+	 */
+	public boolean createDeck(String deckName, String description) {
+		if (containsDeck(deckName)) {
+			throw new IllegalArgumentException("Deck in collection already the same name as this new name!");
+		}
+		else if (!CheckValidInput.nameIsValid(deckName)) {
+			throw new IllegalArgumentException("Deck name isn't valid!");
+		}
+		else {
+			LocalDate currentDate = LocalDate.now();
+			Deck newDeck = new Deck(deckName, description, currentDate);
+			addDeck(newDeck);
+			return true;
+		}
+	}
+	
 	public boolean addCardToDeck(FlashCard flashCard, String deckName) {
+		Deck foundDeck = findDeck(deckName);
 		// TODO implement
 		// Finds the deck with name deckName
 		// and adds flashCard to it
