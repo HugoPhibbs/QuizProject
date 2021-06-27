@@ -4,6 +4,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import coreLogic.CheckValidInput;
+
 /** Represents a Deck. Contains FlashCard objects
  * 
  * @author Hugo Phibbs 
@@ -184,8 +186,14 @@ public class Deck {
 	 * 
 	 * @param name String for the name of a deck to be set
 	 */
-	public void setName(String name) {
-		this.name = name;
+	public void setName(String newName) {
+		if (!CheckValidInput.nameIsValid(newName)) {
+			String msg = "Name cannot have 2 more consecutive white spaces nor have any special characters!";
+			throw new IllegalArgumentException(msg);
+		}
+		else {
+			this.name = newName;
+		}
 	}
 	
 	/** Setter method for the description of a Deck
