@@ -63,7 +63,7 @@ public class Deck {
 	 * @returns boolean if a flashCard was added or not
 	 */
 	public boolean addCard(FlashCard flashCard) {
-		if (!cards.contains(flashCard)) {
+		if (this.contains(flashCard)) {
 			return (cards.add(flashCard));
 		}
 		else {
@@ -71,7 +71,16 @@ public class Deck {
 		}
 	}
 	
-	/** Method for removing a card from a deck
+	/** Checks if a deck contains a given FlashCard object
+	 * 
+	 * @param flashCard FlashCard object to be checked if it is contained in Deck
+	 * @return boolean if a deck contains flashCard or not
+	 */
+	public boolean contains(FlashCard flashCard) {
+		return (cards.contains(flashCard));
+	}
+	
+	/** Removes a card from a deck
 	 * 
 	 * @param flashCard FlashCard object to be removed from a deck
 	 * @return boolean if the flashCard was removed from cards, ie it was found or not. 
