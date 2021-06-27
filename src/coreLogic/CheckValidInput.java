@@ -10,9 +10,13 @@ package coreLogic;
  *
  */
 public class CheckValidInput {
+	
+	private String VALID_NAME_REQUIREMENTS = 
+			"Name must have no more than 2 consequtive white spaces"
+			+ "and be between 3 and 15 characters long";
 
 	/** Checks if an inputed name is valid.
-	 * Name must have no more than 2 consecutive white space, and be between 3 and 15 chars long
+	 * Name must have no more than 2 consecutive white spaces, and be between 3 and 15 chars long
 	 * 
 	 * @param name String for the name to be checked
 	 * @return boolean if the inputed name is valid
@@ -39,5 +43,13 @@ public class CheckValidInput {
 			return false;
 		}
 		return true;
+	}
+
+	/** Getter method for VALID_NAME_REQUIREMENTS
+	 * 
+	 * @return String for VALID_NAME_REQUIREMENTS
+	 */
+	public String getVALID_NAME_REQUIREMENTS() {
+		return VALID_NAME_REQUIREMENTS;
 	}
 }
