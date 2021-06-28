@@ -6,11 +6,11 @@ import java.util.ArrayList;
 import coreObjects.Deck;
 import coreObjects.FlashCard;
 
-/** Represents a flash card quiz.
+/** Represents a FlashCardQuiz.
  * 
  * @author Hugo Phibbs
  * @author Tom Berry
- * @version 26/6/21
+ * @version 28/6/21
  * @since 25/6/21
  * 
  */
@@ -22,7 +22,8 @@ public class FlashCardQuiz {
 	private FlashCard currentFlashCard;
 	/** Current side of currentFlashCard being shown to a user */
 	private String currentFlashCardSide = "FRONT";
-	/** ArrayList of all the unique FlashCards for this quiz */
+	/** ArrayList of all the unique FlashCards for this quiz
+	 * Both all the new and due cards that are being tested on, with no duplicates.  */
 	private ArrayList<FlashCard> uniqueCards;
 	/** ArrayList<ArrayList<FlashCard>> of the current state of the quiz interms of cards 
 	 * See Deck.cardsToQuiz(int, LocalDate) for more details*/
@@ -37,28 +38,39 @@ public class FlashCardQuiz {
 	FlashCardQuiz(Deck deck){
 		this.deck = deck;
 	} 
-
+	
+	/** Starts a new Quiz
+	 * 
+	 * @param maxNewCards int for the max number of new cards that a User wants to see 
+	 */
 	public void startQuiz(int maxNewCards) {
 		// TODO implement
 		
 		// Starts a quiz 
 		LocalDate currentDate = LocalDate.now();
-		this.cardsToQuiz = deck.cardsToQuiz(maxNewCards, currentDate);
-		this.uniqueCards = cardsToQuiz.get(0);
+		this.cardsToQuiz = deck.flashCardsToQuiz(maxNewCards, currentDate);
+		this.uniqueCards = cardsToQuiz.get(0); // All cards that are being quizzed on, both new and due cards
 	}
 	
-	public void endQuiz() {
+	public QuizStats endQuiz() {
 		// TODO implement
 		
 		// Ends a quiz
-
-		updateQuizCards();
+		
+		updateQuizFlashCards();
+		
+		// Update quizStats
+		
+		return quizStats;
 	}
 	
 	/** Updates all the review dates of the cards that have been
-	 * seen once the quiz is over	
+	 * seen once the quiz is over
+	 * <p>
+	 * Iterates over uniqueCards as these are all the cards that have been quizzed on
+	 * 
 	 */
-	private void updateQuizCards() {
+	private void updateQuizFlashCards() {
 		for (FlashCard flashCard : uniqueCards) {
 			flashCard.updateNextReviewDate();
 		}
@@ -75,6 +87,7 @@ public class FlashCardQuiz {
 	}
 	
 	/** Handles request of wanting to flip a flash card. If the current flash card has it's front showing. 
+	 * <p>
 	 * Called after button pressed in GUI to flip the current flash card
 	 * 
 	 * @return String for the side of currentFlashCard that a user wants to see
