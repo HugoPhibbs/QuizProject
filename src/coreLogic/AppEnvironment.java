@@ -11,4 +11,22 @@ package coreLogic;
  */
 public class AppEnvironment {
 
+	private DeckManager deckManager = new DeckManager();
+
+	/** Returns the DeckManager for this AppEnvironment.
+	 * 
+	 * @return the deckManager
+	 */
+	public DeckManager getDeckManager() {
+		return deckManager;
+	}
+
+	/** Sets the DeckManager for this AppEnvironment.
+	 * 
+	 * @param deckManager the deckManager to set
+	 */
+	public void setDeckManager(DeckManager deckManager) {
+		this.deckManager = deckManager;
+	}
+	
 }
