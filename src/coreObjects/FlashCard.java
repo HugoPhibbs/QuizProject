@@ -40,7 +40,7 @@ public class FlashCard {
 	 * @return boolean for if a card should be quizzed or not
 	 */
 	public boolean isDue(LocalDate currentDate) {
-		if (this.isNew()) {
+		if (isNew()) {
 			return false;
 		}
 		else if (currentDate.equals(nextReviewDate)) {
@@ -93,19 +93,19 @@ public class FlashCard {
 		case 0:
 			reviewInterval = 1;
 			break;
-		case 2:
+		case 1:
 			reviewInterval = 3;
 			break;
-		case 3:
+		case 2:
 			reviewInterval = 5;
 			break;
-		case 4:
+		case 3:
 			reviewInterval = 8;
 			break;
-		case 5:
+		case 4:
 			reviewInterval = 14;
 			break;
-		case 6:
+		case 5:
 			// Reviewed adequete number of times, no more reviews needed. 
 			// Set review date for practically infinite days from now ~ 10 years
 			reviewInterval = 3000;
@@ -137,8 +137,7 @@ public class FlashCard {
 	public String getBackText() {
 		return backText;
 	}
-	
-	
+
 	/** Getter method for the next review date of a flash card
 	 * 
 	 * @return LocalDate for the next review date of a flash card

@@ -120,6 +120,11 @@ public class DeckManager {
 		}
 	}
 	
+	public boolean deckNameIsValid() {
+		// TODO implement!
+		return true;
+	}
+	
 	public boolean addCardToDeck(FlashCard flashCard, String deckName) {
 		Deck foundDeck = findDeck(deckName);
 		// TODO implement
@@ -128,6 +133,13 @@ public class DeckManager {
 		// Returns true if operation was successful or not, ie deck with deckName
 		// Was found and not a duplicate flashCard already in deck
 		return false;
+	}
+	
+	public boolean changeFlashCardDeck(FlashCard flashCard, String deckName, String newDeckName) {
+		// Changes which deck a flash card belongs to
+		// Need to check that a flash card doesnt already already exist in deck with name
+		// new deckName
+		return true;
 	}
 	
 	/** Method that returns if a DeckManager contains a
@@ -164,7 +176,7 @@ public class DeckManager {
 	
 	/** Method to set the deck collection of a DeckManager
 	 * WARNING - USE WISELY, make sure that the deckCollection is already 
-	 * prechecked, ie no duplicate names for decks, and deck are valid aswell
+	 * prechecked, ie no duplicate names for decks, and deck are valid aswell etc
 	 * 
 	 * @param deckCollection ArrayList<Deck> to be set as the collection
 	 */

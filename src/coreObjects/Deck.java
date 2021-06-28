@@ -59,20 +59,24 @@ public class Deck {
 		return false;
 	}
 	
-	/** Adds a card to a deck. 
+	/** Adds a FlashCard to a deck. 
 	 * Will not add a FlashCard to a deck if a FlashCard with same front and back text
 	 * as the new flashCard is the same.
 	 * 
 	 * @param flashCard FlashCard object to be added to a deck
 	 * @returns boolean if a flashCard was added or not
 	 */
-	public boolean addCard(FlashCard flashCard) {
+	public boolean addFlashCard(FlashCard flashCard) {
 		if (!contains(flashCard)) {
 			return (cards.add(flashCard));
 		}
 		else {
 			return false;
 		}
+	}
+	
+	public void uniqueCards() {
+		// TODO implement 
 	}
 	
 	/** Checks if a deck contains a given FlashCard object
@@ -84,16 +88,16 @@ public class Deck {
 		return (cards.contains(flashCard));
 	}
 	
-	/** Removes a card from a deck
+	/** Removes a FlashCard from a deck
 	 * 
 	 * @param flashCard FlashCard object to be removed from a deck
 	 * @return boolean if the flashCard was removed from cards, ie it was found or not. 
 	 */
-	public boolean removeCard(FlashCard flashCard) {
+	public boolean removeFlashCard(FlashCard flashCard) {
 		return (cards.remove(flashCard));
 	}
 	
-	/** Returns the cards that a user is to be quizzed on. Shuffles the deck before choosing new cards. 
+	/** Returns the FlashCards that a user is to be quizzed on. Shuffles the deck before choosing new cards. 
 	 * This ensures that new cards are in random order, but cards that are due are always added to be
 	 * quizzed. 
 	 * 
@@ -105,9 +109,9 @@ public class Deck {
 	 * @param currentDate LocalDate object for the current date
 	 * @return ArrayList<ArrayList<FlashCard>> table containing the cards to be quizzed on
 	 */
-	public ArrayList<ArrayList<FlashCard>> cardsToQuiz(int maxNewCards, LocalDate currentDate){
+	public ArrayList<ArrayList<FlashCard>> flashCardsToQuiz(int maxNewCards, LocalDate currentDate){
 		
-		ArrayList<ArrayList<FlashCard>> cardsToQuiz = createCardsToQuizTable();
+		ArrayList<ArrayList<FlashCard>> flashCardsToQuiz = createFlashCardsToQuizTable();
 		
 		Collections.shuffle(cards);
 		int newCardsAdded = 0;
@@ -116,15 +120,15 @@ public class Deck {
 			if (flashCard.isNew() && newCardsAdded < maxNewCards) {
 				// Card is new, and added new cards is less than max
 				// Add to inital stack and final stack
-				cardsToQuiz.get(0).add(flashCard);
-				cardsToQuiz.get(2).add(flashCard);
+				flashCardsToQuiz.get(0).add(flashCard);
+				flashCardsToQuiz.get(2).add(flashCard);
 				newCardsAdded += 1;
 			}
 		    else if (flashCard.isDue(currentDate)) {
-				cardsToQuiz.get(0).add(flashCard);
+		    	flashCardsToQuiz.get(0).add(flashCard);
 			}
 		}
-		return cardsToQuiz;
+		return flashCardsToQuiz;
 	}
 	
 	/** Fills an ArrayList with 3 rows of ArrayList<FlashCard>, and returns it.
@@ -132,12 +136,12 @@ public class Deck {
 	 * 
 	 * @return ArrayList<ArrayList<FlashCard>> table for cards to quiz
 	 */
-	private ArrayList<ArrayList<FlashCard>> createCardsToQuizTable() {
-		ArrayList<ArrayList<FlashCard>> cardsToQuiz = new ArrayList<ArrayList<FlashCard>>();
+	private ArrayList<ArrayList<FlashCard>> createFlashCardsToQuizTable() {
+		ArrayList<ArrayList<FlashCard>> flashCardsToQuiz = new ArrayList<ArrayList<FlashCard>>();
 		for (int i = 0; i < 3; i++) {
-			cardsToQuiz.add(new ArrayList<FlashCard>());
+			flashCardsToQuiz.add(new ArrayList<FlashCard>());
 		}
-		return cardsToQuiz;
+		return flashCardsToQuiz;
 	}
 	
 	/** Method that returns the size of a deck. 
@@ -192,7 +196,7 @@ public class Deck {
 	 */
 	public void setName(String newName) {
 		if (!CheckValidInput.nameIsValid(newName)) {
-			String msg = "Name cannot have 2 more consecutive white spaces nor have any special characters!";
+			String msg = String.format(CheckValidInput.get)
 			throw new IllegalArgumentException(msg);
 		}
 		else {
