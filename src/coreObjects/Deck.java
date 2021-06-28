@@ -10,7 +10,7 @@ import coreLogic.CheckValidInput;
  * 
  * @author Hugo Phibbs 
  * @author Tom Berry
- * @version 26/6/21
+ * @version 28/6/21
  * @since 25/6/21
  * 
  */
@@ -29,6 +29,7 @@ public class Deck {
 	/** Constructor for a Deck object
 	 * 
 	 * @param name String for the name of a deck
+	 * @param description String for a brief description of a Deck
 	 * @param dateOfCreation int for the date of creation of a deck
 	 */
 	public Deck(String name, String description, LocalDate dateOfCreation){
@@ -64,7 +65,7 @@ public class Deck {
 	 * as the new flashCard is the same.
 	 * 
 	 * @param flashCard FlashCard object to be added to a deck
-	 * @returns boolean if a flashCard was added or not
+	 * @return boolean if a flashCard was added or not
 	 */
 	public boolean addFlashCard(FlashCard flashCard) {
 		if (!contains(flashCard)) {
@@ -73,10 +74,6 @@ public class Deck {
 		else {
 			return false;
 		}
-	}
-	
-	public void uniqueCards() {
-		// TODO implement 
 	}
 	
 	/** Checks if a deck contains a given FlashCard object
@@ -100,14 +97,17 @@ public class Deck {
 	/** Returns the FlashCards that a user is to be quizzed on. Shuffles the deck before choosing new cards. 
 	 * This ensures that new cards are in random order, but cards that are due are always added to be
 	 * quizzed. 
-	 * 
-	 * Returned ArrayList has format [initialStack, againStack, finalStack].
-	 * 
+	 * <p>
+	 * Returned nested ArrayList has format [initialStack, againStack, finalStack].
+	 * <p>
 	 * New cards are added both to the initial card stack and the final card stack.
+	 * <p>
+	 * Final stack only contains new cards, as cards that have already been viewed by default
+	 * don't appear in the final stack, this is just part of the learning algorithm. 
 	 * 
 	 * @param maxNewCards int for the max number of new cards that a user wants to see
 	 * @param currentDate LocalDate object for the current date
-	 * @return ArrayList<ArrayList<FlashCard>> table containing the cards to be quizzed on
+	 * @return nested ArrayList containing the cards to be quizzed on
 	 */
 	public ArrayList<ArrayList<FlashCard>> flashCardsToQuiz(int maxNewCards, LocalDate currentDate){
 		
@@ -125,6 +125,7 @@ public class Deck {
 				newCardsAdded += 1;
 			}
 		    else if (flashCard.isDue(currentDate)) {
+		    	// Otherwise if the flashCard is due
 		    	flashCardsToQuiz.get(0).add(flashCard);
 			}
 		}
@@ -196,7 +197,7 @@ public class Deck {
 	 */
 	public void setName(String newName) {
 		if (!CheckValidInput.nameIsValid(newName)) {
-			String msg = String.format(CheckValidInput.get)
+			String msg = String.format(CheckValidInput.getVALID_NAME_REQUIREMENTS());
 			throw new IllegalArgumentException(msg);
 		}
 		else {
