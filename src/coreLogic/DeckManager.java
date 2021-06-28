@@ -1,17 +1,21 @@
 package coreLogic;
 
-import java.time.LocalDate;
+import java.time.LocalDate; 
 import java.util.ArrayList;
 
 import coreObjects.Deck;
 import coreObjects.FlashCard;
 
 /** Class to manage a collection of decks for a quiz application.
- * Manages CRUD actions do with a collection of Decks
+ * Manages CRUD actions do with a collection of Decks. 
+ * <p>
+ * Acts as a controller to make sure that actions to do with Decks are permissable in the context of
+ * other decks, for example if renaming a deck gives it the same name as another deck- which is obviously
+ * not permissible. 
  * 
  * @author Hugo Phibbs
  * @author Tom Berry
- * @version 27/6/21
+ * @version 28/6/21
  * @since 27/6/21
  *
  */
@@ -26,6 +30,7 @@ public class DeckManager {
 	public DeckManager() {}
 	
 	/** Adds a deck to the collection of a DeckManager
+	 * <p>
 	 * Only adds a deck if a deck with the same name doesn't already
 	 * exist
 	 * 
@@ -33,7 +38,7 @@ public class DeckManager {
 	 * @return boolean if deck was added or not
 	 */
 	public boolean addDeck(Deck deck) {
-		if (this.containsDeck(deck)) {
+		if (containsDeck(deck)) {
 			// Deck is already contained in deckManager
 			return false;
 		}
@@ -44,6 +49,7 @@ public class DeckManager {
 	
 	/** Removes the deck with name deckName from the collection of
 	 * a deckManager. 
+	 * <p>
 	 * If a deck with name deckName isn't found in the collection, it
 	 * returns false, otherwise true. 
 	 * 
@@ -71,16 +77,17 @@ public class DeckManager {
 	}
 	
 	/** Renames a deck with name deckName with a new name.
-	 * 
+	 * <p>
 	 * Checks if deckName is appropriate, throws an Exception if not.
-	 * 
+	 * <p>
 	 * @param deckName String for the name of the Deck to be renamed
 	 * @param newDeckName String for the new name of a deck
 	 * @return boolean true if deck was renamed.
-	 * @throws IllegalArgumentException if deckName doesn't belong to a deck
-	 * in this colection or newDeckName isn't valid
+	 * @throws IllegalArgumentException if: <br>
+	 * - DeckName doesn't belong to a deck in this collection <br>
+	 * - newDeckName isn't valid
 	 */
-	public boolean renameDeck(String deckName, String newDeckName) {
+	public boolean renameDeck(String deckName, String newDeckName) throws IllegalArgumentException {
 		if (!containsDeck(deckName)) {
 			throw new IllegalArgumentException("Deck with given name doesn't exist in this collection!");
 		}
@@ -96,16 +103,17 @@ public class DeckManager {
 	
 	/** Creates a new deck with a name deckName and the given description
 	 * then adds this new Deck to the collection of this DeckManager.  
-	 * 
+	 * <p>
 	 * Checks if the deckName is appropriate, throws an exception if not. 
 	 * 
 	 * @param deckName String for the new name of a Deck to be created
 	 * @param description String for the description of a new Deck
 	 * @return boolean true if deck was created and added to the DeckManager collection
-	 * @throws IllegalArgumentExceptionn if a deck with deckName already exists in the collection
-	 * or deckName isn't valid as per CheckValidInput.nameIsValid(String)
+	 * @throws IllegalArgumentException if: <br>
+	 * - A deck with deckName already exists in the collection <br>
+	 * - DeckName isn't valid as per CheckValidInput.nameIsValid(String) 
 	 */
-	public boolean createDeck(String deckName, String description) {
+	public boolean createDeck(String deckName, String description) throws IllegalArgumentException {
 		if (containsDeck(deckName)) {
 			throw new IllegalArgumentException("Deck in collection already the same name as this new name!");
 		}
@@ -120,43 +128,105 @@ public class DeckManager {
 		}
 	}
 	
-	public boolean deckNameIsValid() {
-		// TODO implement!
-		return true;
-	}
-	
-	public boolean addCardToDeck(FlashCard flashCard, String deckName) {
+	/** Adds flashCard to a destination Deck with name deckName
+	 * 
+	 * @param flashCard FlashCard object to be added to destination Deck
+	 * @param deckName String for the name of the destination Deck
+	 * @return boolean if operation was performed or not
+	 * @throws IllegalArgumentException if:<br>
+	 * - A FlashCard already exists identical to flashCard in destination deck <br>
+	 * - Destination deck with name deckName doesn't exist in this collection
+	 */
+	public boolean addFlashCardToDeck(FlashCard flashCard, String deckName) throws IllegalArgumentException {
 		Deck foundDeck = findDeck(deckName);
 		// TODO implement
-		// Finds the deck with name deckName
-		// and adds flashCard to it
-		// Returns true if operation was successful or not, ie deck with deckName
-		// Was found and not a duplicate flashCard already in deck
-		return false;
+		if (!containsDeck(deckName)) {
+			throw new IllegalArgumentException("Destination deck with name deckName doesn't exist in this collection");
+		}
+		else if (findDeck(deckName).contains(flashCard)) {
+			throw new IllegalArgumentException("A flash card already exists identical to this new FlashCard in this deck");
+		}
+		else {
+			Deck destDeck = findDeck(deckName);
+			destDeck.addFlashCard(flashCard);
+			return true;
+		}
 	}
 	
-	public boolean changeFlashCardDeck(FlashCard flashCard, String deckName, String newDeckName) {
+	/** Removes flashCard from the deck with name.	
+	 * <p>
+	 * Returns true if the flashCard was removed. 
+	 * 
+	 * @param flashCard FlashCard object to be removed from a Deck
+	 * @param deckName String for the name of the deck that flashCard is to be removed from
+	 * @return boolean if the flashCard was removed from the deck. 
+	 * @throws IllegalArgumentException if: <br>
+	 * - Deck with given deckName doesn't exist in this collection
+	 */
+	public boolean removeFlashCardFromDeck(FlashCard flashCard, String deckName) throws IllegalArgumentException {
+		if (!containsDeck(deckName)) {
+			throw new IllegalArgumentException("Deck with given deckName doesn't exist in this collection");
+		}
+		else {
+			Deck sourceDeck = findDeck(deckName);
+			return sourceDeck.removeFlashCard(flashCard);
+		}
+	}
+	
+	/** Changes which Deck a FlashCard belongs to
+	 * <p>
+	 * Makes sure that there is no duplicate FlashCard in the requested deck destination
+	 * 
+	 * @param flashCard FlashCard object to be moved
+	 * @param deckName String for the name of the current deck of flashCard
+	 * @param newDeckName String for the name of the destination deck for flashCard
+	 * @return boolean if the operation was performed or not
+	 * @throws IllegalArgumentException if: <br>
+	 * - The source deck is not in this collection <br>
+	 * - The location deck is not in this collection <br>
+	 * - Location deck already has a flash card identical to the one wanting to be moved <br>
+	 * - Source deck doesn't contain flashCard
+	 */
+	public boolean changeFlashCardDeck(FlashCard flashCard, String deckName, String newDeckName) throws IllegalArgumentException{
 		// Changes which deck a flash card belongs to
 		// Need to check that a flash card doesnt already already exist in deck with name
 		// new deckName
-		return true;
+		if (!containsDeck(deckName)) {
+			throw new IllegalArgumentException("Source deck is not in this collection!");
+		}
+		else if (!containsDeck(newDeckName)) {
+			throw new IllegalArgumentException("Location deck is not in this collection!");
+		}
+		else if (findDeck(newDeckName).contains(flashCard)) {
+			throw new IllegalArgumentException("Location deck already has a flash card identical to the one wanting to be moved!");
+		}
+		else {
+			// Otherwise transfer flashCard from the source Deck to the destination Deck
+			if (removeFlashCardFromDeck(flashCard, deckName)) {
+				return addFlashCardToDeck(flashCard, newDeckName); // Will return true
+			}
+			else {
+				throw new IllegalArgumentException("Source deck does not contain this flash card!");
+			}
+		}
+		
 	}
 	
 	/** Method that returns if a DeckManager contains a
 	 * a Deck in it's collection. 
-	 * 
+	 * <p>
 	 * Overloaded with DeckManager.containsDeck(String)
 	 * 
 	 * @param deck Deck to be checked if it is contained in DeckManager
-	 * @return boolean if deck was found
+	 * @return boolean value for if deck was found
 	 */
 	public boolean containsDeck(Deck deck) {
-		return (findDeck(deck.getName()) != null);
+		return (containsDeck(deck.getName()));
 	}
 	
 	/** Method that returns if a DeckManager contains a
-	 * Deck with the name DeckName in it's collection
-	 * 
+	 * Deck with the name deckName in it's collection
+	 * <p>
 	 * Overloaded with DeckManager.containsDeck(Deck)
 	 * 
 	 * @param deckName String for the name of a Deck to check if it contained in DeckManager
@@ -168,17 +238,18 @@ public class DeckManager {
 	
 	/** Getter method for the a deck collection of a DeckManager object
 	 * 
-	 * @return ArrayList<Deck> for the deckCollection of a DeckManager object
+	 * @return ArrayList of Deck objects for the deckCollection of a DeckManager object
 	 */
 	public ArrayList<Deck> getDeckCollection(){
 		return deckCollection;
 	}
 	
 	/** Method to set the deck collection of a DeckManager
+	 * <p>
 	 * WARNING - USE WISELY, make sure that the deckCollection is already 
-	 * prechecked, ie no duplicate names for decks, and deck are valid aswell etc
+	 * pre-checked, i.e. no duplicate names for Decks, and Deck names are valid aswell etc
 	 * 
-	 * @param deckCollection ArrayList<Deck> to be set as the collection
+	 * @param deckCollection ArrayList of Deck objects to be set as the collection
 	 */
 	public void setDeckCollection(ArrayList<Deck> deckCollection){
 		this.deckCollection = deckCollection;
