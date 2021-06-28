@@ -6,12 +6,12 @@ import java.util.ArrayList;
 import coreObjects.Deck;
 import coreObjects.FlashCard;
 
-/** Represents a flash card quiz
+/** Represents a flash card quiz.
  * 
  * @author Hugo Phibbs
  * @author Tom Berry
- * @version 26/5/21
- * @version 25/5/21
+ * @version 26/6/21
+ * @since 25/6/21
  * 
  */
 public class FlashCardQuiz {
