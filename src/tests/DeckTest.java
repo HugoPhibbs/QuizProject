@@ -25,9 +25,9 @@ class DeckTest {
 		
 		Deck testDeck = new Deck("testName", "", null);
 		// Test normally
-		assertEquals(true, testDeck.addCard(testCard1));
+		assertEquals(true, testDeck.addFlashCard(testCard1));
 		// Test with a duplicate card already in deck
-		assertEquals(false, testDeck.addCard(testCard2));
+		assertEquals(false, testDeck.addFlashCard(testCard2));
 	}
 	
 	@Test
@@ -48,18 +48,18 @@ class DeckTest {
 		testDeck1.setCards(new ArrayList<FlashCard>(Arrays.asList(testCardArray1)));
 		
 		// Test with a deck with more than max new cards
-		ArrayList<ArrayList<FlashCard>> cardsToQuiz = testDeck1.cardsToQuiz(3, LocalDate.of(2021, 6, 26));
+		ArrayList<ArrayList<FlashCard>> cardsToQuiz = testDeck1.flashCardsToQuiz(3, LocalDate.of(2021, 6, 26));
 		assertEquals(5, cardsToQuiz.get(0).size());
 		assertEquals(3, cardsToQuiz.get(2).size());
 		
 		// Test with a deck with no new cards
 		FlashCard[] testCardArray2 = {testCard1, testCard2, testCard6};
 		testDeck1.setCards(new ArrayList<FlashCard>(Arrays.asList(testCardArray2)));
-		assertEquals(2, testDeck1.cardsToQuiz(5, LocalDate.of(2021, 6, 26)).get(0).size());
+		assertEquals(2, testDeck1.flashCardsToQuiz(5, LocalDate.of(2021, 6, 26)).get(0).size());
 	
 		// Test with an empty deck
 		Deck testDeck2 = new Deck("testName", "", null);
-		assertEquals(0, testDeck2.cardsToQuiz(5, null).get(0).size());
+		assertEquals(0, testDeck2.flashCardsToQuiz(5, null).get(0).size());
 	}
 	
 	@Test
