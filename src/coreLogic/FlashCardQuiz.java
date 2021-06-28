@@ -27,6 +27,8 @@ public class FlashCardQuiz {
 	/** ArrayList<ArrayList<FlashCard>> of the current state of the quiz interms of cards 
 	 * See Deck.cardsToQuiz(int, LocalDate) for more details*/
 	private ArrayList<ArrayList<FlashCard>> cardsToQuiz;
+	/** Instance of QuizStats for current quiz */
+	private QuizStats quizStats = new QuizStats();
 	
 	/** Constructor for FlashCardQuiz
 	 * 
