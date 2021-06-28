@@ -11,7 +11,7 @@ package coreLogic;
  */
 public class CheckValidInput {
 	
-	private String VALID_NAME_REQUIREMENTS = 
+	private static String VALID_NAME_REQUIREMENTS = 
 			"%s name must have no more than 2 consequtive white spaces"
 			+ "and be between 1 and 15 characters long";
 
@@ -49,7 +49,7 @@ public class CheckValidInput {
 	 * 
 	 * @return String for VALID_NAME_REQUIREMENTS
 	 */
-	public String getVALID_NAME_REQUIREMENTS() {
+	public static String getVALID_NAME_REQUIREMENTS() {
 		return VALID_NAME_REQUIREMENTS;
 	}
 }
