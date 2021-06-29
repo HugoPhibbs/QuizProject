@@ -8,6 +8,8 @@ import java.util.Collections;
 import coreLogic.CheckValidInput;
 
 /** Represents a Deck. Contains FlashCard objects
+ * <p>
+ * Supports CRUD actions to do with FlashCards for a Deck
  * 
  * @author Hugo Phibbs 
  * @author Tom Berry
@@ -21,8 +23,8 @@ public class Deck implements Serializable {
 	private String name;
 	/** String for the description of a deck. E.g. a short note on what this deck contains**/
 	private String description;
-	/** ArrayList containing the cards for this deck **/
-	private ArrayList<FlashCard> cards = new ArrayList<FlashCard>();
+	/** ArrayList containing the FlashCards for this deck **/
+	private ArrayList<FlashCard> flashCards = new ArrayList<FlashCard>();
 	/** LocalDate object for the date of creation of this deck **/
 	private LocalDate dateOfCreation;
 	
@@ -33,10 +35,10 @@ public class Deck implements Serializable {
 	 * @param description String for a brief description of a Deck
 	 * @param dateOfCreation int for the date of creation of a deck
 	 */
-	public Deck(String name, String description, LocalDate dateOfCreation){
+	public Deck(String name, String description){
 		setName(name); // Checks for valid name
 		this.description = description;
-		this.dateOfCreation = dateOfCreation;
+		this.dateOfCreation = LocalDate.now();
 	}
 	
 	/** Returns a String representation of a Deck object
@@ -61,40 +63,83 @@ public class Deck implements Serializable {
 		return false;
 	}
 	
-	/** Adds a FlashCard to a deck. 
-	 * <p>
-	 * Will not add a FlashCard to a deck if a FlashCard with same front and back text
-	 * as the new flashCard is the same.
-	 * 
-	 * @param flashCard FlashCard object to be added to a deck
-	 * @return boolean if a flashCard was added or not
-	 */
-	public boolean addFlashCard(FlashCard flashCard) {
-		if (!contains(flashCard)) {
-			return (cards.add(flashCard));
-		}	
-		else {
-			return false;
-		}
-	}
-	
+	//******************************** METHODS FOR CRUD OF FLASHCARDS ******************************
+
 	/** Checks if a deck contains a given FlashCard object
 	 * 
 	 * @param flashCard FlashCard object to be checked if it is contained in Deck
 	 * @return boolean if a deck contains flashCard or not
 	 */
 	public boolean contains(FlashCard flashCard) {
-		return (cards.contains(flashCard));
+		return (flashCards.contains(flashCard));
+	}
+	
+	/** Checks if a Deck contains a FlashCard with inputed front and back text
+	 * <p>
+	 * Creates a temporary FlashCard object and checks if this is in the flashCards for this deck
+	 * 
+	 * @param frontText String for the front text of a FlashCard to be check if it is contained in this deck
+	 * @param backText String for the back text of a FlashCard to be check if it is contained in this deck
+	 * @return boolean if the operation was completed
+	 */
+	public boolean contains(String frontText, String backText) {
+		FlashCard tempFlashCard = new FlashCard(frontText, backText);
+		return (contains(tempFlashCard));
+	}
+	
+	/** Adds a FlashCard to a deck. 
+	 * <p>
+	 * Will not add a FlashCard to a deck if a FlashCard with same front and back text
+	 * as the new flashCard is the same.
+	 * 
+	 * @param flashCard FlashCard object to be added to a deck
+	 * @return boolean if a flashCard was added or not, false if deck already contains a FlashCard identical to flashCard
+	 */
+	public boolean addFlashCard(FlashCard flashCard) {
+		if (!contains(flashCard)) {
+			return (flashCards.add(flashCard));
+		}	
+		else {
+			return false;
+		}
 	}
 	
 	/** Removes a FlashCard from a deck
 	 * 
 	 * @param flashCard FlashCard object to be removed from a deck
-	 * @return boolean if the flashCard was removed from cards, ie it was found or not. 
+	 * @return boolean if the flashCard was removed from cards, i.e. it was found or not. 
 	 */
 	public boolean removeFlashCard(FlashCard flashCard) {
-		return (cards.remove(flashCard));
+		return (flashCards.remove(flashCard));
 	}
+
+	/** Edits the front and back text of a flashCard object
+	 * <p>
+	 * Makes sure that another FlashCard doesn't already have the same front and back text that is 
+	 * wished to be edited to for flashCard. Returns false if so. 
+	 * 
+	 * @param flashCard FlashCard object to be edited
+	 * @param newFrontText String for the new proposed front text of flashCard
+	 * @param newBackText String for the new proposed back text of flashCard
+	 * @return boolean if the flashCard was edited or not.
+	 * @throws IllegalArgumentException if: <br>
+	 * - Variable flashCard isn't contained in this deck <br>
+	 */
+	public boolean editFlashCard(FlashCard flashCard, String newFrontText, String newBackText) {
+		if (!contains(flashCard)) {
+			throw new IllegalArgumentException("FlashCard object isn't contained in this deck!, Please check for bugs!");
+		}
+		else if (contains(newFrontText, newBackText)) {
+			return false;
+		}
+		else {
+			flashCard.setFrontText(newFrontText);
+			flashCard.setBackText(newBackText);
+			return true;
+		}
+	}
+	
+	//******************************** METHODS FOR QUIZZING *************************************************
 	
 	/** Returns the FlashCards that a user is to be quizzed on. Shuffles the deck before choosing new cards. 
 	 * This ensures that new cards are in random order, but cards that are due are always added to be
@@ -115,13 +160,13 @@ public class Deck implements Serializable {
 		
 		ArrayList<ArrayList<FlashCard>> flashCardsToQuiz = createFlashCardsToQuizTable();
 		
-		Collections.shuffle(cards);
+		Collections.shuffle(flashCards);
 		int newCardsAdded = 0;
 		
-		for (FlashCard flashCard: cards) {
+		for (FlashCard flashCard: flashCards) {
 			if (flashCard.isNew() && newCardsAdded < maxNewCards) {
 				// Card is new, and added new cards is less than max
-				// Add to inital queue and final queue
+				// Add to initial queue and final queue
 				flashCardsToQuiz.get(0).add(flashCard);
 				flashCardsToQuiz.get(2).add(flashCard);
 				newCardsAdded += 1;
@@ -149,16 +194,20 @@ public class Deck implements Serializable {
 		return flashCardsToQuiz;
 	}
 	
+	//********************************* GETTERS AND SETTERS ****************************************
+	
 	/** Method that returns the size of a deck. 
+	 * <p>
 	 * Again borrows functionality from ArrayList, as this will often be called
-	 * and is cleaner than Deck.getCards.size()
+	 * and is cleaner than Deck.getflashCards.size()
+	 * <p>
 	 * Keep as a method and not an attribute, as having it as an attribute means
 	 * that it need to be constantly updated
 	 * 
 	 * @return int for the size of deck
 	 */
 	public int size() {
-		return cards.size();
+		return flashCards.size();
 	}
 	
 	/** Getter method for the name of a deck
@@ -181,8 +230,8 @@ public class Deck implements Serializable {
 	 * 
 	 * @return ArrayList<FlashCard> representation of the flash cards that a deck has
 	 */
-	public ArrayList<FlashCard> getCards() {
-		return cards;
+	public ArrayList<FlashCard> getFlashCards() {
+		return flashCards;
 	}
 	
 	/** Getter method for the description of a deck
@@ -217,12 +266,12 @@ public class Deck implements Serializable {
 		this.description = description;
 	}
 	
-	/** Setter method for the cards of a deck. 
+	/** Setter method for the flashCards of a deck. 
 	 * ONLY TO BE USED FOR TESTING
 	 * 
 	 * @param cards ArrayList<FlashCard> to be set as the cards for this deck
 	 */
-	public void setCards(ArrayList<FlashCard> cards) {
-		this.cards = cards;
+	public void setflashCards(ArrayList<FlashCard> flashCards) {
+		this.flashCards = flashCards;
 	}
 }
