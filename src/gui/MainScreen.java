@@ -4,6 +4,8 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 
+import coreLogic.AppEnvironment;
+
 public class MainScreen extends Screen{
 
 	/**
@@ -25,7 +27,8 @@ public class MainScreen extends Screen{
 	/**
 	 * Create the application.
 	 */
-	public MainScreen() {
+	public MainScreen(AppEnvironment appEnvironment) {
+		// TODO Implement!
 		super();
 		initialize();
 	}
