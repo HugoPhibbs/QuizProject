@@ -61,6 +61,7 @@ public class Deck {
 	}
 	
 	/** Adds a FlashCard to a deck. 
+	 * <p>
 	 * Will not add a FlashCard to a deck if a FlashCard with same front and back text
 	 * as the new flashCard is the same.
 	 * 
@@ -98,12 +99,12 @@ public class Deck {
 	 * This ensures that new cards are in random order, but cards that are due are always added to be
 	 * quizzed. 
 	 * <p>
-	 * Returned nested ArrayList has format [initialStack, againStack, finalStack].
+	 * Returned nested ArrayList has format [initialQueue, againQueue, finalQueue].
 	 * <p>
-	 * New cards are added both to the initial card stack and the final card stack.
+	 * New cards are added both to the initial card queue and the final card queue.
 	 * <p>
-	 * Final stack only contains new cards, as cards that have already been viewed by default
-	 * don't appear in the final stack, this is just part of the learning algorithm. 
+	 * Final queue only contains new cards, as cards that have already been viewed by default
+	 * don't appear in the final queue, this is just part of the learning algorithm. 
 	 * 
 	 * @param maxNewCards int for the max number of new cards that a user wants to see
 	 * @param currentDate LocalDate object for the current date
@@ -119,7 +120,7 @@ public class Deck {
 		for (FlashCard flashCard: cards) {
 			if (flashCard.isNew() && newCardsAdded < maxNewCards) {
 				// Card is new, and added new cards is less than max
-				// Add to inital stack and final stack
+				// Add to inital queue and final queue
 				flashCardsToQuiz.get(0).add(flashCard);
 				flashCardsToQuiz.get(2).add(flashCard);
 				newCardsAdded += 1;
@@ -134,6 +135,8 @@ public class Deck {
 	
 	/** Fills an ArrayList with 3 rows of ArrayList<FlashCard>, and returns it.
 	 *  Used locally by cardsToQuiz(int, LocalDate)
+	 *  <p>
+	 *  Table is in format [initialQueue, againQueue, FinalQueue]
 	 * 
 	 * @return ArrayList<ArrayList<FlashCard>> table for cards to quiz
 	 */
