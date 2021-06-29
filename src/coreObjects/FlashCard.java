@@ -1,5 +1,6 @@
 package coreObjects;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
 /** Represents a FlashCard
@@ -10,7 +11,7 @@ import java.time.LocalDate;
  * @since 25/6/21
  *
  */
-public class FlashCard {
+public class FlashCard implements Serializable {
 	
 	/** String for the front text of a flash card */
 	private String frontText;
@@ -21,6 +22,12 @@ public class FlashCard {
 	/** int for the number of times this card has been reviewed */
 	private int timesReviewed = 0;
 	
+	/** Constructor for a FlashCard object
+	 * <p>
+	 * Useful for when you are creating a FlashCard when you dont immediately know what the front and
+	 * back texts will be. 
+	 */
+	public FlashCard() {}
 	
 	/** Constructor for a FlashCard object 
 	 * 
