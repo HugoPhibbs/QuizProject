@@ -33,7 +33,8 @@ public class FlashCard {
 	}
 	
 	/** Method to decide if this card is due to be be quizzed.
-	 * Always returns false if a card hasnt been seen. As this functionality is
+	 * <p>
+	 * Always returns false if a card hasn't been seen. As this functionality is
 	 * already covered in Deck.cardsToQuiz(int)
 	 * 
 	 * @param currentDate LocalDate object for the current date
@@ -61,9 +62,11 @@ public class FlashCard {
 		return (nextReviewDate == null);
 	}
 	
-	/** Determines if an object is equal to this FlashCard object. 
+	/** Determines if an object is equal to this FlashCard object.
+	 * <p>
 	 * If the object is an instance of a FlashCard, then it compares
 	 * the front and back text with this FlashCard.
+	 * <p>
 	 * Used when adding a flashcard to a deck to make sure effectively
 	 * duplicate FlashCards aren't added to the same deck
 	 */
@@ -81,17 +84,19 @@ public class FlashCard {
 	
 	/** Sets the next review date of a flash card based on
 	 *  how many times that it has been seen
-	 * Intervals between reviews gradually increase in size. 
-	 * 
+	 *  <p>
+	 * Intervals between reviews gradually increase in size, and are measured in days time
+	 * <p>
 	 * Called once a quiz ends. 
 	 * 
 	 */
 	public void updateNextReviewDate() {
-		// The interval for this card next to be seen in a quiz
+		// The interval (days) for this card next to be seen in a quiz
 		int reviewInterval = 0;
 		switch (timesReviewed) {
 		case 0:
 			reviewInterval = 1;
+			nextReviewDate = LocalDate.now(); // Create this as it hasn't been created before
 			break;
 		case 1:
 			reviewInterval = 3;
