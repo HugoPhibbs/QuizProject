@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import coreObjects.Deck;
 import coreObjects.FlashCard;
+import coreObjects.User;
 
 /** Represents a FlashCardQuiz.
  * 
@@ -30,13 +31,16 @@ public class FlashCardQuiz {
 	private ArrayList<ArrayList<FlashCard>> cardsToQuiz;
 	/** Instance of QuizStats for current quiz */
 	private QuizStats quizStats = new QuizStats();
+	/** UserStats object for this this quiz application is updated at the end of the quiz*/
+	private UserStats userStats;
 	
 	/** Constructor for FlashCardQuiz
 	 * 
 	 * @param deck Deck object for this quiz
 	 */
-	FlashCardQuiz(Deck deck){
+	FlashCardQuiz(Deck deck, UserStats userStats){
 		this.deck = deck;
+		this.userStats = userStats;
 	} 
 	
 	/** Starts a new Quiz
@@ -52,16 +56,13 @@ public class FlashCardQuiz {
 		this.uniqueCards = cardsToQuiz.get(0); // All cards that are being quizzed on, both new and due cards
 	}
 	
-	public QuizStats endQuiz() {
+	public void endQuiz() {
 		// TODO implement
 		
 		// Ends a quiz
 		
 		updateQuizFlashCards();
-		
-		// Update quizStats
-		
-		return quizStats;
+		userStats.addQuizStatsEntry(quizStats);
 	}
 	
 	/** Updates all the review dates of the cards that have been
