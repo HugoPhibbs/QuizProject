@@ -19,7 +19,25 @@ class DeckTest {
 	}
 	
 	@Test
-	public void addCardTest() {
+	public void equalsTest() {
+		Deck testDeck1 = new Deck("testNameOne", "", null);
+		Deck testDeck2 = new Deck("testNameOne", "", null);
+		Deck testDeck3 = new Deck("testNameTwo", "", null);
+		
+		FlashCard testCard1 = new FlashCard("A", "B");
+		testDeck1.addFlashCard(testCard1);
+		testDeck2.addFlashCard(testCard1);
+		
+		// Test with two equal decks
+		assertEquals(true, testDeck1.equals(testDeck2));
+		// Test with two in-equal decks
+		assertEquals(false, testDeck1.equals(testDeck3));
+		// Test with another object type
+		assertEquals(false, testDeck1.equals("testString"));
+	}
+	
+	@Test
+	public void addFlashCardTest() {
 		FlashCard testCard1 = new FlashCard("A", "B");
 		FlashCard testCard2 = new FlashCard("A", "B");
 		
@@ -28,6 +46,22 @@ class DeckTest {
 		assertEquals(true, testDeck.addFlashCard(testCard1));
 		// Test with a duplicate card already in deck
 		assertEquals(false, testDeck.addFlashCard(testCard2));
+	}
+	
+	@Test
+	public void containsTest() {
+		FlashCard testCard1 = new FlashCard("A", "B");
+		FlashCard testCard2 = new FlashCard("C", "D");
+		FlashCard testCard3 = new FlashCard("E", "F");
+		
+		Deck testDeck1 = new Deck("testName", "", null);
+		testDeck1.addFlashCard(testCard1);
+		testDeck1.addFlashCard(testCard2);
+		
+		// With a card already in the deck, with contains(Deck)
+		assertEquals(true, testDeck1.contains(testCard1));
+		// With a card that is not in the deck
+		assertEquals(false, testDeck1.contains(testCard3));
 	}
 	
 	@Test
@@ -68,5 +102,8 @@ class DeckTest {
 		Deck testDeck1 = new Deck("testName", "", null);
 		// Check that it throws an error with an invalid name
 		assertThrows(IllegalArgumentException.class, () -> {testDeck1.setName("G  erman");});
+		// Check that it works normally with a correct name
+		testDeck1.setName("testNameTwo");
+		assertEquals("testNameTwo", testDeck1.getName());
 	}
 }
