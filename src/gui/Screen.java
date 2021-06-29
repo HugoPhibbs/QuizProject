@@ -63,7 +63,7 @@ public abstract class Screen {
 	/** Makes the screen visible to the user.
 	 * 
 	 */
-	protected void show() {
+	public void show() {
 		frame.setVisible(true);
 	}
 	
