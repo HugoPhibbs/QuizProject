@@ -1,5 +1,7 @@
 package coreLogic;
 
+import java.io.Serializable;
+
 /** Quiz statistics for an individual quiz completed by the user.
  * 
  * @author Tom Berry
@@ -8,6 +10,6 @@ package coreLogic;
  * @since 28/07/2021
  *
  */
-public class QuizStats {
+public class QuizStats implements Serializable {
 
 }

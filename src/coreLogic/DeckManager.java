@@ -1,5 +1,6 @@
 package coreLogic;
 
+import java.io.Serializable;
 import java.time.LocalDate; 
 import java.util.ArrayList;
 
@@ -19,7 +20,7 @@ import coreObjects.FlashCard;
  * @since 27/6/21
  *
  */
-public class DeckManager {
+public class DeckManager implements Serializable {
 	
 	/** ArrayList<Deck> containing the decks of this DeckManager */
 	private ArrayList<Deck> deckCollection = new ArrayList<Deck>();

@@ -1,5 +1,7 @@
 package coreLogic;
 
+import java.io.Serializable;
+
 /** Class to containing methods to check if input 
  * from a user is valid 
  * 
@@ -9,7 +11,7 @@ package coreLogic;
  * @since 27/6/21
  *
  */
-public class CheckValidInput {
+public class CheckValidInput implements Serializable {
 	
 	private static String VALID_NAME_REQUIREMENTS = 
 			"%s name must have no more than 2 consequtive white spaces"

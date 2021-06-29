@@ -1,5 +1,6 @@
 package coreObjects;
 
+import java.io.Serializable;
 import java.time.LocalDate;  
 import java.util.ArrayList;
 import java.util.Collections;
@@ -14,7 +15,7 @@ import coreLogic.CheckValidInput;
  * @since 25/6/21
  * 
  */
-public class Deck {
+public class Deck implements Serializable {
 	
 	/** String for the name of this deck **/
 	private String name;
@@ -71,7 +72,7 @@ public class Deck {
 	public boolean addFlashCard(FlashCard flashCard) {
 		if (!contains(flashCard)) {
 			return (cards.add(flashCard));
-		}
+		}	
 		else {
 			return false;
 		}
