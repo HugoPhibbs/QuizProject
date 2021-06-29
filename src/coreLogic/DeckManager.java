@@ -138,8 +138,6 @@ public class DeckManager {
 	 * - Destination deck with name deckName doesn't exist in this collection
 	 */
 	public boolean addFlashCardToDeck(FlashCard flashCard, String deckName) throws IllegalArgumentException {
-		Deck foundDeck = findDeck(deckName);
-		// TODO implement
 		if (!containsDeck(deckName)) {
 			throw new IllegalArgumentException("Destination deck with name deckName doesn't exist in this collection");
 		}
@@ -148,8 +146,7 @@ public class DeckManager {
 		}
 		else {
 			Deck destDeck = findDeck(deckName);
-			destDeck.addFlashCard(flashCard);
-			return true;
+			return (destDeck.addFlashCard(flashCard));
 		}
 	}
 	
@@ -161,15 +158,19 @@ public class DeckManager {
 	 * @param deckName String for the name of the deck that flashCard is to be removed from
 	 * @return boolean if the flashCard was removed from the deck. 
 	 * @throws IllegalArgumentException if: <br>
-	 * - Deck with given deckName doesn't exist in this collection
+	 * - Deck with given deckName doesn't exist in this collection <br>
+	 * - flashCard doesn't exist in a deck with name deckName
 	 */
 	public boolean removeFlashCardFromDeck(FlashCard flashCard, String deckName) throws IllegalArgumentException {
 		if (!containsDeck(deckName)) {
-			throw new IllegalArgumentException("Deck with given deckName doesn't exist in this collection");
+			throw new IllegalArgumentException("Deck with name deckName doesn't exist in this collection");
+		}
+		else if (!findDeck(deckName).contains(flashCard)) {
+			throw new IllegalArgumentException("Flash card doesn't exist in this deck");
 		}
 		else {
 			Deck sourceDeck = findDeck(deckName);
-			return sourceDeck.removeFlashCard(flashCard);
+			return (sourceDeck.removeFlashCard(flashCard));
 		}
 	}
 	
@@ -202,12 +203,8 @@ public class DeckManager {
 		}
 		else {
 			// Otherwise transfer flashCard from the source Deck to the destination Deck
-			if (removeFlashCardFromDeck(flashCard, deckName)) {
-				return addFlashCardToDeck(flashCard, newDeckName); // Will return true
-			}
-			else {
-				throw new IllegalArgumentException("Source deck does not contain this flash card!");
-			}
+			removeFlashCardFromDeck(flashCard, deckName); // May throw error if source deck doesn't contain the flashCard
+			return (addFlashCardToDeck(flashCard, newDeckName)); // Will return true
 		}
 		
 	}
