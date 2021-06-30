@@ -131,7 +131,7 @@ public class FlashCard implements Serializable {
 	 */
 	@Override
 	public String toString() {
-		return String.format("FlashCard has: Front: %s; Back: %s", frontText, backText);
+		return String.format("FlashCard: (Front: %s; Back: %s)", frontText, backText);
 	}
 	
 	/** Getter method for the front text of a flash card
