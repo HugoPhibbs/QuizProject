@@ -21,9 +21,9 @@ class DeckManagerTest {
 	@BeforeEach
 	public void setUpBeforeClass() throws Exception {
 		// Create test objects needed
-		testDeck1 = new Deck("testNameOne", "", null);
-		testDeck2 = new Deck("testNameTwo", "", null);
-		testDeck3 = new Deck("testNameThree", "", null);
+		testDeck1 = new Deck("testNameOne", "");
+		testDeck2 = new Deck("testNameTwo", "");
+		testDeck3 = new Deck("testNameThree", "");
 		
 		testCard1 = new FlashCard("testFrontOne", "testBackOne");
 		testCard2 = new FlashCard("testFrontTwo", "testBackTwo");
@@ -53,7 +53,7 @@ class DeckManagerTest {
 	
 	@Test
 	public void addDeckTest() {
-		Deck testDeck4 = new Deck("testNameFour", "", null);
+		Deck testDeck4 = new Deck("testNameFour", "");
 		
 		assertEquals(true, testDeckManager.addDeck(testDeck4));
 		assertEquals(false, testDeckManager.addDeck(testDeck1)); // testDeck1 already added
@@ -64,30 +64,6 @@ class DeckManagerTest {
 		assertEquals(true, testDeckManager.removeDeck("testNameOne"));
 		assertEquals(false, testDeckManager.removeDeck("testNameOne")); // testDeck1 already removed
 		assertEquals(false, testDeckManager.removeDeck("testNameFour")); 
-	}
-	
-	@Test
-	public void removeFlashCardFromDeckTest() {
-		
-		testDeck1.addFlashCard(testCard1);
-		
-		// Test blue sky scenario
-		assertEquals(true, testDeckManager.removeFlashCardFromDeck(testCard1, "testNameOne"));
-		// Test with a card that is not in a deck
-		assertThrows(IllegalArgumentException.class, () -> {testDeckManager.removeFlashCardFromDeck(testCard2, "testNameOne");});
-		// Test with a deck that is not in the DeckManager
-		assertThrows(IllegalArgumentException.class, () -> {testDeckManager.removeFlashCardFromDeck(testCard2, "testNameFour");});
-	}
-	
-	@Test
-	public void addFlashCardToDeckTest() {
-		
-		// Test normally
-		assertEquals(true, testDeckManager.addFlashCardToDeck(testCard1, "testNameOne"));
-		// Test with a card that is already in the deck
-		assertThrows(IllegalArgumentException.class, () ->  {testDeckManager.addFlashCardToDeck(testCard1, "testNameOne");});
-		// Test with a deck that doesn't exist in the collection
-		assertThrows(IllegalArgumentException.class, () ->  {testDeckManager.addFlashCardToDeck(testCard1, "testNameFour");});
 	}
 	
 	@Test
