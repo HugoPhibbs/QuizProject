@@ -5,7 +5,9 @@ import java.io.Serializable;
 import coreObjects.User;
 
 /** Class to manage the environment of the application. 
- * Holds all the objects necessary for a the application
+ * Holds all the objects necessary for the application to run
+ * <p>
+ * Is the class that is saved under serialization for saving a session
  * 
  * @author Hugo Phibbs
  * @author Tom Berry
@@ -15,11 +17,19 @@ import coreObjects.User;
  */
 public class AppEnvironment implements Serializable {
 
+	/** Deck manager holding all the Decks for this application */
 	private DeckManager deckManager = new DeckManager();
+	/** User object for this AppEnvironment */
 	private User user = new User();
 	
-	public AppEnvironment() {
-		
+	/** Constructor for AppEnvironment
+	 * <p>
+	 * Includes a parameter for a User
+	 * 
+	 * @param user User object for this AppEnvironment
+	 */
+	public AppEnvironment(User user) {
+		this.user = user;
 	}
 
 	/** Returns the DeckManager for this AppEnvironment.
