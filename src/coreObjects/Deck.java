@@ -271,7 +271,7 @@ public class Deck implements Serializable {
 	 * 
 	 * @param cards ArrayList<FlashCard> to be set as the cards for this deck
 	 */
-	public void setflashCards(ArrayList<FlashCard> flashCards) {
+	public void setFlashCards(ArrayList<FlashCard> flashCards) {
 		this.flashCards = flashCards;
 	}
 }

@@ -6,8 +6,10 @@ import javax.swing.JFrame;
 
 import coreLogic.AppEnvironment;
 
-public class MainScreen extends Screen{
-
+public class MainScreen{
+	
+	JFrame frame;
+	
 	/**
 	 * Launch the application.
 	 */
@@ -15,7 +17,7 @@ public class MainScreen extends Screen{
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					MainScreen window = new MainScreen();
+					MainScreen window = new MainScreen(null);
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();

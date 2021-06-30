@@ -52,7 +52,7 @@ public class DeckManager implements Serializable {
 	 * @param deck Deck to be added to the collection
 	 * @return boolean if deck was added or not
 	 */
-	private boolean addDeck(Deck deck) {
+	public boolean addDeck(Deck deck) {
 		if (containsDeck(deck)) {
 			// Deck is already contained in deckManager
 			return false;
@@ -127,15 +127,12 @@ public class DeckManager implements Serializable {
 	 * @param flashCard FlashCard object to be moved
 	 * @param deckName String for the name of the current deck of flashCard
 	 * @param newDeckName String for the name of the destination deck for flashCard
-	 * @return boolean if the operation was performed or not
+	 * @return boolean if the operation was performed or not. False if newDeckName is a name belonging to a pre-existing deck
 	 * @throws IllegalArgumentException if: <br>
 	 * - The source deck is not in this collection <br>
 	 * - The location deck is not in this collection <br>
 	 */
 	public boolean changeFlashCardDeck(FlashCard flashCard, String deckName, String newDeckName) throws IllegalArgumentException{
-		// Changes which deck a flash card belongs to
-		// Need to check that a flash card doesn't already already exist in deck with name
-		// new deckName
 		if (!containsDeck(deckName)) {
 			throw new IllegalArgumentException("Source deck is not in this collection!");
 		}
