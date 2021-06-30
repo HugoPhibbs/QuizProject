@@ -144,21 +144,14 @@ public class Deck implements Serializable {
 	/** Returns the FlashCards that a user is to be quizzed on. Shuffles the deck before choosing new cards. 
 	 * This ensures that new cards are in random order, but cards that are due are always added to be
 	 * quizzed. 
-	 * <p>
-	 * Returned nested ArrayList has format [initialQueue, againQueue, finalQueue].
-	 * <p>
-	 * New cards are added both to the initial card queue and the final card queue.
-	 * <p>
-	 * Final queue only contains new cards, as cards that have already been viewed by default
-	 * don't appear in the final queue, this is just part of the learning algorithm. 
 	 * 
 	 * @param maxNewCards int for the max number of new cards that a user wants to see
 	 * @param currentDate LocalDate object for the current date
-	 * @return nested ArrayList containing the cards to be quizzed on
+	 * @return ArrayList containing the cards to be quizzed on
 	 */
-	public ArrayList<ArrayList<FlashCard>> flashCardsToQuiz(int maxNewCards, LocalDate currentDate){
+	public ArrayList<FlashCard> flashCardsToQuiz(int maxNewCards, LocalDate currentDate){
 		
-		ArrayList<ArrayList<FlashCard>> flashCardsToQuiz = createFlashCardsToQuizTable();
+		ArrayList<FlashCard> flashCardsToQuiz = new ArrayList<FlashCard>();
 		
 		Collections.shuffle(flashCards);
 		int newCardsAdded = 0;
@@ -167,29 +160,14 @@ public class Deck implements Serializable {
 			if (flashCard.isNew() && newCardsAdded < maxNewCards) {
 				// Card is new, and added new cards is less than max
 				// Add to initial queue and final queue
-				flashCardsToQuiz.get(0).add(flashCard);
-				flashCardsToQuiz.get(2).add(flashCard);
+				flashCardsToQuiz.add(flashCard);
+				flashCardsToQuiz.add(flashCard);
 				newCardsAdded += 1;
 			}
 		    else if (flashCard.isDue(currentDate)) {
 		    	// Otherwise if the flashCard is due
-		    	flashCardsToQuiz.get(0).add(flashCard);
+		    	flashCardsToQuiz.add(flashCard);
 			}
-		}
-		return flashCardsToQuiz;
-	}
-	
-	/** Fills an ArrayList with 3 rows of ArrayList<FlashCard>, and returns it.
-	 *  Used locally by cardsToQuiz(int, LocalDate)
-	 *  <p>
-	 *  Table is in format [initialQueue, againQueue, FinalQueue]
-	 * 
-	 * @return ArrayList<ArrayList<FlashCard>> table for cards to quiz
-	 */
-	private ArrayList<ArrayList<FlashCard>> createFlashCardsToQuizTable() {
-		ArrayList<ArrayList<FlashCard>> flashCardsToQuiz = new ArrayList<ArrayList<FlashCard>>();
-		for (int i = 0; i < 3; i++) {
-			flashCardsToQuiz.add(new ArrayList<FlashCard>());
 		}
 		return flashCardsToQuiz;
 	}
