@@ -9,6 +9,25 @@ import coreObjects.Deck;
 import coreObjects.FlashCard;
 
 /** Represents a FlashCardQuiz.
+ * <p>
+ * The current state of a quiz can be reflected with 3 queues, the initialQueue, the againQueue and the finalQueue. 
+ * <p>
+ * How the quiz algorithm works: <br>
+ * - The user sees cards from one of the queues at once as long as they aren't empty. However the priority is initial<-final<-again.
+ *   the algorithm will tend to switch between the final and again queues <br>
+ * - At the start of the quiz, a user will see all the cards from initialQueue until this queue is empty. If the initialQueue is empty, then FlashCards
+ * are taken from the finalQueue or againQueue, in order for what ever one isn't empty <br>
+ * - For each card that they see from any queue, they can either press AGAIN or OK.<br>
+ * <p>
+ * Pressing OK: <br>
+ * - While on the initial or again queue: If a user presses OK for a currentFlashCard that is new, this FlashCard is added to the final queue, <br>
+ * - If the card isn't new or the current queue is the final queue (has been seen atleast once before) then nothing happens <br>
+ * <p>
+ * Pressing AGAIN <br>
+ * - No matter if a card is new or not, if AGAIN is pressed, then currentFlashCard is added both to the final and again queues. <br>
+ * <p>
+ * Stats<br>
+ * At each point in the quiz, statistics from the quiz are added to an instance of QuizStats. 
  * 
  * @author Hugo Phibbs
  * @author Tom Berry
@@ -27,12 +46,18 @@ public class FlashCardQuiz {
 	/** Current side of currentFlashCard being shown to a user */
 	private String currentFlashCardSide = "FRONT";
 	
+	/** Queue for cards that have not yet been viewed in this quiz. <br> 
+	 * Cards are added and removed from the initialQueue only once*/
 	private Queue<FlashCard> initialQueue = new LinkedList<FlashCard>();
 	
+	/** Queue for cards that are to be viewed again for this quiz */
 	private Queue<FlashCard> againQueue = new LinkedList<FlashCard>();
 	
+	/** Queue for cards on their final view for this quiz */
 	private Queue<FlashCard> finalQueue = new LinkedList<FlashCard>();
 	
+	/** String for what the current queue the quiz is taking cards from 
+	 * either "INITIAL", "AGAIN" or "FINAL" */
 	private String currentQueue;
 	
 	/** ArrayList<FlashCard> for all the cards to be quizzed on throughout a quiz */
@@ -67,6 +92,9 @@ public class FlashCardQuiz {
 		initialQueue.addAll(cardsToQuiz);
 	}
 	
+	/** Ends a quiz
+	 * 
+	 */
 	public void endQuiz() {
 		// TODO implement
 		
@@ -74,6 +102,10 @@ public class FlashCardQuiz {
 		
 		updateQuizFlashCards();
 		userStats.addQuizStatsEntry(quizStats);
+	}
+	
+	public void summary() {
+		// TODO implement!	
 	}
 	
 	/** Updates all the review dates of the cards that have been
@@ -104,7 +136,8 @@ public class FlashCardQuiz {
 		return currentFlashCard;
 	}
 	
-	/** Checks if a quiz is finished or not
+	/** Checks if a quiz is finished or not.
+	 * <p>
 	 * Does this by seeing if currentFlashCard is equal to null or not
 	 * 
 	 * @return boolean value if a quiz is finished or not
@@ -116,7 +149,6 @@ public class FlashCardQuiz {
 	/** Updates the value of currentFlashCard attribute
 	 * <p>
 	 * currentFlashCard is set to null if there are no more cards to be quizzed on
-	 * 
 	 */
 	public void updateCurrentFlashCard() {
 		if (!initialQueue.isEmpty()) {
@@ -161,11 +193,15 @@ public class FlashCardQuiz {
 	 * <p> 
 	 * Put it into a separate method to make it more clear to read
 	 */
-	public void resetCurrentFlashCardSide() {
+	private void resetCurrentFlashCardSide() {
 		currentFlashCardSide = "FRONT";
 	}
 	
-	
+	/** Handles result of pressing AGAIN button in GUI
+	 * <p>
+	 * Adds the current flash card to both the final and again queues
+	 * 
+	 */
 	private void flashCardAgain() {
 		// TODO update val of quizStats
 		againQueue.add(currentFlashCard);
