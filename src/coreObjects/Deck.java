@@ -161,7 +161,6 @@ public class Deck implements Serializable {
 				// Card is new, and added new cards is less than max
 				// Add to initial queue and final queue
 				flashCardsToQuiz.add(flashCard);
-				flashCardsToQuiz.add(flashCard);
 				newCardsAdded += 1;
 			}
 		    else if (flashCard.isDue(currentDate)) {
