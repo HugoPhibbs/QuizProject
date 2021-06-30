@@ -1,5 +1,6 @@
 package coreLogic;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -11,7 +12,6 @@ import coreObjects.User;
 import gui.MainScreen;
 
 /** Class to start the Quiz Application
- * contains the main Method to start the application
  * <p>
  * Coordinates the starting of the application, checks if there is an existing
  * Serialized file for info from a previous session. Other wise creates a new
@@ -19,47 +19,49 @@ import gui.MainScreen;
  * 
  * @author Hugo Phibbs
  * @author Tom Berry
- * @version 29/6/21
+ * @version 30/6/21
  * @since 25/6/21
  *
  */
 public class Setup {
 	
-	/** Method to start the application
+	private String workingDirectory;
+	private AppEnvironment appEnvironment;
+	
+	/** Constructor for Setup class
+	 * <p>
+	 * Sets the working directory for this application, i.e. where to load and write files for serialization.
+	 * 
+	 * @param sessionsDirectory
 	 */
-	public static void main(String[] args) {
-		// TODO implement
-		// Creates a Setup Screen to handle starting of application
-	}
+	public Setup(String workingDirectory){
+		this.workingDirectory = workingDirectory;
+	}	
 	
 	/** Loads a session saved for a User with name userName
 	 * <p>
 	 * 
 	 * @param userName String for a User's name, that a user wants to load a session for
-	 * @throws IllegalArgumentException if the session doesn't exist
 	 */
-	public static void loadPreviousSession(String userName) throws IllegalArgumentException, IOException {
-		// TODO implement
-		String sessionFileName = sessionFileName(userName);
+	public void loadSession(String userName) throws FileNotFoundException {
+		String sessionFilePath = sessionFilePath(userName);
 		try {
-			FileInputStream fileIn = new FileInputStream(sessionFileName);
+			FileInputStream fileIn = new FileInputStream(sessionFilePath);
 			ObjectInputStream objIn = new ObjectInputStream(fileIn);
-			AppEnvironment appEnvironment = (AppEnvironment) objIn.readObject();
+			appEnvironment = (AppEnvironment) objIn.readObject();
 			objIn.close();
 			fileIn.close();
-			onSetupFinished(appEnvironment);
 		}
-		catch (FileNotFoundException fnfe ) {
-			fnfe.printStackTrace();
+		catch (FileNotFoundException fnfe) {
+			throw new FileNotFoundException("Session doesn't exist!");
 		} 
-		catch (IOException i) {
-	         i.printStackTrace();
-	         return;
+		catch (IOException ioe) {
+	        ioe.printStackTrace();
+	        return;
 		} 
-		catch (ClassNotFoundException c) {
-	         System.out.println("AppEnvironment class not found!");
-	         c.printStackTrace();
-	         return;
+		catch (ClassNotFoundException cnfe) {
+			cnfe.printStackTrace();
+	        return;
 	    }
 	}
 	
@@ -67,38 +69,31 @@ public class Setup {
 	 * 
 	 * @param userName String for a User's name, that a user wants to delete a session for
 	 */
-	public static void deleteSession(String userName) {
-		String sessionFileName = sessionFileName(userName);
-		try {
-			FileInputStream fileIn = new FileInputStream(sessionFileName);
-		}
-		catch (FileNotFoundException fnfe ) {
-			fnfe.printStackTrace();
-		}
+	public void deleteSession(String userName) {
+		String sessionFilePath = sessionFilePath(userName);
+		File file = new File(sessionFilePath);
+		file.delete();
 	}
 	
 	/** Creates a session for a user
 	 * 
 	 * @param userName String for the name of a User object that a user wants to create a session for
 	 */
-	public static void createSession(String userName) {
-		// TODO implement
-		String sessionFileName = sessionFileName(userName);
+	public void createSession(String userName) {
+		String sessionFileName = sessionFilePath(userName);
 		if (!canLoadSession(sessionFileName)) {
 			try {
 				FileOutputStream fileOut = new FileOutputStream(sessionFileName);
 				ObjectOutputStream objOut= new ObjectOutputStream(fileOut);
 				
 				// Create a new AppEnvironment instance
-				AppEnvironment appEnvironment = new AppEnvironment();
+				appEnvironment = new AppEnvironment();
 				appEnvironment.setUser(new User("userName"));
 				
 				// Write AppEnvironment to file
 				objOut.writeObject(appEnvironment);
 				objOut.close();
 				fileOut.close();
-				
-				onSetupFinished(appEnvironment);
 			}
 			catch (IOException ioe) {
 				ioe.printStackTrace();
@@ -109,14 +104,14 @@ public class Setup {
 		}
 	}
 	
-	/** Returns the file that a serialized session
+	/** Returns the file directory that a serialized session
 	 *  would be saved under using userName
 	 * 
 	 * @param userName String for a user's name
 	 * @return String for the name of a file 
 	 */
-	private static String sessionFileName(String userName) {
-		return String.format("%sQuizSession.txt", userName);
+	private String sessionFilePath(String userName) {
+		return String.format("%s\\%sQuizSession.ser", workingDirectory, userName);
 	}
 	
 	/** Finds out if a session can be loaded that was saved for a userName as per file defined by
@@ -127,11 +122,12 @@ public class Setup {
 	 * @param userName String for the name a User's session to see if it exists
 	 */
 	@SuppressWarnings("resource")
-	private static boolean canLoadSession(String sessionName) {
-		 try {
-			new FileInputStream("/tmp/employee.ser");
+	private static boolean canLoadSession(String sessionFilePath) {
+		try {
+			new FileInputStream(sessionFilePath);
 			return true; // If reaches here, exception wasn't thrown
-		} catch (FileNotFoundException fnfe) {
+		} 
+		catch (FileNotFoundException fnfe) {
 			return false;
 		}
 	}
@@ -140,8 +136,8 @@ public class Setup {
 	 * 
 	 * @param appEnvironment AppEnvironment object for the application
 	 */
-	private static void onSetupFinished(AppEnvironment appEnvironment) {
-		// Creates and shows a new MainScreen with inputted appEnvironment
+	public void onSetupFinished() {
+		// Creates and shows a new MainScreen with inputed appEnvironment
 		MainScreen mainScreen = new MainScreen(appEnvironment);
 		mainScreen.show();
 	}
