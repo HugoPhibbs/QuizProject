@@ -87,8 +87,7 @@ public class Setup {
 				ObjectOutputStream objOut= new ObjectOutputStream(fileOut);
 				
 				// Create a new AppEnvironment instance
-				appEnvironment = new AppEnvironment();
-				appEnvironment.setUser(new User("userName"));
+				appEnvironment = new AppEnvironment(new User(userName));
 				
 				// Write AppEnvironment to file
 				objOut.writeObject(appEnvironment);
@@ -139,6 +138,6 @@ public class Setup {
 	public void onSetupFinished() {
 		// Creates and shows a new MainScreen with inputed appEnvironment
 		MainScreen mainScreen = new MainScreen(appEnvironment);
-		mainScreen.show();
+		//mainScreen.show();
 	}
 }
