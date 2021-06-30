@@ -1,11 +1,12 @@
 package coreLogic;
 
-import java.time.LocalDate; 
+import java.time.LocalDate;  
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Queue;
 
 import coreObjects.Deck;
 import coreObjects.FlashCard;
-import coreObjects.User;
 
 /** Represents a FlashCardQuiz.
  * 
@@ -19,20 +20,30 @@ public class FlashCardQuiz {
 	
 	/** Deck that is currently being quizzed on */
 	private Deck deck;
-	/** Flashcard for the current flash card for this quiz */
+	
+	/** FlashCard for the current flash card for this quiz */
 	private FlashCard currentFlashCard;
+	
 	/** Current side of currentFlashCard being shown to a user */
 	private String currentFlashCardSide = "FRONT";
-	/** ArrayList of all the unique FlashCards for this quiz
-	 * Both all the new and due cards that are being tested on, with no duplicates.  */
-	private ArrayList<FlashCard> uniqueCards;
-	/** ArrayList<ArrayList<FlashCard>> of the current state of the quiz interms of cards 
-	 * See Deck.cardsToQuiz(int, LocalDate) for more details*/
-	private ArrayList<ArrayList<FlashCard>> cardsToQuiz;
+	
+	private Queue<FlashCard> initialQueue = new LinkedList<FlashCard>();
+	
+	private Queue<FlashCard> againQueue = new LinkedList<FlashCard>();
+	
+	private Queue<FlashCard> finalQueue = new LinkedList<FlashCard>();
+	
+	private String currentQueue;
+	
+	/** ArrayList<FlashCard> for all the cards to be quizzed on throughout a quiz */
+	private ArrayList<FlashCard> cardsToQuiz;
+	
 	/** Instance of QuizStats for current quiz */
 	private QuizStats quizStats = new QuizStats();
+	
 	/** UserStats object for this this quiz application is updated at the end of the quiz*/
 	private UserStats userStats;
+	
 	
 	/** Constructor for FlashCardQuiz
 	 * 
@@ -53,7 +64,7 @@ public class FlashCardQuiz {
 		// Starts a quiz 
 		LocalDate currentDate = LocalDate.now();
 		this.cardsToQuiz = deck.flashCardsToQuiz(maxNewCards, currentDate);
-		this.uniqueCards = cardsToQuiz.get(0); // All cards that are being quizzed on, both new and due cards
+		initialQueue.addAll(cardsToQuiz);
 	}
 	
 	public void endQuiz() {
@@ -69,25 +80,67 @@ public class FlashCardQuiz {
 	 * seen once the quiz is over
 	 * <p>
 	 * Iterates over uniqueCards as these are all the cards that have been quizzed on
+	 * in this quiz.
+	 * <p>
+	 * FlashCards will only have their nextReviewDates updated if the quiz finishes!
 	 * 
 	 */
 	private void updateQuizFlashCards() {
-		for (FlashCard flashCard : uniqueCards) {
+		for (FlashCard flashCard : cardsToQuiz) {
 			flashCard.updateNextReviewDate();
 		}
 	}
 	
-	private FlashCard nextFlashCard() {
-		// TODO implement
-		
-		// Handles request of next card, after either "AGAIN" or "OK" was pressed
-		// Returns the next Flash Card to be shown to a user
-		
-		// Current side needs to be set to FRONT
-		return null;
+	/** Handles request of pressing NEXT in the GUI. 
+	 * <p>
+	 * If the quiz is finished, then the currentFlashCard is null. 
+	 * This will be dealt with in the GUI. 
+	 * 
+	 * @return FlashCard object that is next, i.e. the currentFlashCard
+	 */
+	public FlashCard nextFlashCard() {
+		updateCurrentFlashCard();
+		resetCurrentFlashCardSide();
+		return currentFlashCard;
+	}
+	
+	/** Checks if a quiz is finished or not
+	 * Does this by seeing if currentFlashCard is equal to null or not
+	 * 
+	 * @return boolean value if a quiz is finished or not
+	 */
+	public boolean quizFinished() {
+		return (currentFlashCard == null);
+	}
+	
+	/** Updates the value of currentFlashCard attribute
+	 * <p>
+	 * currentFlashCard is set to null if there are no more cards to be quizzed on
+	 * 
+	 */
+	public void updateCurrentFlashCard() {
+		if (!initialQueue.isEmpty()) {
+			currentFlashCard = initialQueue.remove();
+			currentQueue = "INITIAL";
+		}
+		else if (!finalQueue.isEmpty()) {
+			currentFlashCard  =  finalQueue.remove();
+			currentQueue = "FINAL";
+		}
+		else if (!againQueue.isEmpty()) {
+			currentFlashCard = againQueue.remove();
+			currentQueue = "AGAIN";
+		}
+		else {
+			// No more cards quiz finished
+			currentFlashCard = null;
+			currentQueue = null;
+		}
 	}
 	
 	/** Handles request of wanting to flip a flash card. If the current flash card has it's front showing. 
+	 * <p>
+	 * By default the currentFlashCard side is set to "FRONT" every time a new card is seen
 	 * <p>
 	 * Called after button pressed in GUI to flip the current flash card
 	 * 
@@ -104,15 +157,30 @@ public class FlashCardQuiz {
 		}
 	}
 	
-	private void flashCardAgain() {
-		// TODO implement
-		
-		// Handles request of card "AGAIN" button from GUI
+	/** Resets the currentFlashCardSide to "FRONT"
+	 * <p> 
+	 * Put it into a separate method to make it more clear to read
+	 */
+	public void resetCurrentFlashCardSide() {
+		currentFlashCardSide = "FRONT";
 	}
 	
+	
+	private void flashCardAgain() {
+		// TODO update val of quizStats
+		againQueue.add(currentFlashCard);
+		finalQueue.add(currentFlashCard);
+	}
+	
+	/** Handles request of pressing OK in GUI
+	 * <p>
+	 * Adds the currentFlashCard to the finalQueue only if the current Queue
+	 * isn't the final queue and the currentFlashCard is new. 
+	 */
 	private void flashCardOk() {
-		// TODO implement
-		
-		// Handles request of card "OK" button from GUI
+		// TODO update val of quizStats
+		if (currentFlashCard.isNew() && !currentQueue.equals("FINAL")) {
+			finalQueue.add(currentFlashCard);
+		}		
 	}
 }
