@@ -66,6 +66,9 @@ public class DeckManager implements Serializable {
 	 * then adds this new Deck to the collection of this DeckManager.  
 	 * <p>
 	 * Checks if the deckName is appropriate, throws an exception if not. 
+	 * <p>
+	 * If the name of a new deck matches a Deck that has been already created, it returns false,
+	 * otherwise true, as per DeckManager.addDeck(Deck)
 	 * 
 	 * @param deckName String for the new name of a Deck to be created
 	 * @param description String for the description of a new Deck
@@ -121,35 +124,53 @@ public class DeckManager implements Serializable {
 	
 	/** Changes which Deck a FlashCard belongs to
 	 * <p>
-	 * Makes sure that there is no duplicate FlashCard in the requested deck destination,
-	 * returns false if so. 
+	 * Does prechecks for exceptions before passing the actual changing Decks of flashCard to
+	 * DeckManager.changeFlashCardDeckHelper(FlashCard, String, String)
 	 * 
 	 * @param flashCard FlashCard object to be moved
-	 * @param deckName String for the name of the current deck of flashCard
-	 * @param newDeckName String for the name of the destination deck for flashCard
-	 * @return boolean if the operation was performed or not. False if newDeckName is a name belonging to a pre-existing deck
+	 * @param sourceDeckName String for the name of the current deck of flashCard
+	 * @param destDeckName String for the name of the destination deck for flashCard
+	 * @return boolean if the operation was performed or not. See comment above
 	 * @throws IllegalArgumentException if: <br>
 	 * - The source deck is not in this collection <br>
 	 * - The location deck is not in this collection <br>
+	 * - The source deck does not contain flashCard <br>
 	 */
-	public boolean changeFlashCardDeck(FlashCard flashCard, String deckName, String newDeckName) throws IllegalArgumentException{
-		if (!containsDeck(deckName)) {
+	public boolean changeFlashCardDeck(FlashCard flashCard, String sourceDeckName, String destDeckName) throws IllegalArgumentException{
+		if (!containsDeck(sourceDeckName)) {
 			throw new IllegalArgumentException("Source deck is not in this collection!");
 		}
-		else if (!containsDeck(newDeckName)) {
+		else if (!containsDeck(destDeckName)) {
 			throw new IllegalArgumentException("Location deck is not in this collection!");
 		}
-		else if (findDeck(newDeckName).contains(flashCard)) {
+		else if (!findDeck(sourceDeckName).contains(flashCard)) {
+			throw new IllegalArgumentException("Source deck does not contain flashCard!");
+		}
+		return (changeFlashCardDeckHelper(flashCard, sourceDeckName, destDeckName));
+	}
+	
+	/** Helper method for changeFlashCardDeck
+	 * <p>
+	 * Makes sure that there is no duplicate FlashCard in the requested deck destination,
+	 * returns false if so. 
+	 * <p>
+	 * Otherwise does the actual changing deck part if it is permissible
+	 * 
+	 * @param flashCard FlashCard object to change Decks with names sourceDeckName to destDeckName
+	 * @param sourceDeckName String for the name of the current Deck that flashCard belongs to
+	 * @param destDeckName String for the name of the destination Deck that flashCard is wished to change to
+	 * @return boolean if the switching of flashCard from the source deck to the destination deck was done
+	 */
+	private boolean changeFlashCardDeckHelper(FlashCard flashCard, String sourceDeckName, String destDeckName) {
+		if (findDeck(destDeckName).contains(flashCard)) {
 			return false;
 		}
 		else {
-			// Otherwise transfer flashCard from the source Deck to the destination Deck
-			Deck sourceDeck = findDeck(deckName);
-			sourceDeck.removeFlashCard(flashCard); // May throw error if source deck doesn't contain the flashCard
-			Deck destDeck = findDeck(newDeckName);
-			return (destDeck.addFlashCard(flashCard)); // Will return true
+			Deck sourceDeck = findDeck(sourceDeckName);
+			sourceDeck.removeFlashCard(flashCard);
+			Deck destDeck = findDeck(destDeckName);
+			return (destDeck.addFlashCard(flashCard)); // Will return true, needed to destDeck didn't contain flashCard before removing from sourceDeck anyways
 		}
-		
 	}
 	
 	/** Method that returns if a DeckManager contains a
