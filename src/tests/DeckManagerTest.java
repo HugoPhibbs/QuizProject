@@ -9,6 +9,11 @@ import coreLogic.DeckManager;
 import coreObjects.Deck;
 import coreObjects.FlashCard;
 
+/** JUnit testing class for DeckManager
+ * 
+ * @author Hugo Phibbs
+ *
+ */
 class DeckManagerTest {
 	
 	DeckManager testDeckManager;
