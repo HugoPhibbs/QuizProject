@@ -76,7 +76,7 @@ class DeckManagerTest {
 		assertThrows(IllegalArgumentException.class, () -> {testDeckManager.renameDeck("testNameFour", "");});
 		
 		// Test with a new name that clashes with a deck that is already in the collection
-		assertThrows(IllegalArgumentException.class, () -> {testDeckManager.renameDeck("German", "testNameTwo");});
+		assertEquals(false, testDeckManager.renameDeck("German", "testNameTwo"));
 	}
 	
 	@Test
@@ -85,7 +85,7 @@ class DeckManagerTest {
 		assertEquals(true, testDeckManager.createDeck("testNameFour", ""));
 		
 		// Test with a deck name that clashes with one already added
-		assertThrows(IllegalArgumentException.class, () -> {testDeckManager.createDeck("testNameOne", "");});
+		assertEquals(false, testDeckManager.createDeck("testNameOne", ""));
 		
 		// Test with a deck name that is invalid
 		assertThrows(IllegalArgumentException.class, () -> {testDeckManager.createDeck("te  stmameOne", "");});
@@ -94,16 +94,15 @@ class DeckManagerTest {
 	@Test
 	public void changeFlashCardDeckTest() {
 		
-		
 		// Test normally
-		testDeck1.addFlashCard(testCard1);
+		testDeck1.addFlashCard(testCard1);	
 		assertEquals(true, testDeckManager.changeFlashCardDeck(testCard1, "testNameOne", "testNameTwo"));
-		assertEquals(false, testDeck1.contains(testCard2)); // Check FlashCard was removed from source Deck
+		assertEquals(false, testDeck1.contains(testCard1)); // Check FlashCard was removed from source Deck
 		assertEquals(true, testDeck2.contains(testCard1)); // Check FlashCard was added to destination Deck
 		// Test with flash card that already exists in another Deck
 		testDeck1.addFlashCard(testCard2);
 		testDeck2.addFlashCard(testCard2);
-		assertThrows(IllegalArgumentException.class, () ->  {testDeckManager.changeFlashCardDeck(testCard2, "testNameOne", "testNameTwo");});
+		assertEquals(false, testDeckManager.changeFlashCardDeck(testCard2, "testNameOne", "testNameTwo"));
 		// Test with a source deck that doesn't exist in the collection
 		assertThrows(IllegalArgumentException.class, () -> {testDeckManager.changeFlashCardDeck(testCard2, "testNameFour", "testNameThree");});
 		// Test with a destination deck that doesn't exist in the collection
