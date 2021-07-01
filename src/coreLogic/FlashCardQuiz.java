@@ -56,9 +56,9 @@ public class FlashCardQuiz {
 	/** Queue for cards on their final view for this quiz */
 	private Queue<FlashCard> finalQueue = new LinkedList<FlashCard>();
 	
-	/** String for what the current queue the quiz is taking cards from 
-	 * either "INITIAL", "AGAIN" or "FINAL" */
-	private String currentQueue;
+	/** Queue that the currentFlashCard was taken from. Merely acts as a pointer, it isn't actually operated on
+	 * i.e. operations are used with it*/
+	private Queue<FlashCard> currentQueue;
 	
 	/** ArrayList<FlashCard> for all the cards to be quizzed on throughout a quiz */
 	private ArrayList<FlashCard> cardsToQuiz;
@@ -74,7 +74,7 @@ public class FlashCardQuiz {
 	 * 
 	 * @param deck Deck object for this quiz
 	 */
-	FlashCardQuiz(Deck deck, UserStats userStats){
+	public FlashCardQuiz(Deck deck, UserStats userStats){
 		this.deck = deck;
 		this.userStats = userStats;
 	} 
@@ -84,12 +84,16 @@ public class FlashCardQuiz {
 	 * @param maxNewCards int for the max number of new cards that a User wants to see 
 	 */
 	public void startQuiz(int maxNewCards) {
-		// TODO implement
+		if (maxNewCards < 0) {
+			throw new IllegalArgumentException("maxNewCards must be a positive integer!");
+		}
+		// TODO implement stats functionality 
 		
 		// Starts a quiz 
 		LocalDate currentDate = LocalDate.now();
 		this.cardsToQuiz = deck.flashCardsToQuiz(maxNewCards, currentDate);
 		initialQueue.addAll(cardsToQuiz);
+		updateCurrentFlashCard();
 	}
 	
 	/** Ends a quiz
@@ -117,7 +121,7 @@ public class FlashCardQuiz {
 	 * FlashCards will only have their nextReviewDates updated if the quiz finishes!
 	 * 
 	 */
-	private void updateQuizFlashCards() {
+	public void updateQuizFlashCards() {
 		for (FlashCard flashCard : cardsToQuiz) {
 			flashCard.updateNextReviewDate();
 		}
@@ -149,19 +153,21 @@ public class FlashCardQuiz {
 	/** Updates the value of currentFlashCard attribute
 	 * <p>
 	 * currentFlashCard is set to null if there are no more cards to be quizzed on
+	 * <p>
+	 * Does this based on the state of the quiz. 
 	 */
 	public void updateCurrentFlashCard() {
 		if (!initialQueue.isEmpty()) {
 			currentFlashCard = initialQueue.remove();
-			currentQueue = "INITIAL";
+			setCurrentQueue("INITIAL");
 		}
 		else if (!finalQueue.isEmpty()) {
 			currentFlashCard  =  finalQueue.remove();
-			currentQueue = "FINAL";
+			setCurrentQueue("FINAL");
 		}
 		else if (!againQueue.isEmpty()) {
 			currentFlashCard = againQueue.remove();
-			currentQueue = "AGAIN";
+			setCurrentQueue("AGAIN");
 		}
 		else {
 			// No more cards quiz finished
@@ -202,7 +208,7 @@ public class FlashCardQuiz {
 	 * Adds the current flash card to both the final and again queues
 	 * 
 	 */
-	private void flashCardAgain() {
+	public void flashCardAgain() {
 		// TODO update val of quizStats
 		againQueue.add(currentFlashCard);
 		finalQueue.add(currentFlashCard);
@@ -210,13 +216,151 @@ public class FlashCardQuiz {
 	
 	/** Handles request of pressing OK in GUI
 	 * <p>
-	 * Adds the currentFlashCard to the finalQueue only if the current Queue
-	 * isn't the final queue and the currentFlashCard is new. 
+	 * Adds the currentFlashCard to the final Queue. <br>
+	 * Does this if: <br>
+	 * Firstly: currentQueue is not currently finalQueue <br>
+	 * AND either: (currentFlashCard is new), or (currentFlashCard isn't new but the currentQueue is againQueue)
+	 * <p>
+	 * Otherwise does nothing
 	 */
-	private void flashCardOk() {
-		// TODO update val of quizStats
-		if (currentFlashCard.isNew() && !currentQueue.equals("FINAL")) {
-			finalQueue.add(currentFlashCard);
-		}		
+	public void flashCardOk() {
+		// TODO update val of quizStats)
+		if (currentQueue != finalQueue){
+			if (currentFlashCard.isNew()) {
+				finalQueue.add(currentFlashCard);
+			}
+			else if (!currentFlashCard.isNew() && currentQueue == againQueue) {
+				finalQueue.add(currentFlashCard);
+			}
+		}
+		// Otherwise do nothing
+	}
+	
+	// NOTE below getters and setters may only be useful for testing
+	
+	/** Getter method for cardsToQuiz
+	 * 
+	 * @return ArrayList for cards to quiz for this quiz
+	 */
+	public ArrayList<FlashCard> getCardsToQuiz(){
+		return cardsToQuiz;
+	}
+	
+	/** Setter method for cardsToQuiz
+	 * <p>
+	 * ONLY USED FOR TESTING
+	 * 
+	 * @param cardsToQuiz ArrayList<FlashCard> to be set as cardsToQuiz
+	 */
+	public void setCardsToQuiz(ArrayList<FlashCard> cardsToQuiz) {
+		this.cardsToQuiz = cardsToQuiz;
+	}
+	
+	/** Getter method for the currentFlashCard for this quiz
+	 * 
+	 * @return FlashCard object for the currentFlashCard for this quiz
+	 */
+	public FlashCard getCurrentFlashCard() {
+		return currentFlashCard;
+	}
+	
+	/** Getter method for the initialQueue of this FlashCardQuiz
+	 * 
+	 * @return Queue<FlashCard> of the initialQueue of this flashCardQuiz
+	 */
+	public Queue<FlashCard> getInitialQueue(){
+		return initialQueue;
+	}
+	
+	/** Getter method for the againQueue of this FlashCardQuiz
+	 * 
+	 * @return Queue<FlashCard> of the againQueue of this flashCardQuiz
+	 */
+	public Queue<FlashCard> getAgainQueue(){
+		return againQueue;
+	}
+	
+	/** Getter method for the finalQueue of this FlashCardQuiz
+	 * 
+	 * @return Queue<FlashCard> of the finalQueue of this flashCardQuiz
+	 */
+	public Queue<FlashCard> getFinalQueue(){
+		return finalQueue;
+	}
+	
+	/** Getter method for the current queue of a quiz
+	 * 
+	 * @return Queue for the currentQueue of this quiz
+	 */
+	public Queue<FlashCard> getCurrentQueue(){
+		return currentQueue;
+	}
+	
+	/** Setter method for the current FlashCard of this quiz
+	 * 
+	 * @param currentFlashCard FlashCard object to be set as the currentFlashcard
+	 */
+	public void setCurrentFlashCard(FlashCard currentFlashCard) {
+		this.currentFlashCard = currentFlashCard;
+	}
+	
+	/** Setter method for the initial queue of this Quiz.
+	 * <p>
+	 * Instead of taking a LinkedList implementation of a queue, it takes an ArrayList
+	 * as a parameter, and sets this to the initialQueue using Collections.addAll(Object)
+	 * 
+	 * @param initialQueueList ArrayList<FlashCard> to be converted into a linked list queue
+	 */
+	public void setInitialQueue(ArrayList<FlashCard> initialQueueList) {
+		initialQueue.clear();
+		initialQueue.addAll(initialQueueList);
+	}
+	
+	/** Setter method for the again queue of this Quiz.
+	 * <p>
+	 * Instead of taking a LinkedList implementation of a queue as a parameter, it takes an ArrayList
+	 * as a parameter, and sets this to the againQueue using Collections.addAll(Object)
+	 * 
+	 * @param againQueueList ArrayList<FlashCard> to be converted into a linked list queue
+	 */
+	public void setAgainQueue(ArrayList<FlashCard> againQueueList) {
+		againQueue.clear();
+		againQueue.addAll(againQueueList);
+	}
+	
+	/** Setter method for the current queue
+	 * <p>
+	 * Takes a String, and sets the value of currentQueue according this String. Name of String is the name
+	 * of the queue that is to be set as the currentQueue
+	 * 
+	 * @param queue ArrayList of FlashCard objects to be added to the current Queue
+	 * @throws IllegalArgumentException if queue isn't either "INITIAL", "FINAL" or "AGAIN"
+	 */
+	public void setCurrentQueue(String queue) {
+		switch (queue) {
+		case "INITIAL":
+			currentQueue = initialQueue;
+			break;
+		case "AGAIN":
+			currentQueue = againQueue;
+			break;
+		case "FINAL":
+			currentQueue = finalQueue;
+			break;
+		default:
+			throw new IllegalArgumentException("String queue must be either 'INITIAL', 'AGAIN' or 'FINAL'");
+		}
+	}
+	
+	/** Setter method for the final queue of this Quiz.
+	 * <p>
+	 * Instead of taking a LinkedList implementation of a queue, it takes an ArrayList
+	 * as a parameter, and sets this to the finalQueue using Collections.addAll(Object)
+	 * 
+	 * @param initialQueueList ArrayList<FlashCard> to be converted into a linked list queue
+	 */
+	public void setFinalQueue(ArrayList<FlashCard> finalQueueList) {
+		finalQueue.clear();
+		finalQueue.addAll(finalQueueList);
 	}
 }
