@@ -66,7 +66,7 @@ public class FlashCard implements Serializable {
 	 * @return boolean value if a FlashCard is new or not
 	 */
 	public boolean isNew() {
-		return (nextReviewDate == null);
+		return (nextReviewDate == null && timesReviewed == 0);
 	}
 	
 	/** Determines if an object is equal to this FlashCard object.
