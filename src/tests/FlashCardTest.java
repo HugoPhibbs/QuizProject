@@ -9,6 +9,11 @@ import org.junit.jupiter.api.Test;
 
 import coreObjects.FlashCard;
 
+/** JUnit testing class for FlashCard
+ * 
+ * @author Hugo Phibbs
+ *
+ */
 class FlashCardTest {
 	
 	FlashCard testCard1;

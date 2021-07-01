@@ -12,6 +12,11 @@ import org.junit.jupiter.api.Test;
 import coreObjects.Deck;
 import coreObjects.FlashCard;
 
+/** JUnit testing class for Deck
+ * 
+ * @author Hugo Phibbs
+ *
+ */
 class DeckTest {
 	
 	Deck testDeck1;
