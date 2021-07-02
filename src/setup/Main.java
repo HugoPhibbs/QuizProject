@@ -1,4 +1,4 @@
-package coreLogic;
+package setup;
 
 /** Class to start the application
  * <p>
