@@ -24,6 +24,16 @@ public class AppEnvironment implements Serializable {
 	/** User object for this AppEnvironment */
 	private User user = new User();
 	
+	/** Constructor for AppEnvironment
+	 * <p>
+	 * Includes a parameter for a User
+	 * 
+	 * @param user User object for this AppEnvironment
+	 */
+	public AppEnvironment(User user) {
+		this.user = user;
+	}
+	
 	/** Creates a new quiz and returns and instance of FashCardQuiz
 	 * for a deck with name deckName, and for a User user
 	 * <p>
@@ -55,16 +65,6 @@ public class AppEnvironment implements Serializable {
 	 */
 	public ArrayList<Deck> viewDecks() {
 		return (deckManager.getDeckCollection());
-	}
-	
-	/** Constructor for AppEnvironment
-	 * <p>
-	 * Includes a parameter for a User
-	 * 
-	 * @param user User object for this AppEnvironment
-	 */
-	public AppEnvironment(User user) {
-		this.user = user;
 	}
 
 	/** Returns the DeckManager for this AppEnvironment.
