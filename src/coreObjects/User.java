@@ -2,7 +2,7 @@ package coreObjects;
 
 import java.io.Serializable;
 
-import coreLogic.UserStats;
+import stats.UserStats;
 
 /** Represents a user of the quiz application.
  * 

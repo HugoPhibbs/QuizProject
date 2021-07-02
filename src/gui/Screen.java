@@ -7,7 +7,7 @@ import java.awt.event.WindowEvent;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
-import coreLogic.Setup;
+import setup.Setup;
 
 /** Represents a Screen object for GUI
  * 

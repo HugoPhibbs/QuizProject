@@ -69,7 +69,7 @@ public class FlashCardQuiz {
 	private QuizStats quizStats = new QuizStats();
 	
 	/** Boolean value to keep track of if if the quiz is finished or not */
-	private Boolean quizFinished = false;
+	private Boolean quizIsFinished = false;
 	
 	/** UserStats object for this this quiz application is updated at the end of the quiz*/
 	private UserStats userStats;
@@ -152,7 +152,7 @@ public class FlashCardQuiz {
 	 * @return boolean value if a quiz is finished or not
 	 */
 	public boolean quizIsFinished() {
-		return quizFinished;
+		return quizIsFinished;
 	}
 	
 	/** Updates the value of currentFlashCard attribute
@@ -178,7 +178,7 @@ public class FlashCardQuiz {
 			// No more cards quiz finished
 			currentFlashCard = null;
 			currentQueue = null;
-			quizFinished = true;
+			quizIsFinished = true;
 		}
 	}
 	

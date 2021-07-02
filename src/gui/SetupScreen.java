@@ -7,7 +7,7 @@ import javax.swing.JLabel;
 import java.awt.Font;
 import javax.swing.JTextField;
 
-import coreLogic.Setup;
+import setup.Setup;
 
 import javax.swing.JButton;
 import java.awt.event.ActionListener;

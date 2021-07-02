@@ -69,7 +69,7 @@ class FlashCardQuizTest {
 	}
 
 	@Test
-	void quizFinishedTest() {
+	void quizIsFinishedTest() {
 	
 	}
 
