@@ -1,4 +1,4 @@
-package coreLogic;
+package stats;
 
 import java.io.Serializable;
 import java.util.ArrayList;
