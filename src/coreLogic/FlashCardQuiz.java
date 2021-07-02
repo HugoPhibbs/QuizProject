@@ -7,6 +7,8 @@ import java.util.Queue;
 
 import coreObjects.Deck;
 import coreObjects.FlashCard;
+import stats.QuizStats;
+import stats.UserStats;
 
 /** Represents a FlashCardQuiz.
  * <p>
@@ -31,7 +33,7 @@ import coreObjects.FlashCard;
  * 
  * @author Hugo Phibbs
  * @author Tom Berry
- * @version 28/6/21
+ * @version 2/7/21
  * @since 25/6/21
  * 
  */
@@ -65,6 +67,9 @@ public class FlashCardQuiz {
 	
 	/** Instance of QuizStats for current quiz */
 	private QuizStats quizStats = new QuizStats();
+	
+	/** Boolean value to keep track of if if the quiz is finished or not */
+	private Boolean quizFinished = false;
 	
 	/** UserStats object for this this quiz application is updated at the end of the quiz*/
 	private UserStats userStats;
@@ -106,6 +111,8 @@ public class FlashCardQuiz {
 		
 		updateQuizFlashCards();
 		userStats.addQuizStatsEntry(quizStats);
+		
+		// TODO, show the summary after this. 
 	}
 	
 	public void summary() {
@@ -142,12 +149,10 @@ public class FlashCardQuiz {
 	
 	/** Checks if a quiz is finished or not.
 	 * <p>
-	 * Does this by seeing if currentFlashCard is equal to null or not
-	 * 
 	 * @return boolean value if a quiz is finished or not
 	 */
-	public boolean quizFinished() {
-		return (currentFlashCard == null);
+	public boolean quizIsFinished() {
+		return quizFinished;
 	}
 	
 	/** Updates the value of currentFlashCard attribute
@@ -173,6 +178,7 @@ public class FlashCardQuiz {
 			// No more cards quiz finished
 			currentFlashCard = null;
 			currentQueue = null;
+			quizFinished = true;
 		}
 	}
 	
@@ -296,6 +302,30 @@ public class FlashCardQuiz {
 		return currentQueue;
 	}
 	
+	/** Setter method for the current queue
+	 * <p>
+	 * Takes a String, and sets the value of currentQueue according this String. Name of String is the name
+	 * of the queue that is to be set as the currentQueue
+	 * 
+	 * @param queue ArrayList of FlashCard objects to be added to the current Queue
+	 * @throws IllegalArgumentException if queue isn't either "INITIAL", "FINAL" or "AGAIN"
+	 */
+	public void setCurrentQueue(String queue) {
+		switch (queue) {
+		case "INITIAL":
+			currentQueue = initialQueue;
+			break;
+		case "AGAIN":
+			currentQueue = againQueue;
+			break;
+		case "FINAL":
+			currentQueue = finalQueue;
+			break;
+		default:
+			throw new IllegalArgumentException("String queue must be either 'INITIAL', 'AGAIN' or 'FINAL'");
+		}
+	}	
+	
 	/** Setter method for the current FlashCard of this quiz
 	 * 
 	 * @param currentFlashCard FlashCard object to be set as the currentFlashcard
@@ -326,30 +356,6 @@ public class FlashCardQuiz {
 	public void setAgainQueue(ArrayList<FlashCard> againQueueList) {
 		againQueue.clear();
 		againQueue.addAll(againQueueList);
-	}
-	
-	/** Setter method for the current queue
-	 * <p>
-	 * Takes a String, and sets the value of currentQueue according this String. Name of String is the name
-	 * of the queue that is to be set as the currentQueue
-	 * 
-	 * @param queue ArrayList of FlashCard objects to be added to the current Queue
-	 * @throws IllegalArgumentException if queue isn't either "INITIAL", "FINAL" or "AGAIN"
-	 */
-	public void setCurrentQueue(String queue) {
-		switch (queue) {
-		case "INITIAL":
-			currentQueue = initialQueue;
-			break;
-		case "AGAIN":
-			currentQueue = againQueue;
-			break;
-		case "FINAL":
-			currentQueue = finalQueue;
-			break;
-		default:
-			throw new IllegalArgumentException("String queue must be either 'INITIAL', 'AGAIN' or 'FINAL'");
-		}
 	}
 	
 	/** Setter method for the final queue of this Quiz.
