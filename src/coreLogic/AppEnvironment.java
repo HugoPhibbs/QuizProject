@@ -54,18 +54,6 @@ public class AppEnvironment implements Serializable {
 			throw new IllegalArgumentException("No deck with name deckName in this collection!");
 		}
 	}
-	
-	/** Allows a user to see what decks they have in the GUI
-	 * returns an ArrayList of Deck objects for the deck collection of
-	 * this AppEnvironment's deckManager
-	 * <p>
-	 * This can then be parsed by GUI into a JTable, from there a user can select a Deck to edit
-	 * 
-	 * @return ArrayList of Deck objects, as explained above. 
-	 */
-	public ArrayList<Deck> viewDecks() {
-		return (deckManager.getDeckCollection());
-	}
 
 	/** Returns the DeckManager for this AppEnvironment.
 	 * 
