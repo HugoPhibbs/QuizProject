@@ -197,6 +197,18 @@ public class DeckManager implements Serializable {
 		return (findDeck(deckName) != null);
 	}
 	
+	/** Gets a tabular representation of this deck collection
+	 * 
+	 * @return Array containing String arrays for info of each deck in this collection
+	 */
+	public String[][] deckCollectionInfo(){
+		ArrayList<String[]> deckCollectionInfo = new ArrayList<String[]>();
+		for (Deck deck: deckCollection) {
+			deckCollectionInfo.add(deck.infoArray());
+		}
+		return (String[][]) deckCollectionInfo.toArray();
+	}
+	
 	/** Getter method for the a deck collection of a DeckManager object
 	 * 
 	 * @return ArrayList of Deck objects for the deckCollection of a DeckManager object
