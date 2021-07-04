@@ -141,9 +141,9 @@ public class Deck implements Serializable {
 	
 	//******************************** METHODS FOR QUIZZING *************************************************
 	
-	/** Returns the FlashCards that a user is to be quizzed on. Shuffles the deck before choosing new cards. 
-	 * This ensures that new cards are in random order, but cards that are due are always added to be
-	 * quizzed. 
+	/** Returns the FlashCards that a user is to be quizzed on. 
+	 * <p>
+	 * Shuffles the order of the FlashCards before returning
 	 * 
 	 * @param maxNewCards int for the max number of new cards that a user wants to see
 	 * @param currentDate LocalDate object for the current date
@@ -153,7 +153,7 @@ public class Deck implements Serializable {
 		
 		ArrayList<FlashCard> flashCardsToQuiz = new ArrayList<FlashCard>();
 		
-		Collections.shuffle(flashCards);
+		
 		int newCardsAdded = 0;
 		
 		for (FlashCard flashCard: flashCards) {
@@ -163,12 +163,35 @@ public class Deck implements Serializable {
 				flashCardsToQuiz.add(flashCard);
 				newCardsAdded += 1;
 			}
-		    else if (flashCard.isDue(currentDate)) {
-		    	// Otherwise if the flashCard is due
-		    	flashCardsToQuiz.add(flashCard);
+		}
+		
+		flashCardsToQuiz.addAll(dueFlashCards(currentDate));
+		Collections.shuffle(flashCardsToQuiz);
+		return flashCardsToQuiz;
+	}
+	
+	/** Finds the FlashCards for this deck that are due
+	 * 
+	 * @param currentDate LocalDate object representing the current date
+	 * @return ArrayList containing all the FlashCards that are due
+	 */
+	public ArrayList<FlashCard> dueFlashCards(LocalDate currentDate){
+		ArrayList<FlashCard> dueFlashCards = new ArrayList<FlashCard>();
+		for (FlashCard flashCard: flashCards) {
+			if (flashCard.isDue(currentDate)) {
+				dueFlashCards.add(flashCard);
 			}
 		}
-		return flashCardsToQuiz;
+		return dueFlashCards;
+	}
+	
+	/** Finds the number of FlashCards that are due for this deck
+	 * 
+	 * @param currentDate LocalDate object for the current date
+	 * @return int value for the number of due cards for this deck
+	 */
+	public int numDueFlashCards(LocalDate currentDate) {
+		return (dueFlashCards(currentDate).size());
 	}
 	
 	//********************************* GETTERS AND SETTERS ****************************************
@@ -185,6 +208,38 @@ public class Deck implements Serializable {
 	 */
 	public int size() {
 		return flashCards.size();
+	}
+	
+	/** Returns an array representation of key details of this deck
+	 * <p>
+	 * Array has format {name, size, numCardsDue}
+	 * <p>
+	 * Used by GUI when displaying decks of a collection in tabular form
+	 * 
+	 * @return String[] containing key info for this deck 
+	 */
+	public String[] infoArray() {
+		String[] infoArray = {
+				name, 
+				Integer.toString(size()), 
+				Integer.toString(numDueFlashCards(LocalDate.now()))
+		};
+		return infoArray;
+	}
+	
+	/** Creates array for the column headers for infoArray()
+	 * <p>
+	 * Used by GUI
+	 * 
+	 * @return String[] of the column headers for a Deck object
+	 */
+	public static String[] infoArrayHeaders() {
+		String[] headers = {
+				"Name", 
+				"Size", 
+				"Due Cards"
+		};
+		return headers;
 	}
 	
 	/** Getter method for the name of a deck
