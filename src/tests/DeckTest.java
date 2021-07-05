@@ -109,4 +109,19 @@ class DeckTest {
 		testDeck1.setName("testNameTwo");
 		assertEquals("testNameTwo", testDeck1.getName());
 	}
+	
+	@Test
+	public void editFlashCardTest() {
+		// Test Normally
+		testDeck1.addFlashCard(testCard1);
+		assertEquals(true, testDeck1.editFlashCard(testCard1, "Y", "Z"));
+		// Test with a new front text that matches a FlashCard already in a Deck
+		testDeck1.addFlashCard(testCard2);
+		testDeck1.addFlashCard(testCard3);
+		assertEquals(false, testDeck1.editFlashCard(testCard3, "C", "D")); // collides with testCard2
+		// Test with a new front text and back text that is same as the flashCard being edited
+		assertEquals(true, testDeck1.editFlashCard(testCard2, "C", "D"));
+		// Test with a flashCard that isn't contained in a Deck
+		assertThrows(IllegalArgumentException.class, () -> {testDeck1.editFlashCard(testCard4, "", "");});
+	}
 }
