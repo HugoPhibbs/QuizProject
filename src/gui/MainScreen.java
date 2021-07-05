@@ -5,6 +5,7 @@ import java.awt.ScrollPane;
 
 import javax.swing.JFrame;
 import javax.swing.JTable;
+import javax.swing.JTextArea;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -27,6 +28,9 @@ public class MainScreen{
 	JTable tableDecks;
 	AppEnvironment appEnvironment;
 	JPanel panelTable;
+	Deck chosenDeck = null;
+	JButton btnEditDeck;
+	JButton btnStartQuiz;
 	
 	
 	/**
@@ -70,12 +74,12 @@ public class MainScreen{
 	
 	private void createTablePanel() {
 		this.panelTable = new JPanel();
-		panelTable.setBounds(148, 26, 374, 292);
+		panelTable.setBounds(114, 48, 408, 292);
 		frame.getContentPane().add(panelTable);
 		panelTable.setLayout(null);
 		
 		JLabel lblSelectDeck = new JLabel("Select a Deck!");
-		lblSelectDeck.setBounds(147, 25, 53, 9);
+		lblSelectDeck.setBounds(91, 25, 148, 9);
 		panelTable.add(lblSelectDeck);
 		
 		createDecksTable();
@@ -84,12 +88,12 @@ public class MainScreen{
 	
 	private void createOptionsPanel() {
 		JPanel panelOptions = new JPanel();
-		panelOptions.setBounds(195, 379, 267, 28);
+		panelOptions.setBounds(114, 379, 408, 28);
 		frame.getContentPane().add(panelOptions);
 		panelOptions.setLayout(null);
 		
-		JButton btnEditDeck = new JButton("Edit Deck");
-		btnEditDeck.setBounds(7, 7, 69, 17);
+		btnEditDeck = new JButton("Edit Deck");
+		btnEditDeck.setBounds(7, 7, 90, 17);
 		panelOptions.add(btnEditDeck);
 		btnEditDeck.setEnabled(false); // Disabled until a deck is selected
 		btnEditDeck.addActionListener(new ActionListener() {
@@ -98,8 +102,8 @@ public class MainScreen{
 			}
 		});
 
-		JButton btnStartQuiz = new JButton("Start new Quiz!");
-		btnStartQuiz.setBounds(83, 7, 78, 17);
+		btnStartQuiz = new JButton("Start new Quiz!");
+		btnStartQuiz.setBounds(104, 7, 153, 17);
 		panelOptions.add(btnStartQuiz);
 		btnStartQuiz.setEnabled(false); // Disabled until a deck is selected
 		btnStartQuiz.addActionListener(new ActionListener() {
@@ -109,7 +113,7 @@ public class MainScreen{
 		});
 		
 		JButton btnNewFlashCard = new JButton("New flash card");
-		btnNewFlashCard.setBounds(168, 7, 90, 17);
+		btnNewFlashCard.setBounds(264, 7, 137, 17);
 		panelOptions.add(btnNewFlashCard);
 		btnNewFlashCard.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -138,20 +142,48 @@ public class MainScreen{
 		tableDecks = new JTable(decks, headers);
 		tableDecks.setBounds(7, 24, 253, 144);
 		JScrollPane sp = new JScrollPane(tableDecks);
-		sp.setBounds(34, 69, 300, 200);
+		sp.setBounds(7, 49, 394, 236);
 		panelTable.add(sp);
 		ListSelectionModel selectionModel = tableDecks.getSelectionModel();
 		selectionModel.addListSelectionListener(new ListSelectionListener() {
 		    public void valueChanged(ListSelectionEvent lse) {
 		    	// Bellow lines ensures that changing selection of a row counts as one change, not two
 		    	if (!lse.getValueIsAdjusting()) {
+		    		deckSelected();
 		    	}
 		    }
 		});
+		
+		// Set the table so it can't be edited
+		tableDecks.setDefaultEditor(Object.class, null);
+	}
+	
+	/** Handles selection of row from decksTable
+	 * <p>
+	 *
+	 */
+	private void deckSelected() {
+		// Commented out chosenDeck = chosenDeck();
+		btnStartQuiz.setEnabled(true);
+		btnEditDeck.setEnabled(true);
+	}
+	
+	/** Returns the name of the currently chosen deck from decksTable
+	 * <p>
+	 * Finds the name from the deck and then finds the matching Deck object based on this name
+	 * 
+	 * @return Deck object that has been chosen 
+	 */
+	private Deck chosenDeck() {
+		int chosenRow = tableDecks.getSelectedRow();
+		String deckName = tableDecks.getModel().getValueAt(chosenRow,  0).toString();
+		Deck chosenDeck = appEnvironment.getDeckManager().findDeck(deckName);
+		return chosenDeck;
 	}
 	
 	public void newFlashCard() {
-		// Creates a new FlashCard screen
+		// Creates a new edit FlashCard screen
+		EditFlashCardScreen flashCardScreen = new EditFlashCardScreen();
 	}
 	
 	public void newQuiz() {
