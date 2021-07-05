@@ -26,6 +26,8 @@ public class FlashCard implements Serializable {
 	 * <p>
 	 * Useful for when you are creating a FlashCard when you dont immediately know what the front and
 	 * back texts will be. 
+	 * <p>
+	 * Can easily set front and back text later with setter methods
 	 */
 	public FlashCard() {}
 	
@@ -81,12 +83,23 @@ public class FlashCard implements Serializable {
 	public boolean equals(Object object) {
 		if (object instanceof FlashCard) {
 			FlashCard flashCard = (FlashCard) object;
-			return (flashCard.getFrontText().equals(this.getFrontText()) && 
-					flashCard.getBackText().equals(this.getBackText()));
+			return (hasText(flashCard.getFrontText(), flashCard.getBackText()));
 		}
 		else {
 			return false;
 		}
+	}
+	
+	/** Finds if a FlashCard has the same front text and back text
+	 * as those that are inputed.
+	 * 
+	 * @param frontText String for the front text to be checked 
+	 * @param backText String for the front text to be checked 
+	 * @return boolean if a FlashCard has the same front text and back text
+	 * as those that are inputed
+	 */
+	public boolean hasText(String frontText, String backText) {
+		return (this.frontText.equals(frontText)) && (this.backText.equals(backText));
 	}
 	
 	/** Sets the next review date of a flash card based on
