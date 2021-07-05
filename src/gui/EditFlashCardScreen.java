@@ -16,13 +16,23 @@ import javax.swing.JComboBox;
 import java.awt.Color;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.JTextPane;
 
+/** Represents a Screen to edit a FlashCard object
+ * <p>
+ * Handles both editing a FlashCard that has already been created or creating an entirely new FlashCard
+ * 
+ * @author Hugo Phibbs
+ */
 public class EditFlashCardScreen {
 	
 	JFrame frame;
+	/** Text field for the front text of the FlashCard that is being edited */
 	JTextField textFieldBackText;
+	/** Text field for the back text of the FlashCard that is being edited */
 	JTextField textFieldFrontText;
-	JLabel lblErrorText;
+	/** Text pane to display any messages for errors that may occur */
+	JTextPane textPaneErrorMsg;
 	
 	/** Keeps track of whether we are creating or editing a FlashCard */
 	boolean isCreating = false;
@@ -65,7 +75,7 @@ public class EditFlashCardScreen {
 		initialize();
 		this.isCreating = true;
 		this.deckManager = deckManager;
-		flashCard = new FlashCard();
+		isCreating();
 	}
 	
 	/** Constructor for editing a FlashCard
@@ -93,6 +103,10 @@ public class EditFlashCardScreen {
 		
 		// Set combo box to have current deck to be selected
 	}
+	
+	private void isCreating() {
+		
+	}
 
 	/**
 	 * Initialize the contents of the frame.
@@ -103,28 +117,23 @@ public class EditFlashCardScreen {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
-		createMiscLabels();
+		createMiscComponents();
 		createChangeTextPanel();
 		createChooseDeckPanel();
 		
 	}
 	
-	/** Creates various labels all around the frame
+	/** Creates various components all around the frame
 	 * <p> 
 	 * Didn't belong in any other method, so create them here
 	 * 
 	 */
-	private void createMiscLabels() {
+	private void createMiscComponents() {
 		
 		JButton btnContinue = new JButton("Continue");
 		btnContinue.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (isCreating) {
-					createFlashCard();
-				}
-				else {
-					editFlashCard();
-				}
+				onContinuePressed();
 			}
 		});
 		btnContinue.setBounds(336, 230, 95, 28);
@@ -135,10 +144,13 @@ public class EditFlashCardScreen {
 		lblAction.setBounds(161, 36, 148, 28);
 		frame.getContentPane().add(lblAction);
 		
-		lblErrorText = new JLabel("<Error Text>");
-		lblErrorText.setForeground(Color.RED);
-		lblErrorText.setBounds(336, 202, 95, 21);
-		frame.getContentPane().add(lblErrorText);
+		JTextPane textPaneErrorMsg = new JTextPane();
+		textPaneErrorMsg.setBounds(335, 156, 96, 45);
+		frame.getContentPane().add(textPaneErrorMsg);
+	}
+	
+	private void changeActionLabel(String operation) {
+		
 	}
 	
 	/** Create components relating to changing the text of a flashCard
@@ -189,29 +201,46 @@ public class EditFlashCardScreen {
 
 	}
 	
+	/** Handles what happens when a user presses continue
+	 * <p>
+	 * Diverts flow to either create a FlashCard or edit a FlashCard. 
+	 * <p>
+	 * Handles any exceptions if they are thrown
+	 */
+	private void onContinuePressed() {
+		try {
+			if (isCreating) {
+				createFlashCard();
+			}
+			else {
+				editFlashCard();
+			}
+			// If above statements didn't throw an error, bellow will be executed
+			// close()
+		}
+		// Catch any exceptions to do with methods above
+		catch (Exception e) {
+			textPaneErrorMsg.setText(e.getMessage());
+		}
+	}
+	
+	
 	/** Handles pressing of "CONTINUE" button, when editing a flashCard
 	 * 
 	 */
 	private void editFlashCard() {
-		try {
-			currentDeck.contains()
-		}
-		catch (Exception e) {
-			lblErrorText.setText(e.getMessage());
-		}
-		
-	}
+		currentDeck.editFlashCard(flashCard, 
+				textFieldFrontText.getText(), 
+				textFieldBackText.getText());		
+}
 	
 	/** Handles pressing of "CONTINUE" button, when creating a flashCard
 	 * 
 	 */
 	private void createFlashCard() {
-		try {
-			FlashCard newFlashCard = new FlashCard();
-			
-		}
-		catch (Exception e){
-			lblErrorText.setText(e.getMessage());
-		}
+		FlashCard newFlashCard = new FlashCard(
+				textFieldFrontText.getText(), 
+				textFieldBackText.getText());
+		currentDeck.addFlashCard(newFlashCard);
 	}
 }
