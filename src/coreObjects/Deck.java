@@ -117,6 +117,9 @@ public class Deck implements Serializable {
 	 * <p>
 	 * Makes sure that another FlashCard doesn't already have the same front and back text that is 
 	 * wished to be edited to for flashCard. Returns false if so. 
+	 * <p>
+	 * Additionally, if the new front and back text's are the same as the texts of flashCard, ie
+	 * the front and back text's aren't actually being changed, it returns true. 
 	 * 
 	 * @param flashCard FlashCard object to be edited
 	 * @param newFrontText String for the new proposed front text of flashCard
@@ -129,7 +132,11 @@ public class Deck implements Serializable {
 		if (!contains(flashCard)) {
 			throw new IllegalArgumentException("FlashCard object isn't contained in this deck!, Please check for bugs!");
 		}
+		else if (flashCard.hasText(newFrontText, newBackText)) {
+			return true;
+		}
 		else if (contains(newFrontText, newBackText)) {
+			// After statement above, this checks for another flashCard with newFrontText and newBackText
 			return false;
 		}
 		else {
