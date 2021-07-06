@@ -144,3 +144,30 @@ Implement a priority queue with viewing cards (min or max heap), to get O(logn) 
 Could have more than one user for this quiz, eg log in with two different users.
 
 On setup screen, fields for working directory and a users name can be preentered with the last used directories
+
+## Conventions and Code Style
+Naming of variables, classes, methods etc should follow standard java conventions and be easily to understand. 
+Try to break methods up as much as possible. This makes things alot easier to test, integrate and refactor. 
+DRY, Don't Repeat Yourself and KISS Keep It Simple Stupid!
+All programming should follow core object orientated principles
+All classes should have appropriate getters and setters. 
+All names must have no special characters with no extra white space
+If a function returns a boolean value from another method, please put this method in parenthesises
+### Throwing exceptions
+Exceptions that indicate a bug in the system, should not be checked, these should end the flow of the program immediately, ie errors
+Exceptions should only be thrown if there is exceptional flow that shouldn't be happening under reasonable conditions. Otherwise, returning boolean values for if an operation was done or not will suffice.
+## Version Control
+Using Git
+Please run unit tests before you push any code, it's much easier to solve bugs for code that you have just created, as it is fresh in your mind
+Make sure commit messages are helpful. 
+## Risks and other concerns
+### Clashes
+We are using Github for continous integration of our work. As a result we need to be careful of not clashing our work too often, as it can be a nightmare. 
+To counter this... commit and push to the main branch regularly. Small changes should be grouped together into one push. Try to push as much as possible, this avoids a big piling up of clashses that is simply really fucking annoying and time wasting to fix
+### Communication
+Can't stress this enough, we need to stay in contact with each other.
+If there are any plans or other things that we need to discuss and overcome, then talk about it. 
+If you feel that you are putting way more work than other members, let them know early before it comes a big problem, I'm sure they will all be happy to help
+### Work load
+Not expecting everyone involved to put in equal amounts of effort, to think that this is going to happen is simply unrealistic.
+So a hard and fast rule is: Do what you have said that you are going to a high quality. Nothing worse than waiting on someone else to implement functionality that they said they would have gotten done.
