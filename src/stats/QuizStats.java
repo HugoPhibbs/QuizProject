@@ -27,6 +27,12 @@ public class QuizStats implements Serializable {
 	private int timeTaken;
 	 
 	
+	/** Empty constructor until this class is fully implemented
+	 * need it for FlashCardQuiz
+	 * TODO remove later
+	 */
+	public QuizStats() {}
+	
 	/** Constructor for a QuizStats object.
 	 * 
 	 * @param numAgain
