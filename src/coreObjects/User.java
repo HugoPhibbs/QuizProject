@@ -2,6 +2,7 @@ package coreObjects;
 
 import java.io.Serializable;
 
+import coreLogic.CheckValidInput;
 import stats.UserStats;
 
 /** Represents a user of the quiz application.
@@ -24,7 +25,7 @@ public class User implements Serializable {
 	 * @param name String for the name of a User
 	 */
 	public User(String name) {
-		this.name = name;
+		setName(name);
 	}
 	
 	/** Constructor for a User object
@@ -45,11 +46,19 @@ public class User implements Serializable {
 	}
 	
 	/** Setter method for the name of a user
+	 * <p>
+	 * Checks if a name is valid, otherwise throws an exception
 	 * 
 	 * @param name String for the name to be set
 	 */
 	public void setName(String name) {
-		this.name = name;
+		if (!CheckValidInput.nameIsValid(name)) {
+			String msg = String.format(CheckValidInput.getVALID_NAME_REQUIREMENTS(), "User");
+			throw new IllegalArgumentException(msg);
+		}
+		else {
+			this.name = name;
+		}
 	}
 
 	/** Getter method for userStats
