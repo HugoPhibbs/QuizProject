@@ -118,7 +118,7 @@ public class FlashCardQuiz {
 		// Ends a quiz
 		
 		LocalTime endTime = LocalTime.now();
-		updateQuizFlashCards();
+		reviewAllQuizFlashCards();
 		userStats.addQuizStatsEntry(quizStats);
 		
 		// TODO, show the summary after this. 
@@ -137,7 +137,7 @@ public class FlashCardQuiz {
 	 * FlashCards will only have their nextReviewDates updated if the quiz finishes!
 	 * 
 	 */
-	public void updateQuizFlashCards() {
+	public void reviewAllQuizFlashCards() {
 		for (FlashCard flashCard : cardsToQuiz) {
 			flashCard.updateNextReviewDate();
 		}
