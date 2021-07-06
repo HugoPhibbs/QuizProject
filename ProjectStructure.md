@@ -104,7 +104,7 @@
 - Buttons to RENAME  or DELETE a deck 
 - Shows all the flash cards in a deck in a JTable. One Column for front and another column for back. 
 - Select a flash card, you have the option to EDIT it by pressing another button. This creates a new EditFlashCardScreen. 
-- Button to ADD a flash card to the deck. Creates a new instance of EditFlashCardScreen, with it's flashCard attribute being an empty FlashCard object. Once the FlashCardScreen is open, editDeckScreen is hidden. 
+- Button to ADD a flash card to the deck. Creates a new instance of EditFlashCardScreen, with it's flashCard attribute being an empty FlashCard object. Once the FlashCardScreen is open, editDeckScreen is hidden. Another button to DELETE a FlashCard from a deck 
 - Press close to collapse screen and go back to the main screen. 
 
 #### EditFlashCardScreen
