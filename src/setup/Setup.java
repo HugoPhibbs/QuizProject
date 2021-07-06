@@ -26,7 +26,9 @@ import gui.MainScreen;
  */
 public class Setup {
 	
+	/** String for the absolute working directory for this application, where session files are stored for each user */
 	private String workingDirectory;
+	/** AppEnvironment object for this application */
 	private AppEnvironment appEnvironment;
 	
 	/** Constructor for Setup class
