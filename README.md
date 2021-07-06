@@ -145,6 +145,8 @@ Could have more than one user for this quiz, eg log in with two different users.
 
 On setup screen, fields for working directory and a users name can be preentered with the last used directories
 
+User can use keys on keyboard to do simple tasks in with the GUI, without using the mouse
+
 ## Conventions and Code Style
 Naming of variables, classes, methods etc should follow standard java conventions and be easily to understand. 
 Try to break methods up as much as possible. This makes things alot easier to test, integrate and refactor. 
