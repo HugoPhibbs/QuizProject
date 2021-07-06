@@ -1,6 +1,7 @@
 package coreLogic;
 
-import java.time.LocalDate;  
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
@@ -74,6 +75,12 @@ public class FlashCardQuiz {
 	/** UserStats object for this this quiz application is updated at the end of the quiz*/
 	private UserStats userStats;
 	
+	/** int keeping track of how many times 'again' has been selected each quiz */
+	private int numAgain = 0;
+	
+	/** int keeping track of how many times 'final' has been selected each quiz */
+	private int numFinal = 0;
+	
 	
 	/** Constructor for FlashCardQuiz
 	 * 
@@ -96,6 +103,7 @@ public class FlashCardQuiz {
 		
 		// Starts a quiz 
 		LocalDate currentDate = LocalDate.now();
+		LocalTime startTime = LocalTime.now();
 		this.cardsToQuiz = deck.flashCardsToQuiz(maxNewCards, currentDate);
 		initialQueue.addAll(cardsToQuiz);
 		updateCurrentFlashCard();
@@ -109,6 +117,7 @@ public class FlashCardQuiz {
 		
 		// Ends a quiz
 		
+		LocalTime endTime = LocalTime.now();
 		updateQuizFlashCards();
 		userStats.addQuizStatsEntry(quizStats);
 		
@@ -216,6 +225,8 @@ public class FlashCardQuiz {
 	 */
 	public void flashCardAgain() {
 		// TODO update val of quizStats
+		numAgain++;
+		
 		againQueue.add(currentFlashCard);
 		finalQueue.add(currentFlashCard);
 	}
@@ -231,6 +242,8 @@ public class FlashCardQuiz {
 	 */
 	public void flashCardOk() {
 		// TODO update val of quizStats)
+		numFinal++;
+		
 		if (currentQueue != finalQueue){
 			if (currentFlashCard.isNew()) {
 				finalQueue.add(currentFlashCard);
