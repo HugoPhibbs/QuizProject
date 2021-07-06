@@ -1,6 +1,6 @@
 package setup;
 
-import java.io.File;
+import java.io.File; 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -19,7 +19,6 @@ import gui.MainScreen;
  * application
  * 
  * @author Hugo Phibbs
- * @author Tom Berry
  * @version 30/6/21
  * @since 25/6/21
  *
@@ -135,12 +134,13 @@ public class Setup {
 	}
 	
 	/** Handles the finishing of the setup of the application
-	 * 
+	 * <p>
+	 * Creates a new MainScreen
+	 * 	 
 	 * @param appEnvironment AppEnvironment object for the application
 	 */
 	public void onSetupFinished() {
-		// Creates and shows a new MainScreen with inputed appEnvironment
 		MainScreen mainScreen = new MainScreen(appEnvironment);
-		//mainScreen.show();
+		//mainScreen.show(); // TODO remove later once Screen fully implemented
 	}
 }
