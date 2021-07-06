@@ -28,7 +28,7 @@ public class Deck implements Serializable {
 	/** LocalDate object for the date of creation of this deck **/
 	private LocalDate dateOfCreation;
 	
-	
+
 	/** Constructor for a Deck object
 	 * 
 	 * @param name String for the name of a deck
@@ -285,12 +285,12 @@ public class Deck implements Serializable {
 	/** Setter method for the name of a Deck. 
 	 * Checks if a name is valid before setting. 
 	 * 
-	 * @param name String for the name of a deck to be set
+	 * @param newName String for the name of a deck to be set
 	 * @throws IllegalArgumentException if name isnt' valid, see CheckValidInput.nameIsValid(String)
 	 */
 	public void setName(String newName) {
 		if (!CheckValidInput.nameIsValid(newName)) {
-			String msg = String.format(CheckValidInput.getVALID_NAME_REQUIREMENTS());
+			String msg = String.format(CheckValidInput.getVALID_NAME_REQUIREMENTS(), "Deck");
 			throw new IllegalArgumentException(msg);
 		}
 		else {
