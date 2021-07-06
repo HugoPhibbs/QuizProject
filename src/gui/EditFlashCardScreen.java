@@ -1,6 +1,6 @@
 package gui;
 
-import java.awt.EventQueue; 
+import java.awt.EventQueue;  
 
 import javax.swing.JFrame;
 import javax.swing.JTextField;
@@ -13,8 +13,8 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JComboBox;
-import java.awt.Color;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 import javax.swing.JTextPane;
 
@@ -27,15 +27,18 @@ import javax.swing.JTextPane;
 public class EditFlashCardScreen {
 	
 	JFrame frame;
+	
 	/** Text field for the front text of the FlashCard that is being edited */
 	JTextField textFieldBackText;
 	/** Text field for the back text of the FlashCard that is being edited */
 	JTextField textFieldFrontText;
 	/** Text pane to display any messages for errors that may occur */
 	JTextPane textPaneErrorMsg;
+	/** Label describing the current operation being done with regards to a FlashCard */
+	JLabel lblAction;
 	
 	/** Keeps track of whether we are creating or editing a FlashCard */
-	boolean isCreating = false;
+	boolean isCreating;
 	/** FlashCard object that we are currently editing, set to null if we are creating a FlashCard */
 	FlashCard flashCard = null;
 	/** DeckManager object for this application, useful when viewing what Decks to put a FlashCard in */
@@ -61,51 +64,41 @@ public class EditFlashCardScreen {
 
 	/**
 	 * Create the application.
+	 * 
 	 */
 	public EditFlashCardScreen() {
-		//super();
+		/* TODO dummy constructor for testing GUI, always create an EditFlashCardScreen using
+		 * one of the two constructors bellow
+		 */
+		super();
 		initialize();
 	}
 	
-	/** Constructor for creating a FlashCard
+	/** Constructor for making a EditFlashCardScren in order to create a FlashCard
 	 * 
 	 * @param deckManager DeckManager object to be used for this screen
 	 */
 	public EditFlashCardScreen(DeckManager deckManager) {
+		super();
 		initialize();
-		this.isCreating = true;
 		this.deckManager = deckManager;
+		this.isCreating = true;
 		isCreating();
 	}
 	
-	/** Constructor for editing a FlashCard
+	/** Constructor for making an EditFlashCardSceen in order to edit a FlashCard
 	 * 
 	 * @param flashCard FlashCard object that is being edited
 	 * @param deckManager DeckManager object for this application
 	 * @param currentDeck Deck object that this FlashCard currently belongs to
 	 */
 	public EditFlashCardScreen(FlashCard flashCard, DeckManager deckManager, Deck currentDeck) {
+		super();
 		initialize();
 		this.deckManager = deckManager;
 		this.flashCard = flashCard;
 		this.currentDeck = currentDeck;
 		isEditing();
-	}
-	
-	/** Adjusts components for when a FlashCard is being editted, not created
-	 * <p>
-	 * Default settings of components are for creating FlashCard objects
-	 * 
-	 */
-	private void isEditing() {
-		textFieldFrontText.setText(flashCard.getFrontText());
-		textFieldBackText.setText(flashCard.getBackText());
-		
-		// Set combo box to have current deck to be selected
-	}
-	
-	private void isCreating() {
-		
 	}
 
 	/**
@@ -140,17 +133,13 @@ public class EditFlashCardScreen {
 		frame.getContentPane().add(btnContinue);
 		btnContinue.setEnabled(!isCreating);
 		
-		JLabel lblAction = new JLabel("<action>ing a flash card!");
+		lblAction = new JLabel("%s a flash card!");
 		lblAction.setBounds(161, 36, 148, 28);
 		frame.getContentPane().add(lblAction);
 		
 		JTextPane textPaneErrorMsg = new JTextPane();
 		textPaneErrorMsg.setBounds(335, 156, 96, 45);
 		frame.getContentPane().add(textPaneErrorMsg);
-	}
-	
-	private void changeActionLabel(String operation) {
-		
 	}
 	
 	/** Create components relating to changing the text of a flashCard
@@ -191,7 +180,9 @@ public class EditFlashCardScreen {
 		panelChooseDeck.setLayout(null);
 		
 		// Keep track of if combo box selection has changed. 
-		JComboBox comboBoxSelectDeck = new JComboBox();
+		// JComboBox<Object> comboBoxSelectDeck = new JComboBox<Object>(deckArray());
+		String[] testArray = new String[] {"testDeck1", "testDeck2"};
+		JComboBox<Object> comboBoxSelectDeck = new JComboBox<Object>(testArray);
 		comboBoxSelectDeck.setBounds(19, 24, 95, 14);
 		panelChooseDeck.add(comboBoxSelectDeck);
 		
@@ -200,6 +191,54 @@ public class EditFlashCardScreen {
 		panelChooseDeck.add(lblChooseDeck);
 
 	}
+	
+	/** Returns the Deck's that can be selected from when choosing which Deck a FlashCard belongs to
+	 * <p>
+	 * If a FlashCard is currently being edited, then the currentDeck is put to the front of the Array,
+	 * So if a user is just editing a FlashCard to change the front and back text, then they don't have to worry
+	 * about which deck to put it in, as this will already be preselected
+	 * 
+	 * @return Deck[] containing deck objects as described. 
+	 */
+	private Deck[] deckArray(){
+		ArrayList<Deck> deckCollection = deckManager.getDeckCollection();
+		if (!isCreating) {
+			deckCollection.add(0, currentDeck); // Set the current deck to be top of list
+		}
+		return (Deck[]) deckCollection.toArray();
+	}
+	
+	
+	
+	/** Adjusts components for when a FlashCard is being editted, not created
+	 * <p>
+	 * 
+	 */
+	private void isEditing() {
+		textFieldFrontText.setText(flashCard.getFrontText());
+		textFieldBackText.setText(flashCard.getBackText());
+		isCreating = false;
+		changeActionLabel("Editing");
+		
+		// Set combo box to have current deck to be selected
+	}
+	
+	/** Adjusts components for when a FlashCard is being created, not editted
+	 * 
+	 */
+	private void isCreating() {
+		isCreating = true;
+		changeActionLabel("Creating");
+	}
+	
+	/** Adjusts the text of the action label for a user
+	 * 
+	 * @param operation String for what a user is doing, either "Creating" or "Editing"
+	 */
+	private void changeActionLabel(String operation) {
+		lblAction.setText(String.format(lblAction.getText(), operation));
+	}
+	
 	
 	/** Handles what happens when a user presses continue
 	 * <p>
@@ -241,6 +280,7 @@ public class EditFlashCardScreen {
 		FlashCard newFlashCard = new FlashCard(
 				textFieldFrontText.getText(), 
 				textFieldBackText.getText());
+		
 		currentDeck.addFlashCard(newFlashCard);
 	}
 }
