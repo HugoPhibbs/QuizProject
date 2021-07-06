@@ -13,6 +13,8 @@ import java.io.Serializable;
  */
 public class CheckValidInput implements Serializable {
 	
+	/** String for the requirements for a valid name, has a template field %s so 
+	 * Programmers can specify which object doesn't currently have a valid name  */
 	private static String VALID_NAME_REQUIREMENTS = 
 			"%s name must have no more than 2 consequtive white spaces"
 			+ "and be between 1 and 15 characters long"
