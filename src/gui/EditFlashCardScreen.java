@@ -76,6 +76,8 @@ public class EditFlashCardScreen {
 		 */
 		super();
 		initialize();
+	
+		setTextFields();
 	}
 	
 	/** Constructor for an EditFlashCardScreen
@@ -140,7 +142,7 @@ public class EditFlashCardScreen {
 		lblAction.setBounds(161, 36, 148, 28);
 		frame.getContentPane().add(lblAction);
 		
-		JTextPane textPaneErrorMsg = new JTextPane();
+		textPaneErrorMsg = new JTextPane();
 		textPaneErrorMsg.setBounds(335, 156, 96, 45);
 		frame.getContentPane().add(textPaneErrorMsg);
 	}
@@ -158,7 +160,6 @@ public class EditFlashCardScreen {
 		textFieldFrontText.setBounds(7, 7, 106, 27);
 		panelChangeText.add(textFieldFrontText);
 		textFieldFrontText.setColumns(10);
-		textFieldFrontText.setText(currentFlashCard.getFrontText());
 		
 		JLabel lblFrontText = new JLabel("Front Text");
 		lblFrontText.setBounds(17, 41, 77, 9);
@@ -197,22 +198,12 @@ public class EditFlashCardScreen {
 	}
 	
 	/** Returns the Deck's that can be selected from when choosing which Deck a FlashCard belongs to
-	 * <p>
-	 * If a FlashCard is currently being edited, then the currentDeck is put to the front of the Array,
-	 * So if a user is just editing a FlashCard to change the front and back text, then they don't have to worry
-	 * about which deck to put it in, as this will already be preselected
 	 * 
-	 * @return Deck[] containing deck objects as described. 
+	 * @return Deck[] containing deck objects as described in deckManager.deckArray(Deck)
 	 */
 	private Deck[] deckArray(){
-		ArrayList<Deck> deckCollection = deckManager.getDeckCollection();
-		if (!isCreating) {
-			deckCollection.add(0, currentDeck); // Set the current deck to be top of list
-		}
-		return (Deck[]) deckCollection.toArray();
+		return (deckManager.deckArray(currentDeck));
 	}
-	
-	
 	
 	/** Adjusts components for when a FlashCard is being editted, not created
 	 * <p>
@@ -238,18 +229,12 @@ public class EditFlashCardScreen {
 	 * text of the FlashCard that is being created or edited
 	 */
 	private void setTextFields() {
-		textFieldFrontText.setText(currentFlashCard.getFrontText());
-		textFieldBackText.setText(currentFlashCard.getBackText());
+		// TODO uncomment lines bellow until this is fully implemented
+		// textFieldFrontText.setText(currentFlashCard.getFrontText());
+		// textFieldBackText.setText(currentFlashCard.getBackText()));
+		textFieldFrontText.setText("<frontText>");
+		textFieldBackText.setText("<backText>");
 	}
-	
-	/** Adjusts the text of the action label for a user
-	 * 
-	 * @param operation String for what a user is doing, either "Creating" or "Editing"
-	 */
-	private void changeActionLabel(String operation) {
-		lblAction.setText(String.format(lblAction.getText(), operation));
-	}
-	
 	
 	/** Handles what happens when a user presses continue
 	 * <p>
@@ -268,29 +253,57 @@ public class EditFlashCardScreen {
 			// If above statements didn't throw an error, bellow will be executed
 			// close()
 		}
-		// Catch any exceptions to do with methods above
+		// Catch any exceptions to do with executing above code
 		catch (Exception e) {
-			textPaneErrorMsg.setText(e.getMessage());
+			displayError(e.getMessage());
 		}
 	}
 	
+	/** Displays an error message to a user
+	 * 
+	 * @param msg String for the error message to be displayed
+	 */
+	private void displayError(String msg) {
+		// textPaneErrorMsg.setText(msg);
+		textPaneErrorMsg.setText("ERROR TEST");
+	}
+	
+	/** Adjusts the text of the action label for a user
+	 * 
+	 * @param operation String for what a user is doing, either "Creating" or "Editing"
+	 */
+	private void changeActionLabel(String operation) {
+		lblAction.setText(String.format(lblAction.getText(), operation));
+	}
 	
 	/** Handles pressing of "CONTINUE" button, when editing a flashCard
 	 * 
 	 */
 	private void editFlashCard() {
-		currentDeck.editFlashCard(currentFlashCard, 
-				textFieldFrontText.getText(), 
-				textFieldBackText.getText());		
+		currentDeck.editFlashCard(currentFlashCard, frontText(), backText());		
     }
 	
 	/** Handles pressing of "CONTINUE" button, when creating a flashCard
 	 * 
 	 */
 	private void createFlashCard() {
-		currentFlashCard.setFrontText(textFieldFrontText.getText());
-		currentFlashCard.setFrontText(textFieldBackText.getText());
-		
+		currentFlashCard.setText(frontText(), backText());
 		currentDeck.addFlashCard(currentFlashCard);
+	}
+	
+	/** Finds the text currently in textFieldFrontText
+	 * 
+	 * @return String for the text currently in textFieldFrontText
+	 */
+	private String frontText() {
+		return textFieldFrontText.getText();
+	}
+	
+	/** Finds the text currently in textFieldBackText
+	 * 
+	 * @return String for the text currently in textFieldBackText
+	 */
+	private String backText() {
+		return textFieldBackText.getText();
 	}
 }
