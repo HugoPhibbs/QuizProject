@@ -2,6 +2,7 @@ package coreLogic;
 
 import java.io.Serializable; 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import coreObjects.Deck;
 import coreObjects.FlashCard;
@@ -195,6 +196,21 @@ public class DeckManager implements Serializable {
 	 */
 	public boolean containsDeck(String deckName) {
 		return (findDeck(deckName) != null);
+	}
+	
+	/** Creates a Deck Array for Deck that can be chosen from for when
+	 * adding a FlashCard to a Deck
+	 * <p>
+	 * The current deck that is selected is placed at the front of the array for ease of fuse
+	 * <p>
+	 * Used by GUI
+	 * 
+	 * @param currentDeck Deck currently chosen to add a FlashCard to or edit a FlashCard
+	 */
+	public Deck[] deckArray(Deck currentDeck) {
+		int chosenDeckIndex = deckCollection.indexOf(currentDeck);
+		Collections.swap(deckCollection, 0, chosenDeckIndex);
+		return (Deck[]) deckCollection.toArray();
 	}
 	
 	/** Gets a tabular representation of this deck collection
