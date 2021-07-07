@@ -76,7 +76,6 @@ public class EditFlashCardScreen {
 		 */
 		super();
 		initialize();
-	
 		setTextFields();
 	}
 	
@@ -96,14 +95,23 @@ public class EditFlashCardScreen {
 		this.currentDeck = currentDeck;
 		this.currentFlashCard = currentFlashCard;
 		
+		handleEditingOrCreating();
+		setTextFields();
+		updateActionLabel();
+	}
+	
+	/** Handles whether a user is creating or editing a FlashCard
+	 * <p> 
+	 * Checks if the current flash card is null, as this indicates whether a FlashCard is being edited or created 
+	 *
+	 */
+	private void handleEditingOrCreating() {
 		if (currentFlashCard == null) {
 			isCreating();
 		}
 		else {
 			isEditing();
 		}
-		
-		setTextFields();
 	}
 
 	/**
@@ -211,7 +219,6 @@ public class EditFlashCardScreen {
 	 */
 	private void isEditing() {
 		isCreating = false;
-		changeActionLabel("Editing");
 		
 		// Set combo box to have current deck to be selected
 	}
@@ -222,7 +229,6 @@ public class EditFlashCardScreen {
 	private void isCreating() {
 		isCreating = true;
 		currentFlashCard = new FlashCard("", "");
-		changeActionLabel("Creating");
 	}
 	
 	/** Sets the text of the TextFields to display the current front and back
@@ -272,7 +278,14 @@ public class EditFlashCardScreen {
 	 * 
 	 * @param operation String for what a user is doing, either "Creating" or "Editing"
 	 */
-	private void changeActionLabel(String operation) {
+	private void updateActionLabel() {
+		String operation;
+		if (isCreating) {
+			operation = "Creating";
+		}
+		else {
+			operation = "Editing";
+		}
 		lblAction.setText(String.format(lblAction.getText(), operation));
 	}
 	
