@@ -10,9 +10,18 @@ import java.awt.event.ActionEvent;
 import javax.swing.JLabel;
 import javax.swing.JTextPane;
 
+import coreLogic.FlashCardQuiz;
+
+/** Represents a Screen to quiz a user
+ * 
+ * @author Hugo Phibbs
+ *
+ */
 public class QuizzingScreen {
 	
 	JFrame frame;
+	/** FlashCardQuiz object holding objects necessary for this QuizzingScreen */
+	FlashCardQuiz flashCardQuiz;
 
 	/**
 	 * Launch the application.
@@ -36,6 +45,12 @@ public class QuizzingScreen {
 	public QuizzingScreen() {
 		super();
 		initialize();
+	}
+	
+	public QuizzingScreen(FlashCardQuiz flashCardQuiz) {
+		super();
+		initialize();
+		this.flashCardQuiz = flashCardQuiz;
 	}
 
 	/**
