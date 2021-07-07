@@ -33,7 +33,6 @@ public class Deck implements Serializable {
 	 * 
 	 * @param name String for the name of a deck
 	 * @param description String for a brief description of a Deck
-	 * @param dateOfCreation int for the date of creation of a deck
 	 */
 	public Deck(String name, String description){
 		setName(name); // Checks for valid name
@@ -141,8 +140,7 @@ public class Deck implements Serializable {
 			throw new IllegalArgumentException("New front and back text already matches a FlashCard in this deck!");
 		}
 		else {
-			flashCard.setFrontText(newFrontText);
-			flashCard.setBackText(newBackText);
+			flashCard.setText(newFrontText, newBackText);
 			return true;
 		}
 	}
@@ -161,13 +159,10 @@ public class Deck implements Serializable {
 		
 		ArrayList<FlashCard> flashCardsToQuiz = new ArrayList<FlashCard>();
 		
-		
 		int newCardsAdded = 0;
 		
 		for (FlashCard flashCard: flashCards) {
 			if (flashCard.isNew() && newCardsAdded < maxNewCards) {
-				// Card is new, and added new cards is less than max
-				// Add to initial queue and final queue
 				flashCardsToQuiz.add(flashCard);
 				newCardsAdded += 1;
 			}
@@ -199,7 +194,7 @@ public class Deck implements Serializable {
 	 * @return int value for the number of due cards for this deck
 	 */
 	public int numDueFlashCards(LocalDate currentDate) {
-		return (dueFlashCards(currentDate).size());
+		return dueFlashCards(currentDate).size();
 	}
 	
 	//********************************* GETTERS AND SETTERS ****************************************

@@ -194,6 +194,16 @@ public class FlashCard implements Serializable {
 		this.frontText = frontText;
 	}
 	
+	/** Setter method for both the front and back text of a FlashCard
+	 * 
+	 * @param frontText String for the front text of a FlashCard
+	 * @param backText String for the back text of a FlashCard
+	 */
+	public void setText(String frontText, String backText) {
+		this.frontText = frontText;
+		this.backText = backText;
+	}
+	
 	/** Setter method for the back text of a flash card
 	 * 
 	 * @param backText String to be set as the back text of a flash card
