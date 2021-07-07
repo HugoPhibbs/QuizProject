@@ -14,11 +14,16 @@ import java.awt.event.ActionEvent;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
 
+import coreLogic.DeckManager;
+import coreObjects.Deck;
+
 public class EditDeckScreen {
 	
 	JFrame frame;
 	private JTable table;
 	private JTextField textField;
+	private Deck deck;
+	private DeckManager deckManager;
 
 	/**
 	 * Launch the application.
@@ -43,6 +48,12 @@ public class EditDeckScreen {
 		super();
 		initialize();
 	}
+	
+	public EditDeckScreen(Deck deck, DeckManager deckManager) {
+		this.deck = deck;
+		this.deckManager = deckManager;
+	}
+	
 
 	/**
 	 * Initialize the contents of the frame.
