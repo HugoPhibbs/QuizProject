@@ -22,6 +22,7 @@ public class QuizzingScreen {
 	JFrame frame;
 	/** FlashCardQuiz object holding objects necessary for this QuizzingScreen */
 	FlashCardQuiz flashCardQuiz;
+	private JButton btnFinishQuiz;
 
 	/**
 	 * Launch the application.
@@ -52,6 +53,77 @@ public class QuizzingScreen {
 		initialize();
 		this.flashCardQuiz = flashCardQuiz;
 	}
+	
+	/** Creates components contained in the options panel
+	 * 
+	 */
+	private void createOptionsPanel() {
+		JPanel panelOptions = new JPanel();
+		panelOptions.setBounds(157, 405, 516, 122);
+		frame.getContentPane().add(panelOptions);
+		panelOptions.setLayout(null);
+		
+		JButton btnOk = new JButton("OK");
+		btnOk.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				flashCardOk();
+			}
+		});
+		btnOk.setBounds(407, 63, 97, 25);
+		panelOptions.add(btnOk);
+		
+		JButton btnAgain = new JButton("AGAIN");
+		btnAgain.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				flashCardAgain();
+			}
+		});
+		btnAgain.setBounds(12, 63, 97, 25);
+		panelOptions.add(btnAgain);
+		
+		JButton btnFlipFlashCard = new JButton("Flip FlashCard");
+		btnFlipFlashCard.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				flashCardFlip();
+			}
+		});
+		btnFlipFlashCard.setBounds(186, 13, 140, 25);
+		panelOptions.add(btnFlipFlashCard);
+		
+	}
+	
+	/** Creates components for the content panel
+	 * 
+	 */
+	private void createContentPanel() {
+		JPanel panelContent = new JPanel();
+		panelContent.setBounds(157, 94, 516, 285);
+		frame.getContentPane().add(panelContent);
+		panelContent.setLayout(null);
+		
+		JTextPane textPaneCurrentSide = new JTextPane();
+		textPaneCurrentSide.setText("<current text side of FlashCard >");
+		textPaneCurrentSide.setBounds(84, 126, 341, 45);
+		panelContent.add(textPaneCurrentSide);
+	}
+	
+	/** Creates various components that aren't contained in a panel
+	 * 
+	 */
+	private void createMiscComponents() {
+		JLabel lblCurrentDeck = new JLabel("Currently being quizzed on <deckName>");
+		lblCurrentDeck.setBounds(283, 65, 233, 16);
+		frame.getContentPane().add(lblCurrentDeck);
+		
+		btnFinishQuiz = new JButton("Finish Quiz");
+		btnFinishQuiz.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				finishQuiz();
+			}
+		});
+		btnFinishQuiz.setBounds(761, 515, 97, 25);
+		frame.getContentPane().add(btnFinishQuiz);
+	}
 
 	/**
 	 * Initialize the contents of the frame.
@@ -61,57 +133,24 @@ public class QuizzingScreen {
 		frame.setBounds(100, 100, 886, 592);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
-		
-		JPanel panel = new JPanel();
-		panel.setBounds(157, 405, 516, 122);
-		frame.getContentPane().add(panel);
-		panel.setLayout(null);
-		
-		JButton btnNewButton_2 = new JButton("OK");
-		btnNewButton_2.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		btnNewButton_2.setBounds(407, 63, 97, 25);
-		panel.add(btnNewButton_2);
-		
-		JButton btnNewButton_3 = new JButton("AGAIN");
-		btnNewButton_3.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		btnNewButton_3.setBounds(12, 63, 97, 25);
-		panel.add(btnNewButton_3);
-		
-		JButton btnNewButton_1 = new JButton("Flip FlashCard");
-		btnNewButton_1.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		btnNewButton_1.setBounds(186, 13, 140, 25);
-		panel.add(btnNewButton_1);
-		
-		JPanel panel_1 = new JPanel();
-		panel_1.setBounds(157, 94, 516, 285);
-		frame.getContentPane().add(panel_1);
-		panel_1.setLayout(null);
-		
-		JTextPane textPane = new JTextPane();
-		textPane.setText("<current text side of FlashCard >");
-		textPane.setBounds(84, 126, 341, 45);
-		panel_1.add(textPane);
-		
-		JLabel lblNewLabel = new JLabel("Currently being quizzed on <deckName>");
-		lblNewLabel.setBounds(283, 65, 233, 16);
-		frame.getContentPane().add(lblNewLabel);
-		
-		JButton btnNewButton = new JButton("Finish Quiz");
-		btnNewButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		btnNewButton.setBounds(761, 515, 97, 25);
-		frame.getContentPane().add(btnNewButton);
+		createContentPanel();
+		createMiscComponents();
+		createOptionsPanel();
 	}
-
+	
+	private void flashCardFlip() {
+		// TODO implement
+	}
+	
+	private void flashCardAgain() {
+		// TODO implement
+	}
+	
+	private void flashCardOk() {
+		// TODO implement
+	}
+	
+	private void finishQuiz() {
+		// TODO implement
+	}
 }
