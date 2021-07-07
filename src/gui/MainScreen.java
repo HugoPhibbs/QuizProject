@@ -43,6 +43,8 @@ public class MainScreen{
 	JButton btnStartQuiz;
 	/** JButton to add a new FlashCard to the chosen deck */
 	JButton btnNewFlashCard;
+	/** JButton to create a new Deck */
+	JButton btnCreateDeck;
 	
 	
 	/**
@@ -108,39 +110,49 @@ public class MainScreen{
 		btnEditDeck.setBounds(12, 7, 90, 25);
 		panelOptions.add(btnEditDeck);
 		btnEditDeck.setEnabled(false); // Disabled until a deck is selected
-		btnEditDeck.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				editDeck();
-			}
-		});
 		
 		btnNewFlashCard = new JButton("Add FlashCard");
 		btnNewFlashCard.setBounds(107, 7, 137, 25);
 		panelOptions.add(btnNewFlashCard);
 		btnNewFlashCard.setEnabled(false); // Disabled until a deck is selected
-		btnNewFlashCard.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				newFlashCard();
-			}
-		});	
-		
-		JButton btnCreateDeck = new JButton("Create Deck");
+
+		btnCreateDeck = new JButton("Create Deck");
 		btnCreateDeck.setBounds(256, 7, 140, 25);
 		panelOptions.add(btnCreateDeck);
-		btnCreateDeck.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
 		
 		btnStartQuiz = new JButton("Start new Quiz!");
 		btnStartQuiz.setBounds(107, 40, 137, 25);
 		panelOptions.add(btnStartQuiz);
 		btnStartQuiz.setEnabled(false); // Disabled until a deck is selected
+
+		addOptionsPanelBtnListeners();
+	}
+	
+	/** Creates action listeners to the buttons in panelOptions */
+	private void addOptionsPanelBtnListeners(){
+		btnEditDeck.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				editDeck();
+			}
+		});
+
+		btnNewFlashCard.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				newFlashCard();
+			}
+		});	
+
+		btnCreateDeck.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+
 		btnStartQuiz.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				startQuiz();
 			}
 		});
+		
 	}
 	
 	/** Creates Table to store info on decks
@@ -149,45 +161,65 @@ public class MainScreen{
 	 * 
 	 */
 	public void createDecksTable() {
-		// Remove bellow line when screen fully implemented
-		// String[][] decks = appEnvironment.getDeckManager().deckCollectionInfo();
-		String[] headers = Deck.infoArrayHeaders();
-		
-		String[][] decks = {
-				{"testName1", "3", "5"}, 
-				{"testName2", "4", "8"}, 
-		};
-		
 		// TODO make it so you can't edit table entries!
 		
-		tableDecks = new JTable(decks, headers);
+		tableDecks = new JTable(decksTableDetails(), decksTableHeaders());
 		tableDecks.setBounds(7, 24, 253, 144);
 		JScrollPane sp = new JScrollPane(tableDecks);
 		sp.setBounds(7, 49, 394, 236);
 		panelViewDecks.add(sp);
+		
+		addDecksTableListener();
+
+		// Set the table so it can't be edited
+		tableDecks.setDefaultEditor(Object.class, null);
+	}
+
+	/** Adds a seletion listener to tableDecks */
+	private void addDecksTableListener(){
 		ListSelectionModel selectionModel = tableDecks.getSelectionModel();
 		selectionModel.addListSelectionListener(new ListSelectionListener() {
 		    public void valueChanged(ListSelectionEvent lse) {
-		    	// Bellow lines ensures that changing selection of a row counts as one change, not two
-		    	if (!lse.getValueIsAdjusting()) {
-		    		deckSelected();
-		    	}
+		    	deckSelected(lse);
 		    }
 		});
-		
-		// Set the table so it can't be edited
-		tableDecks.setDefaultEditor(Object.class, null);
+	}
+
+	/** Finds and returns the column titles for tableDecks
+	 * 
+	 * @returns String[] array containing column titles for Deck details
+	 */
+	private String[] decksTableHeaders(){
+		return Deck.infoArrayHeaders();
+	}
+	
+	/** Finds and returns the row content for tableDecks
+	 * 
+	 * @returns String[][] nested array containing info on decks contained in this application's DeckManager
+	 */
+	private String[][] decksTableDetails()){
+		// TODO uncomment bellow when class fully implemented
+		// return appEnvironment.getDeckManager().deckCollectionInfo();
+		return new String[][] {
+			{"testName1", "3", "5"}, 
+			{"testName2", "4", "8"}, 
+		};
 	}
 	
 	/** Handles selection of row from decksTable
 	 * <p>
-	 *
+	 * Makes sure that the changing of a selection only counts as one event, with if statement
+	 * 
+	 * @param lse ListSelection that occured to select a Deck from tableDecks
 	 */
-	private void deckSelected() {
-		updateChosenDeck();
-		btnStartQuiz.setEnabled(true);
-		btnEditDeck.setEnabled(true);
-		btnNewFlashCard.setEnabled(true);
+	private void deckSelected(ListSelectionEvent lse) {
+		// Bellow lines ensures that changing selection of a row counts as one change, not two
+		if (!lse.getValueIsAdjusting()) {
+			updateChosenDeck();
+			btnStartQuiz.setEnabled(true);
+			btnEditDeck.setEnabled(true);
+			btnNewFlashCard.setEnabled(true);
+		}
 	}
 	
 	/** Finds the name of the currently chosen Deck from the deck
