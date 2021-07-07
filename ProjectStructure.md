@@ -48,9 +48,8 @@
 - The 'Puppet Player' for the entire App 
 - Has an instance of DeckCollection for holding all the decks. 
 - Holds a User for this Game.
-- Manages queries from the GUI for the main screen, eg a method newQuiz(), which creates a new flashCardQuiz object and returns it to the GUI. 
-- Has method viewDecks(), which returns the ArrayList deckCollection of it's deckManager
-- Takes a Quiz Stats object and delivers it to user stats, which then parses this information. 
+- Manages queries from the GUI for the main screen, eg a method newQuiz(), which creates a new flashCardQuiz object and a newFlashCardScreen
+- Takes a QuizStats object and delivers it to user stats, which then parses this information. 
 
 #### DeckManager
 - Contains all the decks for a user 
@@ -95,7 +94,8 @@
 - Object for the main screen of the quiz. 
 - See all of the decks that you have created and choose one of them. 
 - Choose a deck. You have options to press QUIZ, or EDIT deck. 
-- Create a FlashCard, this is an empty Flash Card object, and then pass this over to an instance of EditFlashCardScreen
+- Create a FlashCard, this is an empty Flash Card object, and then pass this over to an instance of EditFlashCardScreen. Can only create a new FlashCard if a deck has been chosen, disable this button until a deck is chosen
+- Button to create a Deck
 
 #### EditDeckScreen
 - Screen for editing a deck. Can only view edit deck at a time. 
@@ -106,6 +106,11 @@
 - Select a flash card, you have the option to EDIT it by pressing another button. This creates a new EditFlashCardScreen. 
 - Button to ADD a flash card to the deck. Creates a new instance of EditFlashCardScreen, with it's flashCard attribute being an empty FlashCard object. Once the FlashCardScreen is open, editDeckScreen is hidden. Another button to DELETE a FlashCard from a deck 
 - Press close to collapse screen and go back to the main screen. 
+
+#### NewDeckScreen
+- Screen to create a new Deck
+- Textfield to enter the name of a new deck
+- Another button to create the deck, upon pressing this, displays error text if this isn't permissible
 
 #### EditFlashCardScreen
 - Screen for editing and creating a flash card. 
