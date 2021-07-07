@@ -109,7 +109,7 @@
 
 #### NewDeckScreen
 - Screen to create a new Deck
-- Textfield to enter the name of a new deck
+- Textfield to enter the name of a new deck and the description of a deck
 - Another button to create the deck, upon pressing this, displays error text if this isn't permissible
 
 #### EditFlashCardScreen
