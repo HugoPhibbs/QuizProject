@@ -1,36 +1,48 @@
 package gui;
 
-import java.awt.EventQueue;
-import java.awt.ScrollPane;
+import java.awt.EventQueue;  
 
 import javax.swing.JFrame;
 import javax.swing.JTable;
-import javax.swing.JTextArea;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import coreLogic.AppEnvironment;
-import coreLogic.FlashCardQuiz;
 import coreObjects.Deck;
 
 import javax.swing.JLabel;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
+/** Represents the main screen of the application
+ * <p>
+ * Central part of the application, displays decks to a user, along with options to
+ * start a new quiz, edit decks and creating new FlashCards
+ * 
+ * @author Hugo Phibbs
+ *
+ */
 public class MainScreen{
 	
 	JFrame frame;
+	/** JTable to hold any decks belonging to a user for this application */
 	JTable tableDecks;
+	/** AppEnvironment object, holds all non-gui objects necessary for an instance of MainScreen */
 	AppEnvironment appEnvironment;
-	JPanel panelTable;
+	/** JPanel to select any elements relating to displaying of decks to a user */
+	JPanel panelViewDecks;
+	/** Deck object representing the currently selected deck from tableDeck, null if no Deck is chosen*/
 	Deck chosenDeck = null;
+	/** JButton to edit a chosen Deck */
 	JButton btnEditDeck;
+	/** JButton to start a quiz for a chosen Deck */
 	JButton btnStartQuiz;
+	/** JButton to add a new FlashCard to the chosen deck */
+	JButton btnNewFlashCard;
 	
 	
 	/**
@@ -73,14 +85,14 @@ public class MainScreen{
 	}
 	
 	private void createTablePanel() {
-		this.panelTable = new JPanel();
-		panelTable.setBounds(114, 48, 408, 292);
-		frame.getContentPane().add(panelTable);
-		panelTable.setLayout(null);
+		this.panelViewDecks = new JPanel();
+		panelViewDecks.setBounds(114, 48, 408, 292);
+		frame.getContentPane().add(panelViewDecks);
+		panelViewDecks.setLayout(null);
 		
 		JLabel lblSelectDeck = new JLabel("Select a Deck!");
 		lblSelectDeck.setBounds(91, 25, 148, 9);
-		panelTable.add(lblSelectDeck);
+		panelViewDecks.add(lblSelectDeck);
 		
 		createDecksTable();
 	}
@@ -88,12 +100,12 @@ public class MainScreen{
 	
 	private void createOptionsPanel() {
 		JPanel panelOptions = new JPanel();
-		panelOptions.setBounds(114, 379, 408, 28);
+		panelOptions.setBounds(114, 353, 408, 71);
 		frame.getContentPane().add(panelOptions);
 		panelOptions.setLayout(null);
 		
 		btnEditDeck = new JButton("Edit Deck");
-		btnEditDeck.setBounds(7, 7, 90, 17);
+		btnEditDeck.setBounds(12, 7, 90, 25);
 		panelOptions.add(btnEditDeck);
 		btnEditDeck.setEnabled(false); // Disabled until a deck is selected
 		btnEditDeck.addActionListener(new ActionListener() {
@@ -101,25 +113,34 @@ public class MainScreen{
 				editDeck();
 			}
 		});
-
-		btnStartQuiz = new JButton("Start new Quiz!");
-		btnStartQuiz.setBounds(104, 7, 153, 17);
-		panelOptions.add(btnStartQuiz);
-		btnStartQuiz.setEnabled(false); // Disabled until a deck is selected
-		btnStartQuiz.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				newQuiz();
-			}
-		});
 		
-		JButton btnNewFlashCard = new JButton("New flash card");
-		btnNewFlashCard.setBounds(264, 7, 137, 17);
+		btnNewFlashCard = new JButton("Add FlashCard");
+		btnNewFlashCard.setBounds(107, 7, 137, 25);
 		panelOptions.add(btnNewFlashCard);
+		btnNewFlashCard.setEnabled(false); // Disabled until a deck is selected
 		btnNewFlashCard.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				newFlashCard();
 			}
 		});	
+		
+		JButton btnCreateDeck = new JButton("Create Deck");
+		btnCreateDeck.setBounds(256, 7, 140, 25);
+		panelOptions.add(btnCreateDeck);
+		btnCreateDeck.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		
+		btnStartQuiz = new JButton("Start new Quiz!");
+		btnStartQuiz.setBounds(107, 40, 137, 25);
+		panelOptions.add(btnStartQuiz);
+		btnStartQuiz.setEnabled(false); // Disabled until a deck is selected
+		btnStartQuiz.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				startQuiz();
+			}
+		});
 	}
 	
 	/** Creates Table to store info on decks
@@ -143,7 +164,7 @@ public class MainScreen{
 		tableDecks.setBounds(7, 24, 253, 144);
 		JScrollPane sp = new JScrollPane(tableDecks);
 		sp.setBounds(7, 49, 394, 236);
-		panelTable.add(sp);
+		panelViewDecks.add(sp);
 		ListSelectionModel selectionModel = tableDecks.getSelectionModel();
 		selectionModel.addListSelectionListener(new ListSelectionListener() {
 		    public void valueChanged(ListSelectionEvent lse) {
@@ -163,34 +184,52 @@ public class MainScreen{
 	 *
 	 */
 	private void deckSelected() {
-		// Commented out chosenDeck = chosenDeck();
+		updateChosenDeck();
 		btnStartQuiz.setEnabled(true);
 		btnEditDeck.setEnabled(true);
+		btnNewFlashCard.setEnabled(true);
 	}
 	
-	/** Returns the name of the currently chosen deck from decksTable
-	 * <p>
-	 * Finds the name from the deck and then finds the matching Deck object based on this name
+	/** Finds the name of the currently chosen Deck from the deck
 	 * 
 	 * @return Deck object that has been chosen 
 	 */
-	private Deck chosenDeck() {
+	private void updateChosenDeck() {
 		int chosenRow = tableDecks.getSelectedRow();
 		String deckName = tableDecks.getModel().getValueAt(chosenRow,  0).toString();
-		Deck chosenDeck = appEnvironment.getDeckManager().findDeck(deckName);
-		return chosenDeck;
+		chosenDeck = appEnvironment.getDeckManager().findDeck(deckName);
 	}
 	
+	/** Handles when a user wants to create a new FlashCard for the chosen Deck
+	 * <p>
+	 * Passes functionality off to AppEnvironment
+	 */
 	public void newFlashCard() {
 		// Creates a new edit FlashCard screen
-		EditFlashCardScreen flashCardScreen = new EditFlashCardScreen();
+		// TODO remove lines bellow until Screen is fully implemented
+		// appEnvironment.newEditFlashCardScreen(null, chosenDeck, this);
+		// this.hide() 
 	}
 	
-	public void newQuiz() {
-		FlashCardQuiz flashCardQuiz = new FlashCardQuiz(null, null);
+	/** Handles when a user wants to start a new quiz for the chosen deck
+	 * <p>
+	 * Passes functionality off to AppEnvironment
+	 */
+	public void startQuiz() {
+		appEnvironment.newQuizzingScreen(chosenDeck);
+		// this.hide() // TODO remove until Screen is fully implemented
 	}
 	
+	/** Handles when a user wants to edit the chosen deck
+	 * <p>
+	 * Passes functionality off to AppEnvironment
+	 */
 	public void editDeck() {
-		
+		appEnvironment.newEditDeckScreen(chosenDeck);
+		// this.hide() // TODO remove until Screen is fully implemented
+	}
+	
+	public void createDeck() {
+		// TODO implement
 	}
 }
