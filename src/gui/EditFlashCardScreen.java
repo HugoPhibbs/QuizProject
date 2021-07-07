@@ -28,6 +28,10 @@ public class EditFlashCardScreen {
 	
 	JFrame frame;
 	
+	/** Screen object for the parent of this screen, useful for when a user wants to go back to the previous screen
+	 * As there are multiple different Screens that create a new EditFlashCardScreen*/
+	Screen parent;
+	
 	/** Text field for the front text of the FlashCard that is being edited */
 	JTextField textFieldBackText;
 	/** Text field for the back text of the FlashCard that is being edited */
@@ -40,7 +44,7 @@ public class EditFlashCardScreen {
 	/** Keeps track of whether we are creating or editing a FlashCard */
 	boolean isCreating;
 	/** FlashCard object that we are currently editing, set to null if we are creating a FlashCard */
-	FlashCard flashCard = null;
+	FlashCard currentFlashCard = null;
 	/** DeckManager object for this application, useful when viewing what Decks to put a FlashCard in */
 	DeckManager deckManager;
 	/** Deck that the FlashCard object that is being editted belongs to, set to null if a FlashCard is being created */
@@ -66,7 +70,7 @@ public class EditFlashCardScreen {
 	 * Create the application.
 	 * 
 	 */
-	public EditFlashCardScreen() {
+	private EditFlashCardScreen() {
 		/* TODO dummy constructor for testing GUI, always create an EditFlashCardScreen using
 		 * one of the two constructors bellow
 		 */
@@ -74,31 +78,30 @@ public class EditFlashCardScreen {
 		initialize();
 	}
 	
-	/** Constructor for making a EditFlashCardScren in order to create a FlashCard
+	/** Constructor for an EditFlashCardScreen
+	 * <p>
+	 * For creating a new FlashCard, currentFlashCard should be set to null
 	 * 
-	 * @param deckManager DeckManager object to be used for this screen
-	 */
-	public EditFlashCardScreen(DeckManager deckManager) {
-		super();
-		initialize();
-		this.deckManager = deckManager;
-		this.isCreating = true;
-		isCreating();
-	}
-	
-	/** Constructor for making an EditFlashCardSceen in order to edit a FlashCard
-	 * 
-	 * @param flashCard FlashCard object that is being edited
+	 * @param flashCard FlashCard object that is being edited, null if a new FlashCard is being created
 	 * @param deckManager DeckManager object for this application
 	 * @param currentDeck Deck object that this FlashCard currently belongs to
 	 */
-	public EditFlashCardScreen(FlashCard flashCard, DeckManager deckManager, Deck currentDeck) {
+	public EditFlashCardScreen(FlashCard currentFlashCard, DeckManager deckManager, Deck currentDeck, Screen parent) {
 		super();
 		initialize();
+		this.parent = parent;
 		this.deckManager = deckManager;
-		this.flashCard = flashCard;
 		this.currentDeck = currentDeck;
-		isEditing();
+		this.currentFlashCard = currentFlashCard;
+		
+		if (currentFlashCard == null) {
+			isCreating();
+		}
+		else {
+			isEditing();
+		}
+		
+		setTextFields();
 	}
 
 	/**
@@ -155,6 +158,7 @@ public class EditFlashCardScreen {
 		textFieldFrontText.setBounds(7, 7, 106, 27);
 		panelChangeText.add(textFieldFrontText);
 		textFieldFrontText.setColumns(10);
+		textFieldFrontText.setText(currentFlashCard.getFrontText());
 		
 		JLabel lblFrontText = new JLabel("Front Text");
 		lblFrontText.setBounds(17, 41, 77, 9);
@@ -215,8 +219,6 @@ public class EditFlashCardScreen {
 	 * 
 	 */
 	private void isEditing() {
-		textFieldFrontText.setText(flashCard.getFrontText());
-		textFieldBackText.setText(flashCard.getBackText());
 		isCreating = false;
 		changeActionLabel("Editing");
 		
@@ -228,7 +230,16 @@ public class EditFlashCardScreen {
 	 */
 	private void isCreating() {
 		isCreating = true;
+		currentFlashCard = new FlashCard("", "");
 		changeActionLabel("Creating");
+	}
+	
+	/** Sets the text of the TextFields to display the current front and back
+	 * text of the FlashCard that is being created or edited
+	 */
+	private void setTextFields() {
+		textFieldFrontText.setText(currentFlashCard.getFrontText());
+		textFieldBackText.setText(currentFlashCard.getBackText());
 	}
 	
 	/** Adjusts the text of the action label for a user
@@ -268,19 +279,18 @@ public class EditFlashCardScreen {
 	 * 
 	 */
 	private void editFlashCard() {
-		currentDeck.editFlashCard(flashCard, 
+		currentDeck.editFlashCard(currentFlashCard, 
 				textFieldFrontText.getText(), 
 				textFieldBackText.getText());		
-}
+    }
 	
 	/** Handles pressing of "CONTINUE" button, when creating a flashCard
 	 * 
 	 */
 	private void createFlashCard() {
-		FlashCard newFlashCard = new FlashCard(
-				textFieldFrontText.getText(), 
-				textFieldBackText.getText());
+		currentFlashCard.setFrontText(textFieldFrontText.getText());
+		currentFlashCard.setFrontText(textFieldBackText.getText());
 		
-		currentDeck.addFlashCard(newFlashCard);
+		currentDeck.addFlashCard(currentFlashCard);
 	}
 }
