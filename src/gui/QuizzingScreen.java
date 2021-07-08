@@ -20,9 +20,18 @@ import coreLogic.FlashCardQuiz;
 public class QuizzingScreen {
 	
 	JFrame frame;
-	/** FlashCardQuiz object holding objects necessary for this QuizzingScreen */
-	FlashCardQuiz flashCardQuiz;
+
+	/** JBUtton that finishes a quiz when pressed */
 	private JButton btnFinishQuiz;
+	/** JBUtton that handles event of a FlashCard being 'ok' */
+	private JButton btnFlashCardOk;
+	/** JButton for when a user wants to see a FlashCard again */
+	private JButton btnFlashCardAgain;
+	/** JBUtton to flip the current FlashCard */
+	private JButton btnFlipFlashCard;
+
+	/** FlashCardQuiz object holding objects necessary for this QuizzingScreen */
+	private FlashCardQuiz flashCardQuiz;
 
 	/**
 	 * Launch the application.
@@ -53,6 +62,27 @@ public class QuizzingScreen {
 		initialize();
 		this.flashCardQuiz = flashCardQuiz;
 	}
+
+	/**
+	 * Initialize the contents of the frame.
+	 */
+	protected void initialize() {
+		frame = new JFrame();
+		frame.setBounds(100, 100, 886, 592);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.getContentPane().setLayout(null);
+		
+		createComponents();
+	}
+
+	// *********************** Creating Components ************************ // 
+
+	/** Calls methods to create components for this Screen */ 
+	private void createComponents(){
+		createContentPanel();
+		createMiscComponents();
+		createOptionsPanel();
+	}
 	
 	/** Creates components contained in the options panel
 	 * 
@@ -63,38 +93,45 @@ public class QuizzingScreen {
 		frame.getContentPane().add(panelOptions);
 		panelOptions.setLayout(null);
 		
-		JButton btnOk = new JButton("OK");
-		btnOk.addActionListener(new ActionListener() {
+		btnFlashCardOk = new JButton("OK");
+		btnFlashCardOk.setBounds(407, 63, 97, 25);
+		panelOptions.add(btnFlashCardOk);
+		
+		btnFlashCardAgain = new JButton("AGAIN");
+		btnFlashCardAgain.setBounds(12, 63, 97, 25);
+		panelOptions.add(btnFlashCardAgain);
+		
+		btnFlipFlashCard = new JButton("Flip FlashCard");
+		btnFlipFlashCard.setBounds(186, 13, 140, 25);
+		panelOptions.add(btnFlipFlashCard);
+
+		addPanelOptionsBtnListeners();
+	}
+
+	// ***************** Adding Listeners to components ********************* //
+
+	/** Adds Action Listeners to buttons in panelOptions */
+	private void addPanelOptionsBtnListeners() {
+		btnFlashCardOk.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				flashCardOk();
 			}
 		});
-		btnOk.setBounds(407, 63, 97, 25);
-		panelOptions.add(btnOk);
-		
-		JButton btnAgain = new JButton("AGAIN");
-		btnAgain.addActionListener(new ActionListener() {
+
+		btnFlashCardAgain.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				flashCardAgain();
 			}
 		});
-		btnAgain.setBounds(12, 63, 97, 25);
-		panelOptions.add(btnAgain);
-		
-		JButton btnFlipFlashCard = new JButton("Flip FlashCard");
+
 		btnFlipFlashCard.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				flashCardFlip();
 			}
 		});
-		btnFlipFlashCard.setBounds(186, 13, 140, 25);
-		panelOptions.add(btnFlipFlashCard);
-		
 	}
 	
-	/** Creates components for the content panel
-	 * 
-	 */
+	/** Creates and fills panelContent with components */
 	private void createContentPanel() {
 		JPanel panelContent = new JPanel();
 		panelContent.setBounds(157, 94, 516, 285);
@@ -116,27 +153,20 @@ public class QuizzingScreen {
 		frame.getContentPane().add(lblCurrentDeck);
 		
 		btnFinishQuiz = new JButton("Finish Quiz");
+		btnFinishQuiz.setBounds(761, 515, 97, 25);
+		frame.getContentPane().add(btnFinishQuiz);
+		addBtnFinishQuizListener();
+	}
+
+	private void addBtnFinishQuizListener(){
 		btnFinishQuiz.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				finishQuiz();
 			}
 		});
-		btnFinishQuiz.setBounds(761, 515, 97, 25);
-		frame.getContentPane().add(btnFinishQuiz);
 	}
 
-	/**
-	 * Initialize the contents of the frame.
-	 */
-	protected void initialize() {
-		frame = new JFrame();
-		frame.setBounds(100, 100, 886, 592);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.getContentPane().setLayout(null);
-		createContentPanel();
-		createMiscComponents();
-		createOptionsPanel();
-	}
+	// ****************** Handling Listener Events ******************* // 
 	
 	private void flashCardFlip() {
 		// TODO implement
