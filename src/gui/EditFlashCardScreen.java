@@ -40,6 +40,8 @@ public class EditFlashCardScreen {
 	JTextPane textPaneErrorMsg;
 	/** Label describing the current operation being done with regards to a FlashCard */
 	JLabel lblAction;
+	/** JButton to finish editing a FlashCard */
+	JButton btnFinish;
 	
 	/** Keeps track of whether we are creating or editing a FlashCard */
 	boolean isCreating;
@@ -136,15 +138,11 @@ public class EditFlashCardScreen {
 	 */
 	private void createMiscComponents() {
 		
-		JButton btnContinue = new JButton("Continue");
-		btnContinue.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				onContinuePressed();
-			}
-		});
-		btnContinue.setBounds(336, 230, 95, 28);
-		frame.getContentPane().add(btnContinue);
-		btnContinue.setEnabled(!isCreating);
+		btnFinish = new JButton("Finish");
+		btnFinish.setBounds(336, 230, 95, 28);
+		frame.getContentPane().add(btnFinish);
+		btnFinish.setEnabled(!isCreating);
+		addFinishBtnListener();
 		
 		lblAction = new JLabel("%s a flash card!");
 		lblAction.setBounds(161, 36, 148, 28);
@@ -153,6 +151,15 @@ public class EditFlashCardScreen {
 		textPaneErrorMsg = new JTextPane();
 		textPaneErrorMsg.setBounds(335, 156, 96, 45);
 		frame.getContentPane().add(textPaneErrorMsg);
+	}
+
+	/** Adds Action Listener to btnFinish */
+	private void addFinishBtnListener(){
+		btnFinish.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				onContinuePressed();
+			}
+		});
 	}
 	
 	/** Create components relating to changing the text of a flashCard
