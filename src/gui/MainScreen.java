@@ -82,10 +82,16 @@ public class MainScreen{
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
+		createComponents();
+	}
+	
+	/** Calls methods to create components for this Screen */
+	private void createComponents(){
 		createTablePanel();
 		createOptionsPanel();
 	}
-	
+
+	/** Create and fill panel for components relating to displaying a Deck collection to a user */
 	private void createTablePanel() {
 		this.panelViewDecks = new JPanel();
 		panelViewDecks.setBounds(114, 48, 408, 292);
@@ -98,8 +104,26 @@ public class MainScreen{
 		
 		createDecksTable();
 	}
+
+	/** Creates Table to store info on decks
+	 * <p>
+	 * User can then select a row from the table to quiz themselves on a deck
+	 * 
+	 */
+	public void createDecksTable() {
+		tableDecks = new JTable(decksTableDetails(), decksTableHeaders());
+		tableDecks.setBounds(7, 24, 253, 144);
+		JScrollPane sp = new JScrollPane(tableDecks);
+		sp.setBounds(7, 49, 394, 236);
+		panelViewDecks.add(sp);
+
+		// Set the table so it can't be edited
+		tableDecks.setDefaultEditor(Object.class, null);
+
+		addDecksTableListener();
+	}
 	
-	
+	/** Create and fill Panel with components relating to main application options */ 
 	private void createOptionsPanel() {
 		JPanel panelOptions = new JPanel();
 		panelOptions.setBounds(114, 353, 408, 71);
@@ -127,7 +151,32 @@ public class MainScreen{
 
 		addOptionsPanelBtnListeners();
 	}
+
+	// ********************* Helpers for creating components *********************** // 
+
+	/** Finds and returns the column titles for tableDecks
+	 * 
+	 * @returns String[] array containing column titles for Deck details
+	 */
+	private String[] decksTableHeaders(){
+		return Deck.infoArrayHeaders();
+	}
 	
+	/** Finds and returns the row content for tableDecks
+	 * 
+	 * @returns String[][] nested array containing info on decks contained in this application's DeckManager
+	 */
+	private String[][] decksTableDetails(){
+		// TODO uncomment bellow when class fully implemented
+		// return appEnvironment.getDeckManager().deckCollectionInfo();
+		return new String[][] {
+			{"testName1", "3", "5"}, 
+			{"testName2", "4", "8"}, 
+		};
+	}
+	
+	// ******************** Adding Listeners to Components ************************* // 
+
 	/** Creates action listeners to the buttons in panelOptions */
 	private void addOptionsPanelBtnListeners(){
 		btnEditDeck.addActionListener(new ActionListener() {
@@ -154,63 +203,24 @@ public class MainScreen{
 		});
 		
 	}
-	
-	/** Creates Table to store info on decks
-	 * <p>
-	 * User can then select a row from the table to quiz themselves on a deck
-	 * 
-	 */
-	public void createDecksTable() {
-		// TODO make it so you can't edit table entries!
-		
-		tableDecks = new JTable(decksTableDetails(), decksTableHeaders());
-		tableDecks.setBounds(7, 24, 253, 144);
-		JScrollPane sp = new JScrollPane(tableDecks);
-		sp.setBounds(7, 49, 394, 236);
-		panelViewDecks.add(sp);
-		
-		addDecksTableListener();
-
-		// Set the table so it can't be edited
-		tableDecks.setDefaultEditor(Object.class, null);
-	}
 
 	/** Adds a seletion listener to tableDecks */
 	private void addDecksTableListener(){
 		ListSelectionModel selectionModel = tableDecks.getSelectionModel();
 		selectionModel.addListSelectionListener(new ListSelectionListener() {
-		    public void valueChanged(ListSelectionEvent lse) {
-		    	deckSelected(lse);
-		    }
+			public void valueChanged(ListSelectionEvent lse) {
+				deckSelected(lse);
+			}
 		});
 	}
 
-	/** Finds and returns the column titles for tableDecks
-	 * 
-	 * @returns String[] array containing column titles for Deck details
-	 */
-	private String[] decksTableHeaders(){
-		return Deck.infoArrayHeaders();
-	}
-	
-	/** Finds and returns the row content for tableDecks
-	 * 
-	 * @returns String[][] nested array containing info on decks contained in this application's DeckManager
-	 */
-	private String[][] decksTableDetails()){
-		// TODO uncomment bellow when class fully implemented
-		// return appEnvironment.getDeckManager().deckCollectionInfo();
-		return new String[][] {
-			{"testName1", "3", "5"}, 
-			{"testName2", "4", "8"}, 
-		};
-	}
-	
+	// ********************* Handling Listener Events ************************** // 
+
 	/** Handles selection of row from decksTable
 	 * <p>
 	 * Makes sure that the changing of a selection only counts as one event, with if statement
 	 * 
-	 * @param lse ListSelection that occured to select a Deck from tableDecks
+	 * @param lse ListSelection that occurred to select a Deck from tableDecks
 	 */
 	private void deckSelected(ListSelectionEvent lse) {
 		// Bellow lines ensures that changing selection of a row counts as one change, not two
