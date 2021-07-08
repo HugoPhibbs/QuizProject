@@ -56,8 +56,7 @@ public class Deck implements Serializable {
 	public boolean equals(Object object) {
 		if (object instanceof Deck) {
 			Deck deck = (Deck) object;
-			return (deck.getName().equals(this.name) && 
-					deck.size() == this.size());
+			return (deck.getName().equals(this.name) && deck.size() == this.size());
 		}
 		return false;
 	}
@@ -158,19 +157,33 @@ public class Deck implements Serializable {
 	public ArrayList<FlashCard> flashCardsToQuiz(int maxNewCards, LocalDate currentDate){
 		
 		ArrayList<FlashCard> flashCardsToQuiz = new ArrayList<FlashCard>();
-		
+
+		// Add new and due FlashCards
+		flashCardsToQuiz.addAll(newFlashCards(maxNewCards));
+		flashCardsToQuiz.addAll(dueFlashCards(currentDate));
+
+		Collections.shuffle(flashCardsToQuiz);
+		return flashCardsToQuiz;
+	}
+
+	/** Creates and ArrayList containing new FlashCards from this Deck, 
+	 * adds new cards to the resultant ArrayList as long as the number of
+	 * added new cards is less than maxNewCards
+	 * 
+	 * @param maxNewCards int for the max number of new FlashCards to be added to the resultant ArrayList
+	 * @return ArrayList containing FlashCard objects. 
+	 */
+	private ArrayList<FlashCard> newFlashCards(int maxNewCards){
+		ArrayList<FlashCard> newFlashCards = new ArrayList<FlashCard>();
 		int newCardsAdded = 0;
 		
 		for (FlashCard flashCard: flashCards) {
 			if (flashCard.isNew() && newCardsAdded < maxNewCards) {
-				flashCardsToQuiz.add(flashCard);
-				newCardsAdded += 1;
+				newFlashCards.add(flashCard);
+				newCardsAdded ++;
 			}
 		}
-		
-		flashCardsToQuiz.addAll(dueFlashCards(currentDate));
-		Collections.shuffle(flashCardsToQuiz);
-		return flashCardsToQuiz;
+		return newFlashCards;
 	}
 	
 	/** Finds the FlashCards for this deck that are due
@@ -178,8 +191,9 @@ public class Deck implements Serializable {
 	 * @param currentDate LocalDate object representing the current date
 	 * @return ArrayList containing all the FlashCards that are due
 	 */
-	public ArrayList<FlashCard> dueFlashCards(LocalDate currentDate){
+	private ArrayList<FlashCard> dueFlashCards(LocalDate currentDate){
 		ArrayList<FlashCard> dueFlashCards = new ArrayList<FlashCard>();
+		
 		for (FlashCard flashCard: flashCards) {
 			if (flashCard.isDue(currentDate)) {
 				dueFlashCards.add(flashCard);
@@ -197,7 +211,7 @@ public class Deck implements Serializable {
 		return dueFlashCards(currentDate).size();
 	}
 	
-	//********************************* GETTERS AND SETTERS ****************************************
+	// ********************************* GETTERS AND SETTERS ************************************** // 
 	
 	/** Method that returns the size of a deck. 
 	 * <p>

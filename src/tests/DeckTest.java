@@ -89,7 +89,6 @@ class DeckTest {
 		FlashCard[] testCardArray1 = {testCard1, testCard2, testCard3,  testCard4, testCard5, testCard6, testCard7};
 		testDeck1.setFlashCards(new ArrayList<FlashCard>(Arrays.asList(testCardArray1)));
 		ArrayList<FlashCard> cardsToQuiz = testDeck1.flashCardsToQuiz(3, LocalDate.of(2021, 6, 26));
-		System.out.println(cardsToQuiz);
 		assertEquals(5, cardsToQuiz.size());
 		
 		// Test with a deck with no new cards

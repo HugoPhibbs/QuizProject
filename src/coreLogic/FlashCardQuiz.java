@@ -176,7 +176,7 @@ public class FlashCardQuiz {
 			setCurrentQueue("INITIAL");
 		}
 		else if (!finalQueue.isEmpty()) {
-			currentFlashCard  =  finalQueue.remove();
+			currentFlashCard = finalQueue.remove();
 			setCurrentQueue("FINAL");
 		}
 		else if (!againQueue.isEmpty()) {
