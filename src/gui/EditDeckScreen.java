@@ -3,11 +3,8 @@ package gui;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
-import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-
-import java.awt.Color;
 import javax.swing.JTable;
 import javax.swing.JLabel;
 import javax.swing.JButton;
@@ -39,10 +36,15 @@ public class EditDeckScreen {
 	private JTextField textFieldDescription;
 	/** JPanel to hold components relating to displaying FlashCards contained in a Deck */
 	JPanel panelFlashCards;
+	/** JButton to add a new FlashCard to a Deck */
 	JButton btnAddFlashCard;
+	/** JButton to edit a FlashCard from a Deck */
 	JButton btnEditFlashCard;
+	/** JButton to delete a FlashCard from a Deck */
 	JButton btnDeleteFlashCard;
-	JButton btnContinue;
+	/** JButton to finish editing a Deck */
+	JButton btnFinish;
+	/** JButton to delete a Deck */
 	JButton btnDeleteDeck;
 
 	/** Deck object that is being editted */
@@ -50,6 +52,7 @@ public class EditDeckScreen {
 	/** DeckManager object for this application, makes sure that CRUD actions to do with a Deck are
 	 * permittable with respect to other Decks in this application */
 	private DeckManager deckManager;
+
 
 	/**
 	 * Launch the application.
@@ -89,9 +92,15 @@ public class EditDeckScreen {
 		frame.setBounds(100, 100, 900, 900);
 		frame.getContentPane().setLayout(null);
 
+		createComponents();
+	}
+
+	// ******************** Creating Components  ******************* //
+
+	private void createComponents(){
 		createFlashCardsPanel();
 		createFlashCardOptionsPanel();
-		createContinuePanel();
+		createFinishPanel();
 		createMiscComponents();
 		createDeckDetailsPanel();
 	}
@@ -123,16 +132,6 @@ public class EditDeckScreen {
 		addFlashCardsTableListener();
 	}
 
-	/** Adds a Selection Listener to tableFlashCards */
-	private void addFlashCardsTableListener(){
-		ListSelectionModel selectionModel = tableFlashCards.getSelectionModel();
-		selectionModel.addListSelectionListener(new ListSelectionListener() {
-		    public void valueChanged(ListSelectionEvent lse) {
-		    	flashCardSelected(lse);
-		    }
-		});
-	}
-
     /** Create Panel and fill it with components relating to Editing 
 	 * FlashCards in a Deck 
 	 */
@@ -155,27 +154,6 @@ public class EditDeckScreen {
 		panelFlashCardOptions.add(btnDeleteFlashCard);
 
 		adFlashCardPanelOptionsBtnListeners();
-	}
-
-	/** Adds Action Listeners to all of the buttons in panelFlashCardOptions */
-	private void adFlashCardPanelOptionsBtnListeners(){
-		btnAddFlashCard.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				addFlashCard();
-			}
-		});
-
-		btnEditFlashCard.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				editFlashCard();
-			}
-		});
-
-		btnDeleteFlashCard.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				deleteFlashCard();
-			}
-		});
 	}
 
 	/** Create panel and fill it with components relating to editing
@@ -209,31 +187,71 @@ public class EditDeckScreen {
 	/** Create JPanel and fill it with components relating to finish editing a deck
 	 * Along with an option to delete a deck. 
 	 */
-	private void createContinuePanel(){
-		JPanel panelContinue = new JPanel();
-		panelContinue.setBounds(561, 622, 244, 129);
-		frame.getContentPane().add(panelContinue);
-		panelContinue.setLayout(null);
+	private void createFinishPanel(){
+		JPanel panelFinish = new JPanel();
+		panelFinish.setBounds(561, 622, 244, 129);
+		frame.getContentPane().add(panelFinish);
+		panelFinish.setLayout(null);
 
-		btnContinue = new JButton("Continue");
-		btnContinue.setBounds(129, 90, 103, 25);
-		panelContinue.add(btnContinue);
+		btnFinish = new JButton("Continue");
+		btnFinish.setBounds(129, 90, 103, 25);
+		panelFinish.add(btnFinish);
 		
 		JTextPane textPaneErrorMsg = new JTextPane();
 		textPaneErrorMsg.setBounds(12, 13, 220, 64);
-		panelContinue.add(textPaneErrorMsg);
+		panelFinish.add(textPaneErrorMsg);
 		
 		btnDeleteDeck = new JButton("Delete Deck");
 		btnDeleteDeck.setBounds(12, 90, 103, 25);
-		panelContinue.add(btnDeleteDeck);
+		panelFinish.add(btnDeleteDeck);
 		
-		addContinuePanelBtnListeners();
+		addFinishPanelBtnListeners();
 	}
 
-	/** Adds Actions listeners onto buttons in panelContinue */
-	private void addContinuePanelBtnListeners(){
+	/** Create Miscelaneous components that don't belong in any panelr */
+	private void createMiscComponents(){
+		JLabel lblTitle = new JLabel("Editing <deckName> ");
+		lblTitle.setBounds(341, 60, 138, 28);
+		frame.getContentPane().add(lblTitle);
+	}
+
+	// ********************** Adding Listeners to Components ************************ // 
+
+	/** Adds a Selection Listener to tableFlashCards */
+	private void addFlashCardsTableListener(){
+		ListSelectionModel selectionModel = tableFlashCards.getSelectionModel();
+		selectionModel.addListSelectionListener(new ListSelectionListener() {
+		    public void valueChanged(ListSelectionEvent lse) {
+		    	flashCardSelected(lse);
+		    }
+		});
+	}
+
+	/** Adds Action Listeners to all of the buttons in panelFlashCardOptions */
+	private void adFlashCardPanelOptionsBtnListeners(){
+		btnAddFlashCard.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				addFlashCard();
+			}
+		});
+
+		btnEditFlashCard.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				editFlashCard();
+			}
+		});
+
+		btnDeleteFlashCard.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				deleteFlashCard();
+			}
+		});
+	}
+
+	/** Adds Actions listeners onto buttons in panelFinish */
+	private void addFinishPanelBtnListeners(){
 		
-		btnContinue.addActionListener(new ActionListener() {
+		btnFinish.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				onContinue();
 			}
@@ -245,12 +263,15 @@ public class EditDeckScreen {
 			}
 		});
 	}
-	
-	/** Create Miscelaneous components that don't belong in any panelr */
-	private void createMiscComponents(){
-		JLabel lblTitle = new JLabel("Editing <deckName> ");
-		lblTitle.setBounds(341, 60, 138, 28);
-		frame.getContentPane().add(lblTitle);
+
+	// ********************** Handling Listener Events ************************* //
+
+	private void flashCardSelected(ListSelectionEvent lse){
+		// Bellow lines ensures that changing selection of a row counts as one change, not two
+		if (!lse.getValueIsAdjusting()) {
+			// Do something
+			// TODO implement
+		}
 	}
 
 	private void onContinue(){
@@ -272,13 +293,4 @@ public class EditDeckScreen {
 	private void addFlashCard(){
 		// TODO implement
 	}
-
-	private void flashCardSelected(ListSelectionEvent lse){
-		// Bellow lines ensures that changing selection of a row counts as one change, not two
-		if (!lse.getValueIsAdjusting()) {
-			// Do something
-			// TODO implement
-		}
-	}
-
 }
