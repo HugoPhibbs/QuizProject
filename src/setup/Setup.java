@@ -11,7 +11,6 @@ import java.io.ObjectOutputStream;
 import coreLogic.AppEnvironment;
 import coreObjects.User;
 import gui.MainScreen;
-import jdk.tools.jlink.resources.plugins;
 
 /** Class to start the Quiz Application
  * <p>
@@ -40,9 +39,12 @@ public class Setup {
 	public Setup(String workingDirectory){
 		this.workingDirectory = workingDirectory;
 	}	
+
+	// ************************ Loading a Session ***************************** // 
 	
 	/** Loads a session saved for a User with name userName
 	 * <p>
+	 * Rethrows FileNotFoundException, this can then be handled by the GUI
 	 * 
 	 * @param userName String for a User's name, that a user wants to load a session for
 	 */
@@ -65,7 +67,9 @@ public class Setup {
 	}
 	
 	/** Helper Method for loadSession(String)
-	 * 
+	 * <p>
+	 * Does the actual loading of a file part 
+	 *  
 	 * @param sessionFilePath String for the file path of a session
 	 * @throws FileNotFoundException If a session wasn't found
 	 * @throws IOException If an I/O exception occurs
@@ -73,11 +77,13 @@ public class Setup {
 	 */
 	private void loadSessionHelper(String sessionFilePath) throws FileNotFoundException, IOException, ClassNotFoundException I{
 		FileInputStream fileIn = new FileInputStream(sessionFilePath);
-			ObjectInputStream objIn = new ObjectInputStream(fileIn);
-			appEnvironment = (AppEnvironment) objIn.readObject();
-			objIn.close();
-			fileIn.close();
+		ObjectInputStream objIn = new ObjectInputStream(fileIn);
+		appEnvironment = (AppEnvironment) objIn.readObject();
+		objIn.close();
+		fileIn.close();
 	}
+
+	// *********************** Deleting a Session **************************** // 
 	
 	/** Deletes a session saved for a User with name userName
 	 * 
@@ -88,6 +94,8 @@ public class Setup {
 		File file = new File(sessionFilePath);
 		file.delete();
 	}
+
+	// *********************** Creating a Session *************************** // 
 	
 	/** Creates a session for a user
 	 * 
@@ -96,7 +104,12 @@ public class Setup {
 	public void createSession(String userName) {
 		String sessionFilePath = sessionFilePath(userName);
 		if (!canLoadSession(sessionFilePath)) {
-			createSessionHelper(sessionFilePath, userName);
+			try {
+				createSessionHelper(sessionFilePath, userName);
+			}
+			catch (IOException ioe) {
+				ioe.printStackTrace();
+			}
 		}
 		else {
 			throw new IllegalArgumentException("Session already exists under this name!");
@@ -104,26 +117,22 @@ public class Setup {
 	}
 	
 	/** Helper method for createSession(String)
+	 * <p>
+	 * Does the actual writing to a new file part
 	 *
 	 * @param sessionFilePath String for the file path of a session to be created
 	 * @param userName String for the name of a user to create a Session for
 	 */
-	private void createSessionHelper(String sessionFilePath, String userName){
-		try {
-			FileOutputStream fileOut = new FileOutputStream(sessionFilePath);
-			ObjectOutputStream objOut= new ObjectOutputStream(fileOut);
-			
-			// Create a new AppEnvironment instance
-			appEnvironment = new AppEnvironment(new User(userName));
-			
-			// Write AppEnvironment to file
-			objOut.writeObject(appEnvironment);
-			objOut.close();
-			fileOut.close();
-		}
-		catch (IOException ioe) {
-			ioe.printStackTrace();
-		}
+	private void createSessionHelper(String sessionFilePath, String userName) throws IOException{
+		FileOutputStream fileOut = new FileOutputStream(sessionFilePath);
+		ObjectOutputStream objOut= new ObjectOutputStream(fileOut);
+		
+		appEnvironment = new AppEnvironment(new User(userName));
+		
+		objOut.writeObject(appEnvironment);
+		objOut.close();
+		fileOut.close();
+		
 	}
 	
 	/** Returns the file directory that a serialized session
