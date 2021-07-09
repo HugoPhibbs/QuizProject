@@ -47,22 +47,23 @@ public class Setup {
 	 * Rethrows FileNotFoundException, this can then be handled by the GUI
 	 * 
 	 * @param userName String for a User's name, that a user wants to load a session for
+	 * @return boolean if a session was successfully loaded
 	 */
-	public void loadSession(String userName) throws FileNotFoundException {
+	public boolean loadSession(String userName) throws FileNotFoundException {
 		String sessionFilePath = sessionFilePath(userName);
 		try {
-			loadSessionHelper(sessionFilePath);
+			return loadSessionHelper(sessionFilePath);
 		}
 		catch (FileNotFoundException fnfe) {
 			throw new FileNotFoundException(String.format("Session for %s doesn't exist!", userName));
 		} 
 		catch (IOException ioe) {
 	        ioe.printStackTrace();
-	        return;
+	        return false;
 		} 
 		catch (ClassNotFoundException cnfe) {
 			cnfe.printStackTrace();
-	        return;
+	        return false;
 	    }
 	}
 	
@@ -71,16 +72,21 @@ public class Setup {
 	 * Does the actual loading of a file part 
 	 *  
 	 * @param sessionFilePath String for the file path of a session
+	 * @return boolean value if a session was succesfully loaded
 	 * @throws FileNotFoundException If a session wasn't found
 	 * @throws IOException If an I/O exception occurs
 	 * @throws ClassNotFoundException If a class isn't found
 	 */
-	private void loadSessionHelper(String sessionFilePath) throws FileNotFoundException, IOException, ClassNotFoundException I{
+	private boolean loadSessionHelper(String sessionFilePath) 
+		throws FileNotFoundException, IOException, ClassNotFoundException {
+
 		FileInputStream fileIn = new FileInputStream(sessionFilePath);
 		ObjectInputStream objIn = new ObjectInputStream(fileIn);
 		appEnvironment = (AppEnvironment) objIn.readObject();
 		objIn.close();
 		fileIn.close();
+		
+		return true;
 	}
 
 	// *********************** Deleting a Session **************************** // 
@@ -88,11 +94,12 @@ public class Setup {
 	/** Deletes a session saved for a User with name userName
 	 * 
 	 * @param userName String for a User's name, that a user wants to delete a session for
+	 * @return boolean if the session was successfully deleted
 	 */
-	public void deleteSession(String userName) {
+	public boolean deleteSession(String userName) {
 		String sessionFilePath = sessionFilePath(userName);
 		File file = new File(sessionFilePath);
-		file.delete();
+		return file.delete();
 	}
 
 	// *********************** Creating a Session *************************** // 
@@ -103,7 +110,7 @@ public class Setup {
 	 */
 	public void createSession(String userName) {
 		String sessionFilePath = sessionFilePath(userName);
-		if (!canLoadSession(sessionFilePath)) {
+		if (!sessionExists(sessionFilePath)) {
 			try {
 				createSessionHelper(sessionFilePath, userName);
 			}
@@ -134,6 +141,8 @@ public class Setup {
 		fileOut.close();
 		
 	}
+
+	// ************************* Other General Methods ************************* //
 	
 	/** Returns the file directory that a serialized session
 	 *  would be saved under using userName
@@ -141,26 +150,19 @@ public class Setup {
 	 * @param userName String for a user's name
 	 * @return String for the name of a file 
 	 */
-	private String sessionFilePath(String userName) {
+	public String sessionFilePath(String userName) {
 		return String.format("%s\\%sQuizSession.ser", workingDirectory, userName);
 	}
 	
 	/** Finds out if a session can be loaded that was saved for a userName as per file defined by
 	 * sessionFilePath(String)
 	 * <p>
-	 * Attempts to load a file, if a FileNotFoundException is caught, the returns false
 	 * 
 	 * @param userName String for the name a User's session to see if it exists
 	 */
-	@SuppressWarnings("resource")
-	private static boolean canLoadSession(String sessionFilePath) {
-		try {
-			new FileInputStream(sessionFilePath);
-			return true; // If reaches here, exception wasn't thrown
-		} 
-		catch (FileNotFoundException fnfe) {
-			return false;
-		}
+	public static boolean sessionExists(String sessionFilePath) {
+		File newFile = new File(sessionFilePath);
+		return newFile.exists();
 	}
 	
 	/** Handles the finishing of the setup of the application
@@ -172,5 +174,13 @@ public class Setup {
 	public void onSetupFinished() {
 		MainScreen mainScreen = new MainScreen(appEnvironment);
 		//mainScreen.show(); // TODO remove later once Screen fully implemented
+	}
+	
+	/** Getter method for the AppEnvironment object for this Setup class
+	 * 
+	 * @return AppEnvironment object for this Setup class
+	 */
+	public AppEnvironment getAppEnvironment(){
+		return appEnvironment;
 	}
 }
