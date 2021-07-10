@@ -5,10 +5,11 @@ import java.util.ArrayList;
 
 import coreObjects.Deck;
 import coreObjects.User;
-import gui.EditDeckScreen;
-import gui.EditFlashCardScreen;
-import gui.QuizzingScreen;
-import gui.Screen;
+import guiLogic.Screen;
+import guiShell.CreateDeckScreen;
+import guiShell.EditDeckScreen;
+import guiShell.EditFlashCardScreen;
+import guiShell.QuizzingScreen;
 
 /** Class to manage the environment of the application. 
  * Holds all the objects necessary for the application to run
@@ -36,64 +37,6 @@ public class AppEnvironment implements Serializable {
 	 */
 	public AppEnvironment(User user) {
 		this.user = user;
-	}
-	
-	/** Handles creating a new screen to quiz a user
-	 * <p>
-	 * Takes logical code away from MainScreen
-	 * 
-	 * @param chosenDeck Deck object to be quizzed on
-	 */
-	public void newQuizzingScreen(Deck chosenDeck) {
-		FlashCardQuiz newQuiz = newQuiz(chosenDeck);
-		QuizzingScreen flashCardQuizScreen = new QuizzingScreen(newQuiz);
-		// flashCardQuizScreen.show() // TODO remove later once Screen has been fully implemented
-	}
-	
-	/** Handles creating a new EditDeckScreen
-	 * <p>
-	 * Takes logical code away from MainScreen
-	 * 
-	 * @param chosenDeck Deck object to be edited
-	 */
-	public void newEditDeckScreen(Deck chosenDeck) {
-		EditDeckScreen editDeckScreen = new EditDeckScreen(chosenDeck, deckManager);
-		// editDeckScreen.show() // TODO remove later once Screen has been fully implemented
-	}
-	
-	/** Handles creating a new screen to create a flash card
-	 * <p>
-	 * Takes logical code away from MainScreen
-	 * <p>
-	 * Despite it creating an EditFlashCardScreen, that handles both editing and creating a FlashCard, this
-	 * method can only create an EditFlashCardScren for the later case, as this is only intended to be used 
-	 * by MainScreen
-	 * 
-	 * @param chosenDeck Deck object that a user has chosen to add a FlashCard to
-	 * @param mainScreen Screen object that is the parent to the to be created EditFlashCardScreen
-	 */
-	public void newEditFlashCardScreen(Deck chosenDeck, Screen mainScreen) {
-		EditFlashCardScreen editFlashCardScreen = new EditFlashCardScreen(null, deckManager, chosenDeck, mainScreen);
-		// editFlashCardScreen.show() // TODO remove later once Screen has been fully implemented
-	}
-	
-	/** Creates a new quiz and returns and instance of FashCardQuiz
-	 * for a deck with name deckName, and for a User user
-	 * <p>
-	 * 
-	 * @param quizDeck Deck object that is to be quizzed on
-	 * @return FlashCardQuiz object for a new quiz
-	 * @throws IllegalArgumentException if deckName isn't the name of 
-	 * any deck in the deckManager of this AppEnviornment
-	 */
-	private FlashCardQuiz newQuiz(Deck quizDeck) {
-		if (deckManager.containsDeck(quizDeck)) {
-			FlashCardQuiz newQuiz = new FlashCardQuiz(quizDeck, user.getUserStats());
-		    return newQuiz;
-		}
-		else {
-			throw new IllegalArgumentException("No deck with name deckName in this collection!");
-		}
 	}
 
 	/** Returns the DeckManager for this AppEnvironment.
