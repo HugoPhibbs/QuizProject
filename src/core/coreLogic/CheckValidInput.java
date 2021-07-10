@@ -1,4 +1,4 @@
-package coreLogic;
+package core.coreLogic;
 
 import java.io.Serializable;
 

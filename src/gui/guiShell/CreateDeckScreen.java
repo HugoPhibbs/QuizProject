@@ -1,4 +1,4 @@
-package guiShell;
+package gui.guiShell;
 
 import java.awt.EventQueue;
 
@@ -9,7 +9,7 @@ import javax.swing.JLabel;
 import javax.swing.JButton;
 import javax.swing.JTextPane;
 
-import coreLogic.DeckManager;
+import core.coreLogic.DeckManager;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;

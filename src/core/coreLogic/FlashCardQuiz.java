@@ -1,4 +1,4 @@
-package coreLogic;
+package core.coreLogic;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -6,10 +6,10 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
 
-import coreObjects.Deck;
-import coreObjects.FlashCard;
-import stats.QuizStats;
-import stats.UserStats;
+import core.coreObjects.Deck;
+import core.coreObjects.FlashCard;
+import core.stats.QuizStats;
+import core.stats.UserStats;
 
 /** Represents a FlashCardQuiz.
  * <p>

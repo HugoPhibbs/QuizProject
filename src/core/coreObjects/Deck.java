@@ -1,11 +1,11 @@
-package coreObjects;
+package core.coreObjects;
 
 import java.io.Serializable;
 import java.time.LocalDate;  
 import java.util.ArrayList;
 import java.util.Collections;
 
-import coreLogic.CheckValidInput;
+import core.coreLogic.CheckValidInput;
 
 /** Represents a Deck. Contains FlashCard objects
  * <p>

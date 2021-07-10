@@ -1,15 +1,12 @@
-package guiShell;
+package gui.guiShell;
 
 import java.awt.EventQueue;  
 
 import javax.swing.JFrame;
 import javax.swing.JTextField;
 
-import coreObjects.Deck;
-import coreObjects.FlashCard;
-import guiLogic.EditFlashCardScreenLogic;
-import guiLogic.Screen;
-import coreLogic.DeckManager;
+import gui.guiLogic.EditFlashCardScreenLogic;
+import gui.guiLogic.Screen;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -19,6 +16,10 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 import javax.swing.JTextPane;
+
+import core.coreLogic.DeckManager;
+import core.coreObjects.Deck;
+import core.coreObjects.FlashCard;
 
 /** Represents a Screen to edit a FlashCard object
  * <p>

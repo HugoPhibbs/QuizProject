@@ -5,9 +5,9 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import coreLogic.DeckManager;
-import coreObjects.Deck;
-import coreObjects.FlashCard;
+import core.coreLogic.DeckManager;
+import core.coreObjects.Deck;
+import core.coreObjects.FlashCard;
 
 /** JUnit testing class for DeckManager
  * 

@@ -1,4 +1,4 @@
-package coreObjects;
+package core.coreObjects;
 
 import java.io.Serializable;
 import java.time.LocalDate;

@@ -1,15 +1,15 @@
-package coreLogic;
+package core.coreLogic;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 
-import coreObjects.Deck;
-import coreObjects.User;
-import guiLogic.Screen;
-import guiShell.CreateDeckScreen;
-import guiShell.EditDeckScreen;
-import guiShell.EditFlashCardScreen;
-import guiShell.QuizzingScreen;
+import core.coreObjects.Deck;
+import core.coreObjects.User;
+import gui.guiLogic.Screen;
+import gui.guiShell.CreateDeckScreen;
+import gui.guiShell.EditDeckScreen;
+import gui.guiShell.EditFlashCardScreen;
+import gui.guiShell.QuizzingScreen;
 
 /** Class to manage the environment of the application. 
  * Holds all the objects necessary for the application to run

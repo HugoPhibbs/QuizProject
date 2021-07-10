@@ -1,4 +1,4 @@
-package gui;
+package gui.guiShell;
 
 import java.awt.EventQueue;
 
@@ -10,7 +10,8 @@ import java.awt.event.ActionEvent;
 import javax.swing.JLabel;
 import javax.swing.JTextPane;
 
-import coreLogic.FlashCardQuiz;
+import core.coreLogic.FlashCardQuiz;
+import gui.guiLogic.QuizzingScreenLogic;
 
 /** Represents a Screen to quiz a user
  * 
@@ -29,9 +30,9 @@ public class QuizzingScreen {
 	private JButton btnFlashCardAgain;
 	/** JBUtton to flip the current FlashCard */
 	private JButton btnFlipFlashCard;
-
-	/** FlashCardQuiz object holding objects necessary for this QuizzingScreen */
-	private FlashCardQuiz flashCardQuiz;
+	
+	/** QuizzingScreenLogic object to control logic operations of this Screen */
+	private QuizzingScreenLogic logic;
 
 	/**
 	 * Launch the application.
@@ -60,7 +61,7 @@ public class QuizzingScreen {
 	public QuizzingScreen(FlashCardQuiz flashCardQuiz) {
 		super();
 		initialize();
-		this.flashCardQuiz = flashCardQuiz;
+		logic = new QuizzingScreenLogic(flashCardQuiz, this);
 	}
 
 	/**
@@ -114,19 +115,19 @@ public class QuizzingScreen {
 	private void addPanelOptionsBtnListeners() {
 		btnFlashCardOk.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				flashCardOk();
+				logic.flashCardOk();
 			}
 		});
 
 		btnFlashCardAgain.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				flashCardAgain();
+				logic.flashCardAgain();
 			}
 		});
 
 		btnFlipFlashCard.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				flashCardFlip();
+				logic.flashCardFlip();
 			}
 		});
 	}
@@ -161,26 +162,12 @@ public class QuizzingScreen {
 	private void addBtnFinishQuizListener(){
 		btnFinishQuiz.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				finishQuiz();
+				logic.finishQuiz();
 			}
 		});
 	}
 
 	// ****************** Handling Listener Events ******************* // 
 	
-	private void flashCardFlip() {
-		// TODO implement
-	}
-	
-	private void flashCardAgain() {
-		// TODO implement
-	}
-	
-	private void flashCardOk() {
-		// TODO implement
-	}
-	
-	private void finishQuiz() {
-		// TODO implement
-	}
+
 }

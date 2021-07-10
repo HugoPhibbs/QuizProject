@@ -1,4 +1,4 @@
-package guiLogic;
+package gui.guiLogic;
 
 import java.awt.Color;
 import java.awt.event.WindowAdapter;

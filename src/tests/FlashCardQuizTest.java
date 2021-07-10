@@ -11,9 +11,9 @@ import java.util.Queue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import coreLogic.FlashCardQuiz;
-import coreObjects.Deck;
-import coreObjects.FlashCard;
+import core.coreLogic.FlashCardQuiz;
+import core.coreObjects.Deck;
+import core.coreObjects.FlashCard;
 
 class FlashCardQuizTest {
 	

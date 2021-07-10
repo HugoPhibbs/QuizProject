@@ -9,8 +9,8 @@ import java.util.Arrays;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import coreObjects.Deck;
-import coreObjects.FlashCard;
+import core.coreObjects.Deck;
+import core.coreObjects.FlashCard;
 
 /** JUnit testing class for Deck
  * 

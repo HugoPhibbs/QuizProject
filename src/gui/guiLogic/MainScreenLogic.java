@@ -1,16 +1,15 @@
-package guiLogic;
+package gui.guiLogic;
 
-import coreLogic.AppEnvironment;
-import coreLogic.DeckManager;
-import coreLogic.FlashCardQuiz;
-import coreObjects.Deck;
-import coreObjects.User;
-import guiShell.CreateDeckScreen;
-import guiShell.EditDeckScreen;
-import guiShell.EditFlashCardScreen;
-import guiShell.MainScreen;
-import guiShell.QuizzingScreen;
-import guiShell.Screen;
+import core.coreLogic.AppEnvironment;
+import core.coreLogic.DeckManager;
+import core.coreLogic.FlashCardQuiz;
+import core.coreObjects.Deck;
+import core.coreObjects.User;
+import gui.guiShell.CreateDeckScreen;
+import gui.guiShell.EditDeckScreen;
+import gui.guiShell.EditFlashCardScreen;
+import gui.guiShell.MainScreen;
+import gui.guiShell.QuizzingScreen;
 
 /** Class to handle logic for MainScreen
  * <p>

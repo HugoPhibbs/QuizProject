@@ -1,9 +1,9 @@
-package coreObjects;
+package core.coreObjects;
 
 import java.io.Serializable;
 
-import coreLogic.CheckValidInput;
-import stats.UserStats;
+import core.coreLogic.CheckValidInput;
+import core.stats.UserStats;
 
 /** Represents a user of the quiz application.
  * 

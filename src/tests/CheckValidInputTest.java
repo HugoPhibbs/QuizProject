@@ -4,7 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.*;
 
-import coreLogic.CheckValidInput;
+import core.coreLogic.CheckValidInput;
 
 /** JUnit testing class for CheckValidInputClass
  * 

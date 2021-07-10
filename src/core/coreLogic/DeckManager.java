@@ -1,11 +1,11 @@
-package coreLogic;
+package core.coreLogic;
 
 import java.io.Serializable; 
 import java.util.ArrayList;
 import java.util.Collections;
 
-import coreObjects.Deck;
-import coreObjects.FlashCard;
+import core.coreObjects.Deck;
+import core.coreObjects.FlashCard;
 
 /** Class to manage a collection of decks for a quiz application.
  * Manages CRUD actions do with a collection of Decks. 

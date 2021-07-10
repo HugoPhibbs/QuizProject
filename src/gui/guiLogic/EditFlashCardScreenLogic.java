@@ -1,9 +1,9 @@
-package guiLogic;
+package gui.guiLogic;
 
-import coreLogic.DeckManager;
-import coreObjects.Deck;
-import coreObjects.FlashCard;
-import guiShell.EditFlashCardScreen;
+import core.coreLogic.DeckManager;
+import core.coreObjects.Deck;
+import core.coreObjects.FlashCard;
+import gui.guiShell.EditFlashCardScreen;
 
 /** Handles logic for EditFlashCardScreen
  * 

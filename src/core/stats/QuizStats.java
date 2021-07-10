@@ -1,4 +1,4 @@
-package stats;
+package core.stats;
 
 import java.io.Serializable;
 import java.time.Duration;

@@ -1,6 +1,6 @@
 package setup;
 
-import gui.SetupScreen;
+import gui.guiShell.SetupScreen;
 
 /** Class to start the application
  * <p>

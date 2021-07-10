@@ -1,4 +1,4 @@
-package gui;
+package gui.guiShell;
 
 import java.awt.EventQueue;
 
@@ -16,8 +16,8 @@ import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import coreLogic.DeckManager;
-import coreObjects.Deck;
+import core.coreLogic.DeckManager;
+import core.coreObjects.Deck;
 
 /** Represents a Screen for editing a Deck
  * 
