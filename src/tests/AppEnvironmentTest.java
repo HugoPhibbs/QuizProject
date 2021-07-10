@@ -5,6 +5,10 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+/** JUnit testing class for AppEnvironment
+ * 
+ * @author Hugo Phibbs
+*/
 class AppEnvironmentTest {
 
 	@BeforeEach
