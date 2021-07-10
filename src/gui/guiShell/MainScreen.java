@@ -1,4 +1,4 @@
-package guiShell;
+package gui.guiShell;
 
 import java.awt.EventQueue;  
 
@@ -8,9 +8,9 @@ import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import coreLogic.AppEnvironment;
-import coreObjects.Deck;
-import guiLogic.MainScreenLogic;
+import core.coreLogic.AppEnvironment;
+import core.coreObjects.Deck;
+import gui.guiLogic.MainScreenLogic;
 
 import javax.swing.JLabel;
 import javax.swing.JButton;
@@ -30,7 +30,7 @@ import javax.swing.JScrollPane;
 public class MainScreen{
 	
 	JFrame frame;
-	
+
 	/** JTable to hold any decks belonging to a user for this application */
 	JTable tableDecks;
 	/** AppEnvironment object, holds all non-gui objects necessary for an instance of MainScreen */
@@ -73,8 +73,8 @@ public class MainScreen{
 	public MainScreen(AppEnvironment appEnvironment) {
 		// TODO Implement!
 		super();
-		initialize();
 		this.mainScreenLogic = new MainScreenLogic(appEnvironment);
+		initialize();
 	}
 	
 	/**
@@ -85,6 +85,7 @@ public class MainScreen{
 		frame.setBounds(100, 100, 720, 492);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
+		frame.setVisible(true);
 		
 		createComponents();
 	}
