@@ -1,4 +1,4 @@
-package gui;
+package gui.guiShell;
 
 import java.awt.EventQueue; 
 
@@ -6,12 +6,13 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import java.awt.Font;
 import javax.swing.JTextField;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
-import setup.Setup;
+import gui.guiLogic.SetupScreenLogic;
 
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
-import java.io.FileNotFoundException;
 import java.awt.event.ActionEvent;
 import java.awt.Color;
 import javax.swing.JPanel;
@@ -30,8 +31,6 @@ public class SetupScreen {
 	
 	/** JTextField for entering the working directory of this application */
 	private JTextField textFieldEnterDirectory;
-	/** Setup class for starting this application */
-	private Setup setup;
 	/** JButton to close from this screen and progress to the main screen, only progresses if it is permissable */
 	private JButton btnContinue;
 	/** JBUtton to load a session for the name of a user */
@@ -48,6 +47,10 @@ public class SetupScreen {
 	private JPanel panelEnterDirectory;
 	/** JButton to enter a directory to create or load a session to */
 	private JButton btnEnterDirectory;
+
+	/** SetupScreenLogic class to handle any logic to do with this screen */
+	private SetupScreenLogic logic;
+
 
 	/**
 	 * Launch the application.
@@ -70,6 +73,7 @@ public class SetupScreen {
 	 */
 	public SetupScreen() {
 		initialize();
+		logic = new SetupScreenLogic(this);
 	}
 
 	/**
@@ -81,6 +85,7 @@ public class SetupScreen {
 		frame.setBounds(100, 100, 450, 300);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
+		frame.setVisible(true);
 	
 		createComponents();
 	}
@@ -156,6 +161,8 @@ public class SetupScreen {
 		textFieldEnterName.setBounds(12, 24, 119, 22);
 		panelEnterName.add(textFieldEnterName);
 		textFieldEnterName.setColumns(10);
+
+		addTextFieldEnterNameListener();
 	}
 	
 	/** Creates miscelanous components that aren't contained in a Panel */
@@ -180,91 +187,107 @@ public class SetupScreen {
 
 	// ****************** Adding Listeners to Components ********************* //
 
-	/** Adds an action listener to btnEnterDirectory */
+	/** Adds an action listener to btnEnterDirectory 
+	 * 
+	*/
 	private void addBtnEnterDirectoryListener(){
 		btnEnterDirectory.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				directoryEntered();
+				logic.directoryEntered(textFieldEnterDirectory.getText());
 			}
 		});
 	}
 
-	/** Adds Action Listeners to buttons relating to loading and creatig a session */
+	/** Adds Action Listeners to buttons relating to loading and creatig a session 
+	 * 
+	*/
 	private void addConfigSessionBtnListeners(){
 		btnCreateSession.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				createSession();;
+				logic.createSession();;
 			}
 		});
 
 		btnLoadSession.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				loadSession();
+				logic.loadSession();
 			}
 		});
 	}
 
-	/** Adds an Action Listener to btnContinue */
+	/** Adds an Action Listener to btnContinue 
+	 * 
+	*/
 	private void addBtnContinueListener() {
 		btnContinue.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				onContinue();
+				logic.onContinue();
 			}
 		});
 	}
 
-	// *********************** Handling Listener Events ************************* //
-
-	/** Handles the entering of a Directory */
-	private void directoryEntered(){
-		setup = new Setup(textFieldEnterDirectory.getText());
-		btnCreateSession.setEnabled(true );
-		btnLoadSession.setEnabled(true);
-	}
-
-	/** Handles pressing of btnCreateSession */
-	private void createSession(){
-		try {
-			setup.createSession(userName());
-			btnContinue.setEnabled(true);
-		}
-		catch (IllegalArgumentException iae){
-			displayConfigSessionError(iae.getMessage());
-		}
-	}
-
-	/** Handles pressing of btnLoadSession 
-	 * Tries to load a session, displays an error in lblConfigSessionError if FileNotFoundException is caught */
-	private void loadSession(){
-		try{
-			setup.loadSession(userName());
-			btnContinue.setEnabled(true);
-		}
-		catch (FileNotFoundException fnfe){
-			displayConfigSessionError(fnfe.getMessage());
-		}
-	}
-
-	/** Handles pressing of btnContinue */
-	private void onContinue(){
-		setup.onSetupFinished();
-		frame.dispose(); // TODO implement this into Screen later, when design is finished!
-	}
-
-	/** Displays an error to user relating to configurating a session
-	 * , that is; loading or creating
+	/** Adds a Document listener to textFieldEnterName
 	 * 
-	 * @param msg String for error message to be displayed
 	 */
-	private void displayConfigSessionError(String msg){
-		lblConfigSessionError.setText(msg);
+	private void addTextFieldEnterNameListener(){
+		textFieldEnterName.getDocument().addDocumentListener(new DocumentListener() {
+			public void changedUpdate(DocumentEvent e) {
+			 	logic.nameChanged();
+			}
+			public void removeUpdate(DocumentEvent e) {
+				logic.nameChanged();
+			}
+			public void insertUpdate(DocumentEvent e) {
+				logic.nameChanged();
+			}
+	    });
 	}
+
+	// *********************** Methods to control this screen ************************* //
 
 	/** Returns the user name currently entered to load a session for 
 	 * 
 	 * @return String for the user name currently entered 
 	 */
-	private String userName(){
+	public String userName(){
 		return textFieldEnterName.getText();
+	}
+
+	/** Displays a message in the label for displaying errors about
+	 * configurating a session
+	 * 
+	 * @param msg String for the error message to be displayed
+	 */
+	public void displayConfigSessionError(String msg){
+		lblConfigSessionError.setText(msg);
+	}
+	
+	/** Toggles btnContinue to be enabled or not
+	 * 
+	 * @param setting boolean value for whether btnContinue should be enabled or not
+	 */
+	public void toggleBtnContinue(boolean setting){
+		btnContinue.setEnabled(setting);
+	}
+
+	/** Toggles btnLoadSession to be enabled or not
+	 * 
+	 * @param setting boolean value for whether btnLoadSession should be enabled or not
+	 */
+	public void toggleBtnLoadSession(boolean setting){
+		btnLoadSession.setEnabled(setting);
+	}
+	
+	/** Toggles btnCreateSession to be enabled or not
+	 * 
+	 * @param setting boolean value for whether btnCreateSession should be enabled or not
+	 */
+	public void toggleBtnCreateSession(boolean setting){
+		btnCreateSession.setEnabled(setting);
+	}
+
+
+	public void dispose(){
+		frame.dispose();
 	}
 }
