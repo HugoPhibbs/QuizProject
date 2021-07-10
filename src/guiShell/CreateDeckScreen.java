@@ -1,4 +1,4 @@
-package gui;
+package guiShell;
 
 import java.awt.EventQueue;
 
@@ -8,6 +8,9 @@ import javax.swing.JTextField;
 import javax.swing.JLabel;
 import javax.swing.JButton;
 import javax.swing.JTextPane;
+
+import coreLogic.DeckManager;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
@@ -16,13 +19,15 @@ import java.awt.event.ActionEvent;
  * @author Hugo Phibbs
  *
  */
-public class NewDeckScreen {
+public class CreateDeckScreen {
 
 	private JFrame frame;
 	/** TextField for entering the name of a new Deck */
 	private JTextField textFieldName;
 	/** TextField for entering the description of a new Deck */
 	private JTextField textFieldDescription;
+	/** DeckManager object for this application */
+	private DeckManager deckManager;
 
 	/**
 	 * Launch the application.
@@ -31,7 +36,7 @@ public class NewDeckScreen {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					NewDeckScreen window = new NewDeckScreen();
+					CreateDeckScreen window = new CreateDeckScreen();
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -43,8 +48,12 @@ public class NewDeckScreen {
 	/**
 	 * Create the application.
 	 */
-	public NewDeckScreen() {
+	public CreateDeckScreen() {
 		initialize();
+	}
+
+	public CreateDeckScreen(DeckManager deckManager){
+		this.deckManager = deckManager;
 	}
 
 	/**
