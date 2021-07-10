@@ -1,4 +1,4 @@
-package gui;
+package guiShell;
 
 import java.awt.EventQueue;  
 
@@ -10,6 +10,7 @@ import javax.swing.event.ListSelectionListener;
 
 import coreLogic.AppEnvironment;
 import coreObjects.Deck;
+import guiLogic.MainScreenLogic;
 
 import javax.swing.JLabel;
 import javax.swing.JButton;
@@ -29,6 +30,7 @@ import javax.swing.JScrollPane;
 public class MainScreen{
 	
 	JFrame frame;
+	
 	/** JTable to hold any decks belonging to a user for this application */
 	JTable tableDecks;
 	/** AppEnvironment object, holds all non-gui objects necessary for an instance of MainScreen */
@@ -45,6 +47,8 @@ public class MainScreen{
 	JButton btnNewFlashCard;
 	/** JButton to create a new Deck */
 	JButton btnCreateDeck;
+	/** MainScreenLogic object to handle any logic concerned with Screen */
+	MainScreenLogic mainScreenLogic;
 	
 	
 	/**
@@ -70,7 +74,7 @@ public class MainScreen{
 		// TODO Implement!
 		super();
 		initialize();
-		this.appEnvironment = appEnvironment;
+		this.mainScreenLogic = new MainScreenLogic(appEnvironment);
 	}
 	
 	/**
@@ -111,7 +115,7 @@ public class MainScreen{
 	 * 
 	 */
 	public void createDecksTable() {
-		tableDecks = new JTable(decksTableDetails(), decksTableHeaders());
+		tableDecks = new JTable(mainScreenLogic.decksTableDetails(), mainScreenLogic.decksTableHeaders());
 		tableDecks.setBounds(7, 24, 253, 144);
 		JScrollPane sp = new JScrollPane(tableDecks);
 		sp.setBounds(7, 49, 394, 236);
@@ -151,29 +155,6 @@ public class MainScreen{
 
 		addOptionsPanelBtnListeners();
 	}
-
-	// ********************* Helpers for creating components *********************** // 
-
-	/** Finds and returns the column titles for tableDecks
-	 * 
-	 * @returns String[] array containing column titles for Deck details
-	 */
-	private String[] decksTableHeaders(){
-		return Deck.infoArrayHeaders();
-	}
-	
-	/** Finds and returns the row content for tableDecks
-	 * 
-	 * @returns String[][] nested array containing info on decks contained in this application's DeckManager
-	 */
-	private String[][] decksTableDetails(){
-		// TODO uncomment bellow when class fully implemented
-		// return appEnvironment.getDeckManager().deckCollectionInfo();
-		return new String[][] {
-			{"testName1", "3", "5"}, 
-			{"testName2", "4", "8"}, 
-		};
-	}
 	
 	// ******************** Adding Listeners to Components ************************* // 
 
@@ -181,24 +162,25 @@ public class MainScreen{
 	private void addOptionsPanelBtnListeners(){
 		btnEditDeck.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				editDeck();
+				mainScreenLogic.editDeck(chosenDeck);
 			}
 		});
 
 		btnNewFlashCard.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				newFlashCard();
+				mainScreenLogic.newQuiz(chosenDeck);
 			}
 		});	
 
 		btnCreateDeck.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				mainScreenLogic.createDeck();
 			}
 		});
 
 		btnStartQuiz.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				startQuiz();
+				mainScreenLogic.editFlashCard(chosenDeck);
 			}
 		});
 		
@@ -240,38 +222,5 @@ public class MainScreen{
 		int chosenRow = tableDecks.getSelectedRow();
 		String deckName = tableDecks.getModel().getValueAt(chosenRow,  0).toString();
 		chosenDeck = appEnvironment.getDeckManager().findDeck(deckName);
-	}
-	
-	/** Handles when a user wants to create a new FlashCard for the chosen Deck
-	 * <p>
-	 * Passes functionality off to AppEnvironment
-	 */
-	public void newFlashCard() {
-		// Creates a new edit FlashCard screen
-		// TODO remove lines bellow until Screen is fully implemented
-		// appEnvironment.newEditFlashCardScreen(null, chosenDeck, this);
-		// this.hide() 
-	}
-	
-	/** Handles when a user wants to start a new quiz for the chosen deck
-	 * <p>
-	 * Passes functionality off to AppEnvironment
-	 */
-	public void startQuiz() {
-		appEnvironment.newQuizzingScreen(chosenDeck);
-		// this.hide() // TODO remove until Screen is fully implemented
-	}
-	
-	/** Handles when a user wants to edit the chosen deck
-	 * <p>
-	 * Passes functionality off to AppEnvironment
-	 */
-	public void editDeck() {
-		appEnvironment.newEditDeckScreen(chosenDeck);
-		// this.hide() // TODO remove until Screen is fully implemented
-	}
-	
-	public void createDeck() {
-		// TODO implement
 	}
 }
