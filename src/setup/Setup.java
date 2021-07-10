@@ -8,9 +8,9 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
-import coreLogic.AppEnvironment;
-import coreObjects.User;
-import gui.MainScreen;
+import core.coreLogic.AppEnvironment;
+import core.coreObjects.User;
+import gui.guiShell.MainScreen;
 
 /** Class to start the Quiz Application
  * <p>
@@ -163,17 +163,6 @@ public class Setup {
 	public static boolean sessionExists(String sessionFilePath) {
 		File newFile = new File(sessionFilePath);
 		return newFile.exists();
-	}
-	
-	/** Handles the finishing of the setup of the application
-	 * <p>
-	 * Creates a new MainScreen
-	 * 	 
-	 * @param appEnvironment AppEnvironment object for the application
-	 */
-	public void onSetupFinished() {
-		MainScreen mainScreen = new MainScreen(appEnvironment);
-		//mainScreen.show(); // TODO remove later once Screen fully implemented
 	}
 	
 	/** Getter method for the AppEnvironment object for this Setup class
