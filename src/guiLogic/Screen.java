@@ -1,4 +1,4 @@
-package gui;
+package guiLogic;
 
 import java.awt.Color;
 import java.awt.event.WindowAdapter;
@@ -20,6 +20,9 @@ public abstract class Screen {
 	
 	/** Frame object for this screen **/
 	JFrame frame;
+
+	/** Screen object that is the parent Screen for this Screen */
+	Screen parent;
 	
 	/** Empty Constructor for Screen, used until extensions of Screen need full constructor
 	 * 
@@ -88,4 +91,28 @@ public abstract class Screen {
         	 quit();
          }
 	}
+
+	/** Handles showing of a new screen, and hides this screen
+     * 
+     * @param newScreen Screen object to be switched to
+     */
+    public void swtichToNewScreen(Screen newScreen){
+        newScreen.show();
+        // this.hide();
+    }
+
+	/** Handles switching back to a parent screen 
+	 * 
+	 */
+	public void switchToParent(){
+		if (parent == null){
+			throw new IllegalStateException("This screen doesn't have a parent screen to switch to!");
+		}
+		else{
+			parent.show();
+			this.hide();
+		}
+	}
+
+
 }
