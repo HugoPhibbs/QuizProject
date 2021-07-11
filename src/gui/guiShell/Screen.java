@@ -5,6 +5,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
@@ -126,14 +127,17 @@ public abstract class Screen {
 		}
 	}
 
+	public abstract void displayError(String msg);
+	// TODO make displayError concrete, ie have an attribute in all Screen implemenations called textPaneError?
+
 	/**
-	 * Disables or enables a JButton according to parameter setting
+	 * Disables or enables a JComponent according to parameter setting
 	 * 
-	 * @param btn     JButton to be enabled or not
-	 * @param setting Boolean value for if a JButton is to be enabled or not
+	 * @param component JComponent to be enabled or not
+	 * @param setting   Boolean value for if a JButton is to be enabled or not
 	 */
-	public void toggleButton(JButton btn, boolean setting) {
-		btn.setEnabled(setting);
+	public void toggleComponent(JComponent component, boolean setting) {
+		component.setEnabled(setting);
 	}
 
 }
