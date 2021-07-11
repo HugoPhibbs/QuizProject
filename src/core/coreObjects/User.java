@@ -5,7 +5,8 @@ import java.io.Serializable;
 import core.coreLogic.CheckValidInput;
 import core.stats.UserStats;
 
-/** Represents a user of the quiz application.
+/**
+ * Represents a user of the quiz application.
  * 
  * @author Hugo Phibbs
  * @author Tom Berry
@@ -14,38 +15,43 @@ import core.stats.UserStats;
  *
  */
 public class User implements Serializable {
-	
+
 	/** Name of a User */
 	private String name;
 	/** UserStats for this User */
 	private UserStats userStats = new UserStats();
-	
-	/** Constructor for a User object
+
+	/**
+	 * Constructor for a User object
 	 * 
 	 * @param name String for the name of a User
 	 */
 	public User(String name) {
 		setName(name);
 	}
-	
-	/** Constructor for a User object
+
+	/**
+	 * Constructor for a User object
 	 * 
 	 */
 	public User() {
-		/* TODO may want to remove other constructor if we aren't using a Users name in the application -
-		 * add then remove name attribute as it won't be used
+		/*
+		 * TODO may want to remove other constructor if we aren't using a Users name in
+		 * the application - add then remove name attribute as it won't be used
 		 */
 	}
-	
-	/** Getter method for the name of a user
+
+	/**
+	 * Getter method for the name of a user
 	 * 
 	 * @return String for the name of a User
 	 */
 	public String getName() {
 		return name;
 	}
-	
-	/** Setter method for the name of a user
+
+	/**
+	 * Setter method for the name of a user
 	 * <p>
 	 * Checks if a name is valid, otherwise throws an exception
 	 * 
@@ -55,13 +61,13 @@ public class User implements Serializable {
 		if (!CheckValidInput.nameIsValid(name)) {
 			String msg = String.format(CheckValidInput.getVALID_NAME_REQUIREMENTS(), "User");
 			throw new IllegalArgumentException(msg);
-		}
-		else {
+		} else {
 			this.name = name;
 		}
 	}
 
-	/** Getter method for userStats
+	/**
+	 * Getter method for userStats
 	 * 
 	 * @return the userStats
 	 */
@@ -69,7 +75,8 @@ public class User implements Serializable {
 		return userStats;
 	}
 
-	/** Setter method for userStats
+	/**
+	 * Setter method for userStats
 	 * 
 	 * @param userStats the userStats to set
 	 */

@@ -2,8 +2,8 @@ package core.coreLogic;
 
 import java.io.Serializable;
 
-/** Class to containing methods to check if input 
- * from a user is valid 
+/**
+ * Class to containing methods to check if input from a user is valid
  * 
  * @author Hugo Phibbs
  * @author Tom Berry
@@ -12,35 +12,34 @@ import java.io.Serializable;
  *
  */
 public class CheckValidInput implements Serializable {
-	
-	/** String for the requirements for a valid name, has a template field %s so 
-	 * Programmers can specify which object doesn't currently have a valid name  */
-	private static String VALID_NAME_REQUIREMENTS = 
-			"%s name must have no more than 2 consequtive white spaces"
-			+ "and be between 1 and 15 characters long"
-			+ " with no numbers";
 
-	/** Checks if an inputed name is valid.
-	 * Name must have no more than 2 consecutive white spaces, and be between 1 and 15 chars long
+	/**
+	 * String for the requirements for a valid name, has a template field %s so
+	 * Programmers can specify which object doesn't currently have a valid name
+	 */
+	private static String VALID_NAME_REQUIREMENTS = "%s name must have no more than 2 consequtive white spaces"
+			+ "and be between 1 and 15 characters long" + " with no numbers";
+
+	/**
+	 * Checks if an inputed name is valid. Name must have no more than 2 consecutive
+	 * white spaces, and be between 1 and 15 chars long
 	 * 
 	 * @param name String for the name to be checked
 	 * @return boolean if the inputed name is valid
 	 */
 	public static boolean nameIsValid(String name) {
-				
+
 		boolean prevWhiteSpace = false;
-		
-		for (int i=0; i < name.length(); i++) {
+
+		for (int i = 0; i < name.length(); i++) {
 			if (name.charAt(i) == ' ') {
 				if (prevWhiteSpace) {
 					return false;
 				}
 				prevWhiteSpace = true;
-			}
-			else if (!Character.isLetter(name.charAt(i))) {
+			} else if (!Character.isLetter(name.charAt(i))) {
 				return false;
-			}
-			else {
+			} else {
 				prevWhiteSpace = false;
 			}
 		}
@@ -50,7 +49,8 @@ public class CheckValidInput implements Serializable {
 		return true;
 	}
 
-	/** Getter method for VALID_NAME_REQUIREMENTS
+	/**
+	 * Getter method for VALID_NAME_REQUIREMENTS
 	 * 
 	 * @return String for VALID_NAME_REQUIREMENTS
 	 */

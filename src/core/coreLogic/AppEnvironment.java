@@ -5,14 +5,15 @@ import java.util.ArrayList;
 
 import core.coreObjects.Deck;
 import core.coreObjects.User;
-import gui.guiLogic.Screen;
 import gui.guiShell.CreateDeckScreen;
 import gui.guiShell.EditDeckScreen;
 import gui.guiShell.EditFlashCardScreen;
 import gui.guiShell.QuizzingScreen;
+import gui.guiShell.Screen;
 
-/** Class to manage the environment of the application. 
- * Holds all the objects necessary for the application to run
+/**
+ * Class to manage the environment of the application. Holds all the objects
+ * necessary for the application to run
  * <p>
  * Is the class that is saved under serialization for saving a session
  * 
@@ -28,8 +29,9 @@ public class AppEnvironment implements Serializable {
 	private DeckManager deckManager = new DeckManager();
 	/** User object for this AppEnvironment */
 	private User user = new User();
-	
-	/** Constructor for AppEnvironment
+
+	/**
+	 * Constructor for AppEnvironment
 	 * <p>
 	 * Includes a parameter for a User
 	 * 
@@ -39,7 +41,8 @@ public class AppEnvironment implements Serializable {
 		this.user = user;
 	}
 
-	/** Returns the DeckManager for this AppEnvironment.
+	/**
+	 * Returns the DeckManager for this AppEnvironment.
 	 * 
 	 * @return the deckManager
 	 */
@@ -47,7 +50,8 @@ public class AppEnvironment implements Serializable {
 		return deckManager;
 	}
 
-	/** Sets the DeckManager for this AppEnvironment.
+	/**
+	 * Sets the DeckManager for this AppEnvironment.
 	 * 
 	 * @param deckManager the deckManager to set
 	 */
@@ -55,7 +59,8 @@ public class AppEnvironment implements Serializable {
 		this.deckManager = deckManager;
 	}
 
-	/** Getter method for a User
+	/**
+	 * Getter method for a User
 	 * 
 	 * @return the user
 	 */
@@ -63,13 +68,13 @@ public class AppEnvironment implements Serializable {
 		return user;
 	}
 
-	/** Setter method for a User
+	/**
+	 * Setter method for a User
 	 * 
 	 * @param user the user to set
 	 */
 	public void setUser(User user) {
 		this.user = user;
 	}
-	
-	
+
 }

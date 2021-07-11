@@ -1,6 +1,6 @@
 package tests;
 
-import static org.junit.jupiter.api.Assertions.*; 
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -12,13 +12,14 @@ import org.junit.jupiter.api.Test;
 import core.coreObjects.Deck;
 import core.coreObjects.FlashCard;
 
-/** JUnit testing class for Deck
+/**
+ * JUnit testing class for Deck
  * 
  * @author Hugo Phibbs
  *
  */
 class DeckTest {
-	
+
 	Deck testDeck1;
 	Deck testDeck2;
 	Deck testDeck3;
@@ -30,7 +31,7 @@ class DeckTest {
 	FlashCard testCard6;
 	FlashCard testCard7;
 	FlashCard testCard8;
-	
+
 	@BeforeEach
 	public void setUpBeforeClass() throws Exception {
 		testDeck1 = new Deck("testNameOne", "");
@@ -45,13 +46,13 @@ class DeckTest {
 		testCard7 = new FlashCard("M", "N");
 		testCard8 = new FlashCard("A", "B");
 	}
-	
+
 	@SuppressWarnings("unlikely-arg-type")
 	@Test
 	public void equalsTest() {
 		testDeck1.addFlashCard(testCard1);
 		testDeck2.addFlashCard(testCard1);
-		
+
 		// Test with two equal decks
 		assertEquals(true, testDeck1.equals(testDeck2));
 		// Test with two in-equal decks
@@ -59,7 +60,7 @@ class DeckTest {
 		// Test with another object type
 		assertEquals(false, testDeck1.equals("testString"));
 	}
-	
+
 	@Test
 	public void addFlashCardTest() {
 		// Test normally
@@ -67,48 +68,50 @@ class DeckTest {
 		// Test with a duplicate card already in deck
 		assertEquals(false, testDeck1.addFlashCard(testCard8));
 	}
-	
+
 	@Test
 	public void containsTest() {
 		testDeck1.addFlashCard(testCard1);
 		testDeck1.addFlashCard(testCard2);
-		
+
 		// With a card already in the deck, with contains(Deck)
 		assertEquals(true, testDeck1.contains(testCard1));
 		// With a card that is not in the deck
 		assertEquals(false, testDeck1.contains(testCard3));
 	}
-	
+
 	@Test
 	public void flashCardsToQuizTest() {
 		testCard1.setNextReviewDate(LocalDate.of(2021, 6, 25));
 		testCard2.setNextReviewDate(LocalDate.of(2021, 6, 26));
-		
+
 		// Test with a deck with more than max new cards
 		testCard6.setNextReviewDate(LocalDate.of(2021, 6, 27));
-		FlashCard[] testCardArray1 = {testCard1, testCard2, testCard3,  testCard4, testCard5, testCard6, testCard7};
+		FlashCard[] testCardArray1 = { testCard1, testCard2, testCard3, testCard4, testCard5, testCard6, testCard7 };
 		testDeck1.setFlashCards(new ArrayList<FlashCard>(Arrays.asList(testCardArray1)));
 		ArrayList<FlashCard> cardsToQuiz = testDeck1.flashCardsToQuiz(3, LocalDate.of(2021, 6, 26));
 		assertEquals(5, cardsToQuiz.size());
-		
+
 		// Test with a deck with no new cards
-		FlashCard[] testCardArray2 = {testCard1, testCard2, testCard6};
+		FlashCard[] testCardArray2 = { testCard1, testCard2, testCard6 };
 		testDeck1.setFlashCards(new ArrayList<FlashCard>(Arrays.asList(testCardArray2)));
 		assertEquals(2, testDeck1.flashCardsToQuiz(5, LocalDate.of(2021, 6, 26)).size());
-	
+
 		// Test with an empty deck
 		assertEquals(0, testDeck2.flashCardsToQuiz(5, null).size());
 	}
-	
+
 	@Test
 	public void setNameTest() {
 		// Check that it throws an error with an invalid name
-		assertThrows(IllegalArgumentException.class, () -> {testDeck1.setName("G  erman");});
+		assertThrows(IllegalArgumentException.class, () -> {
+			testDeck1.setName("G  erman");
+		});
 		// Check that it works normally with a correct name
 		testDeck1.setName("testNameTwo");
 		assertEquals("testNameTwo", testDeck1.getName());
 	}
-	
+
 	@Test
 	public void editFlashCardTest() {
 		// Test Normally
@@ -117,10 +120,15 @@ class DeckTest {
 		// Test with a new front text that matches a FlashCard already in a Deck
 		testDeck1.addFlashCard(testCard2);
 		testDeck1.addFlashCard(testCard3);
-		assertThrows(IllegalArgumentException.class, () -> {testDeck1.editFlashCard(testCard3, "C", "D");}); // collides with testCard2
-		// Test with a new front text and back text that is same as the flashCard being edited
+		assertThrows(IllegalArgumentException.class, () -> {
+			testDeck1.editFlashCard(testCard3, "C", "D");
+		}); // collides with testCard2
+		// Test with a new front text and back text that is same as the flashCard being
+		// edited
 		assertEquals(true, testDeck1.editFlashCard(testCard2, "C", "D"));
 		// Test with a flashCard that isn't contained in a Deck
-		assertThrows(IllegalArgumentException.class, () -> {testDeck1.editFlashCard(testCard4, "", "");});
+		assertThrows(IllegalArgumentException.class, () -> {
+			testDeck1.editFlashCard(testCard4, "", "");
+		});
 	}
 }

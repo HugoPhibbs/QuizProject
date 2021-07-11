@@ -16,19 +16,19 @@ import core.coreObjects.Deck;
 import core.coreObjects.FlashCard;
 
 class FlashCardQuizTest {
-	
+
 	Deck testDeck1;
 	FlashCardQuiz testFlashCardQuiz;
 	FlashCard testCard1;
 	FlashCard testCard2;
 	FlashCard testCard3;
 	FlashCard testCard4;
-	
+
 	@BeforeEach
 	void setUp() throws Exception {
 		// Create a test deck
 		Deck testDeck1 = new Deck("testNameOne", "");
-		
+
 		// Create testFlashCards
 		testCard1 = new FlashCard("A", "B");
 		testCard2 = new FlashCard("C", "D");
@@ -36,21 +36,23 @@ class FlashCardQuizTest {
 		testCard4 = new FlashCard("G", "H");
 		testCard1.setNextReviewDate(LocalDate.now()); // Will be due
 		testCard2.setNextReviewDate(LocalDate.now().plusDays(10)); // Won't be due
-		ArrayList<FlashCard> testCardsToQuiz = new ArrayList<FlashCard>(Arrays.asList(testCard1, testCard2, testCard3, testCard4));
-		testDeck1.setFlashCards(testCardsToQuiz); 
-		
+		ArrayList<FlashCard> testCardsToQuiz = new ArrayList<FlashCard>(
+				Arrays.asList(testCard1, testCard2, testCard3, testCard4));
+		testDeck1.setFlashCards(testCardsToQuiz);
+
 		// Create testFlashCardQuiz
 		testFlashCardQuiz = new FlashCardQuiz(testDeck1, null);
-		
-		// Set FlashCards to quiz directly to avoid randomness with Deck.cardsToQuiz(int)
+
+		// Set FlashCards to quiz directly to avoid randomness with
+		// Deck.cardsToQuiz(int)
 		testFlashCardQuiz.setCardsToQuiz(testCardsToQuiz);
-		
+
 		// Set the initialQueue to avoid using startQuiz(int)
 		testFlashCardQuiz.setInitialQueue(testCardsToQuiz);
 	}
 
 	@Test
-	void startQuizTest() { 
+	void startQuizTest() {
 
 	}
 
@@ -70,28 +72,28 @@ class FlashCardQuizTest {
 
 	@Test
 	void quizIsFinishedTest() {
-	
+
 	}
 
 	@Test
 	void updateCurrentFlashCardTest() {
-		
+
 		// Test with a non-empty initial queue
 		testFlashCardQuiz.updateCurrentFlashCard();
 		assertEquals(testCard1, testFlashCardQuiz.getCurrentFlashCard());
-		
+
 		// Test with an empty initial queue and a partially filled again and final queue
 		testFlashCardQuiz.setFinalQueue(new ArrayList<FlashCard>(Arrays.asList(testCard3, testCard4)));
 		testFlashCardQuiz.setInitialQueue(new ArrayList<FlashCard>()); // empty
 		testFlashCardQuiz.setAgainQueue(new ArrayList<FlashCard>(Arrays.asList(testCard4)));
 		testFlashCardQuiz.updateCurrentFlashCard();
 		assertEquals(testCard3, testFlashCardQuiz.getCurrentFlashCard());
-		
+
 		// Test with an empty final and initialQueue, and a non-empty againQueue
 		testFlashCardQuiz.setFinalQueue(new ArrayList<FlashCard>());
 		testFlashCardQuiz.updateCurrentFlashCard();
 		assertEquals(testCard4, testFlashCardQuiz.getCurrentFlashCard());
-		
+
 		// Test with all empty queues
 		testFlashCardQuiz.setAgainQueue(new ArrayList<FlashCard>());
 		testFlashCardQuiz.updateCurrentFlashCard();
@@ -101,41 +103,41 @@ class FlashCardQuizTest {
 	@Test
 	void flipCurrentFlashCardTest() {
 		testFlashCardQuiz.setCurrentFlashCard(testCard1);
-		
+
 		// Test with current side being FRONT
 		assertEquals(testCard1.getBackText(), testFlashCardQuiz.flipCurrentFlashCard());
-		
+
 		// Test with current side being BACK
 		assertEquals(testCard1.getFrontText(), testFlashCardQuiz.flipCurrentFlashCard());
 	}
-	
+
 	@Test
 	void flashCardOkTest() {
 		testFlashCardQuiz.setCurrentFlashCard(testCard1);
 		testFlashCardQuiz.setFinalQueue(new ArrayList<FlashCard>(Arrays.asList(testCard1, testCard3)));
-		
+
 		// Test with the currentQueue being finalQueue
 		testFlashCardQuiz.setCurrentQueue("FINAL");
 		testFlashCardQuiz.setCurrentFlashCard(testCard4);
 		Queue<FlashCard> finalQueueExpected = new LinkedList<FlashCard>(testFlashCardQuiz.getFinalQueue());
 		testFlashCardQuiz.flashCardOk();
 		assertEquals(finalQueueExpected, testFlashCardQuiz.getFinalQueue());
-		
+
 		// Test with currentQueue being initialQueue
 		testFlashCardQuiz.setCurrentQueue("INITIAL");
 		testFlashCardQuiz.setCurrentFlashCard(testCard4);
 		testFlashCardQuiz.flashCardOk(); // testCard4 is new
 		finalQueueExpected.add(testCard4);
 		assertEquals(finalQueueExpected, testFlashCardQuiz.getFinalQueue());
-		
+
 		// Test with currentQueue being againQueue and a card that is due
 		testFlashCardQuiz.setAgainQueue(new ArrayList<FlashCard>(Arrays.asList(testCard1, testCard3)));
 		testFlashCardQuiz.setCurrentQueue("AGAIN");
 		testFlashCardQuiz.setCurrentFlashCard(testCard1);
 		testFlashCardQuiz.flashCardOk();
 		finalQueueExpected.add(testCard1);
-		assertEquals(finalQueueExpected, testFlashCardQuiz.getFinalQueue()); //testCard1 is due
-		
+		assertEquals(finalQueueExpected, testFlashCardQuiz.getFinalQueue()); // testCard1 is due
+
 		// Test with a card that is not new, and the current queue isn't againQueue
 		testFlashCardQuiz.setCurrentFlashCard(testCard1);
 		testFlashCardQuiz.setCurrentQueue("INITIAL");
@@ -143,7 +145,7 @@ class FlashCardQuizTest {
 		assertEquals(finalQueueExpected, testFlashCardQuiz.getFinalQueue());
 		// TODO add tests for when stats is implemented
 	}
-	
+
 	@Test
 	void setCurrentQueueTest() {
 		// Test normally
@@ -156,9 +158,11 @@ class FlashCardQuizTest {
 		Queue<FlashCard> initialQueue = testFlashCardQuiz.getInitialQueue();
 		testFlashCardQuiz.setCurrentQueue("INITIAL");
 		assertEquals(initialQueue, testFlashCardQuiz.getCurrentQueue());
-		
+
 		// Test with invalid input
-		assertThrows(IllegalArgumentException.class, () -> {testFlashCardQuiz.setCurrentQueue("again");});
+		assertThrows(IllegalArgumentException.class, () -> {
+			testFlashCardQuiz.setCurrentQueue("again");
+		});
 	}
 
 }
