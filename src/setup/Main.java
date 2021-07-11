@@ -1,8 +1,10 @@
 package setup;
 
+import gui.guiLogic.SetupScreenLogic;
 import gui.guiShell.SetupScreen;
 
-/** Class to start the application
+/**
+ * Class to start the application
  * <p>
  * Creates a new SetupScreen and and Setup object to setup the application
  * 
@@ -12,15 +14,17 @@ import gui.guiShell.SetupScreen;
  *
  */
 public class Main {
-	
-	
-	/** Method to start the application
+
+	/**
+	 * Method to start the application
 	 * <p>
 	 * Creates a new setupScreen and then shows it to a user
+	 * 
 	 * @param args String[] arguments, none needed to start the application
 	 */
 	public static void main(String[] args) {
-		SetupScreen setupScreen = new SetupScreen();
+		SetupScreenLogic setupScreenLogic = new SetupScreenLogic();
+		setupScreenLogic.createScreen();
 		// setupScreen.show(); // TODO Remove later when setupScreen implements Screen
 	}
 
