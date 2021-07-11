@@ -10,6 +10,7 @@ import javax.swing.JButton;
 import javax.swing.JTextPane;
 
 import core.coreLogic.DeckManager;
+import gui.guiLogic.CreateDeckScreenLogic;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -27,8 +28,10 @@ public class CreateDeckScreen {
 	private JTextField textFieldName;
 	/** TextField for entering the description of a new Deck */
 	private JTextField textFieldDescription;
-	/** DeckManager object for this application */
-	private DeckManager deckManager;
+	/** TextPane to display an error to a */
+	private JTextPane textPaneErrorMsg;
+	/** CrateDeckScreenLogic object to manipulate this Screen */
+	private CreateDeckScreenLogic logic;
 
 	/**
 	 * Launch the application.
@@ -37,7 +40,7 @@ public class CreateDeckScreen {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					CreateDeckScreen window = new CreateDeckScreen();
+					CreateDeckScreen window = new CreateDeckScreen(null);
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -49,12 +52,9 @@ public class CreateDeckScreen {
 	/**
 	 * Create the application.
 	 */
-	public CreateDeckScreen() {
+	public CreateDeckScreen(CreateDeckScreenLogic createDeckScreenLogic) {
+		this.logic = createDeckScreenLogic;
 		initialize();
-	}
-
-	public CreateDeckScreen(DeckManager deckManager) {
-		this.deckManager = deckManager;
 	}
 
 	/**
@@ -65,6 +65,7 @@ public class CreateDeckScreen {
 		frame.setBounds(100, 100, 450, 300);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
+		frame.setVisible(true);
 
 		createDetailsPanel();
 		createContinuePanel();
@@ -115,11 +116,11 @@ public class CreateDeckScreen {
 		panelContinue.add(btnCreateDeck);
 		btnCreateDeck.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				createDeck();
+				logic.createDeck();
 			}
 		});
 
-		JTextPane textPaneErrorMsg = new JTextPane();
+		textPaneErrorMsg = new JTextPane();
 		textPaneErrorMsg.setBounds(17, 13, 156, 93);
 		panelContinue.add(textPaneErrorMsg);
 	}
@@ -134,7 +135,25 @@ public class CreateDeckScreen {
 		frame.getContentPane().add(lblTitle);
 	}
 
-	private void createDeck() {
-		// TODO implement
+	public void displayError(String msg) {
+		textPaneErrorMsg.setText(msg);
+	}
+
+	/**
+	 * Finds the description text entered for a new Deck
+	 * 
+	 * @return String for the description of a new Decks
+	 */
+	public String descriptionText() {
+		return textFieldDescription.getText();
+	}
+
+	/**
+	 * Finds the name entered for a new Deck
+	 * 
+	 * @return String for the name of a new Deck
+	 */
+	public String nameText() {
+		return textFieldName.getText();
 	}
 }
