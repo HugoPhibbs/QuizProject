@@ -87,12 +87,17 @@ public class MainScreenLogic extends ScreenLogic {
 	public String[][] decksTableDetails() {
 		// TODO uncomment bellow when class fully implemented
 		return appEnvironment.getDeckManager().deckCollectionInfo();
-		// return new String[][] { { "testName1", "3", "5" }, { "testName2", "4", "8" },
+		// return new String[][] { { "testName1", "3", "5" }, { "testName2", "4", "8" }
 		// };
 	}
 
-	// ********************** Methods to swtich the current screen
-	// ************************ //
+	// ***************** Methods to swtich the current screen ******************* //
+	/**
+	 * Refreshes the content of MainScreen, does this by re-initializing tableDecks
+	 */
+	public void refresh() {
+		screen.createDecksTable();
+	}
 
 	/**
 	 * Handles creating a new screen to create a flash card

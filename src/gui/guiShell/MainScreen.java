@@ -57,6 +57,10 @@ public class MainScreen {
 	 */
 	JButton btnCreateDeck;
 	/**
+	 * JButton to refresh the screen
+	 */
+	JButton btnRefresh;
+	/**
 	 * MainScreenLogic object to handle any logic concerned with Screen
 	 */
 	MainScreenLogic logic;
@@ -170,6 +174,10 @@ public class MainScreen {
 		panelOptions.add(btnStartQuiz);
 		btnStartQuiz.setEnabled(false); // Disabled until a deck is selected
 
+		btnRefresh = new JButton("Refresh");
+		btnRefresh.setBounds(12, 40, 90, 25);
+		panelOptions.add(btnRefresh);
+
 		addOptionsPanelBtnListeners();
 	}
 
@@ -199,6 +207,11 @@ public class MainScreen {
 		btnStartQuiz.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				logic.newQuiz();
+			}
+		});
+		btnRefresh.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				logic.refresh();
 			}
 		});
 
@@ -236,5 +249,4 @@ public class MainScreen {
 	public void toggleButton(JButton btn, boolean setting) {
 		btn.setEnabled(setting);
 	}
-
 }
