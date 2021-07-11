@@ -1,6 +1,6 @@
 package gui.guiShell;
 
-import java.awt.EventQueue; 
+import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -12,15 +12,18 @@ import javax.swing.event.DocumentListener;
 import gui.guiLogic.SetupScreenLogic;
 
 import javax.swing.JButton;
+import javax.swing.JComponent;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Color;
 import javax.swing.JPanel;
 
-/** Screen for setting up the application
+/**
+ * Screen for setting up the application
  * <p>
- * Handles selecting the working/saving directory of this application and either creating
- * or loading a previous saved session for a name of a user.
+ * Handles selecting the working/saving directory of this application and either
+ * creating or loading a previous saved session for a name of a user.
  * 
  * @author Hugo Phibbs
  *
@@ -28,52 +31,57 @@ import javax.swing.JPanel;
 public class SetupScreen {
 
 	private JFrame frame;
-	
-	/** JTextField for entering the working directory of this application */
-	private JTextField textFieldEnterDirectory;
-	/** JButton to close from this screen and progress to the main screen, only progresses if it is permissable */
-	private JButton btnContinue;
-	/** JBUtton to load a session for the name of a user */
-	private JButton btnLoadSession;
-	/** JButton to create a session for the name of a user */
-	private JButton btnCreateSession;
-	/** JTextField to enter the name of a user */
-	private JTextField textFieldEnterName;
-	/** JLabel to display any errors to a user */
-	private JLabel lblConfigSessionError;
-	/** JPanel to contain components relating to entering a user name for a session */
-	private JPanel panelEnterName;
-	/** JPanel to contain components relating to entering a directory for loading or creating a session */
-	private JPanel panelEnterDirectory;
-	/** JButton to enter a directory to create or load a session to */
-	private JButton btnEnterDirectory;
-
-	/** SetupScreenLogic class to handle any logic to do with this screen */
-	private SetupScreenLogic logic;
-
 
 	/**
-	 * Launch the application.
+	 * JTextField for entering the working directory of this application
 	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					SetupScreen window = new SetupScreen();
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+	private JTextField textFieldEnterDirectory;
+	/**
+	 * JButton to close from this screen and progress to the main screen, only
+	 * progresses if it is permissable
+	 */
+	private JButton btnContinue;
+	/**
+	 * JBUtton to load a session for the name of a user
+	 */
+	private JButton btnLoadSession;
+	/**
+	 * JButton to create a session for the name of a user
+	 */
+	private JButton btnCreateSession;
+	/**
+	 * JTextField to enter the name of a user
+	 */
+	private JTextField textFieldEnterName;
+	/**
+	 * JLabel to display any errors to a user
+	 */
+	private JLabel lblConfigSessionError;
+	/**
+	 * JPanel to contain components relating to entering a user name for a session
+	 */
+	private JPanel panelEnterName;
+	/**
+	 * JPanel to contain components relating to entering a directory for loading or
+	 * creating a session
+	 */
+	private JPanel panelEnterDirectory;
+	/**
+	 * JButton to enter a directory to create or load a session to
+	 */
+	private JButton btnEnterDirectory;
+
+	/**
+	 * SetupScreenLogic class to handle any logic to do with this screen
+	 */
+	private SetupScreenLogic logic;
 
 	/**
 	 * Create the application.
 	 */
-	public SetupScreen() {
+	public SetupScreen(SetupScreenLogic setupScreenLogic) {
 		initialize();
-		logic = new SetupScreenLogic(this);
+		this.logic = setupScreenLogic;
 	}
 
 	/**
@@ -86,11 +94,11 @@ public class SetupScreen {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		frame.setVisible(true);
-	
+
 		createComponents();
 	}
 
-	// ******************** Creating Components  ******************* //
+	// ******************** Creating Components ******************* //
 
 	/** Calls methods to create components for this Screen */
 	private void createComponents() {
@@ -100,19 +108,21 @@ public class SetupScreen {
 		createEnterDirectoryPanel();
 	}
 
-	/** Creates and fills and Panel with components relating to entering a 
-	 * working directory for this application */
-	private void createEnterDirectoryPanel(){
+	/**
+	 * Creates and fills and Panel with components relating to entering a working
+	 * directory for this application
+	 */
+	private void createEnterDirectoryPanel() {
 		panelEnterDirectory = new JPanel();
 		panelEnterDirectory.setBounds(24, 46, 365, 75);
 		frame.getContentPane().add(panelEnterDirectory);
 		panelEnterDirectory.setLayout(null);
-		
+
 		textFieldEnterDirectory = new JTextField();
 		textFieldEnterDirectory.setBounds(43, 22, 286, 22);
 		panelEnterDirectory.add(textFieldEnterDirectory);
 		textFieldEnterDirectory.setColumns(10);
-		
+
 		JLabel lblEnterDirectory = new JLabel("Please enter a working directory!");
 		lblEnterDirectory.setBounds(91, 0, 186, 15);
 		panelEnterDirectory.add(lblEnterDirectory);
@@ -125,18 +135,21 @@ public class SetupScreen {
 		addBtnEnterDirectoryListener();
 	}
 
-	/** Creates and fill a Panel with components relating to creating or loading a session */
-	private void createConfigSessionPanel(){
+	/**
+	 * Creates and fill a Panel with components relating to creating or loading a
+	 * session
+	 */
+	private void createConfigSessionPanel() {
 		JPanel panelConfigSession = new JPanel();
 		panelConfigSession.setBounds(49, 191, 352, 33);
 		frame.getContentPane().add(panelConfigSession);
 		panelConfigSession.setLayout(null);
-		
+
 		btnCreateSession = new JButton("Create Session");
 		btnCreateSession.setBounds(12, 12, 139, 17);
 		panelConfigSession.add(btnCreateSession);
 		btnCreateSession.setEnabled(false);
-		
+
 		btnLoadSession = new JButton("Load Session");
 		btnLoadSession.setBounds(173, 12, 148, 17);
 		panelConfigSession.add(btnLoadSession);
@@ -145,34 +158,38 @@ public class SetupScreen {
 		addConfigSessionBtnListeners();
 	}
 
-	/** Creates and fills Panel for entering a user's name into to load or create a session */
-	private void createEnterNamePanel(){
+	/**
+	 * Creates and fills Panel for entering a user's name into to load or create a
+	 * session
+	 */
+	private void createEnterNamePanel() {
 		panelEnterName = new JPanel();
 		panelEnterName.setBounds(127, 132, 139, 58);
 		frame.getContentPane().add(panelEnterName);
 		panelEnterName.setLayout(null);
-		
+
 		JLabel lblEnterName = new JLabel("Please enter your name!");
 		lblEnterName.setBounds(12, 0, 129, 23);
 		panelEnterName.add(lblEnterName);
 		lblEnterName.setFont(new Font("Tahoma", Font.PLAIN, 11));
-		
+
 		textFieldEnterName = new JTextField();
 		textFieldEnterName.setBounds(12, 24, 119, 22);
 		panelEnterName.add(textFieldEnterName);
 		textFieldEnterName.setColumns(10);
+		textFieldEnterName.setEnabled(false);
 
 		addTextFieldEnterNameListener();
 	}
-	
+
 	/** Creates miscelanous components that aren't contained in a Panel */
-	private void createMiscComponents(){
+	private void createMiscComponents() {
 		JLabel lblWelcome = new JLabel("Hello, welcome to Quizzer!");
 		lblWelcome.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		lblWelcome.setBounds(85, 7, 263, 46);
 		frame.getContentPane().add(lblWelcome);
-		
-		lblConfigSessionError= new JLabel();
+
+		lblConfigSessionError = new JLabel();
 		lblConfigSessionError.setForeground(Color.RED);
 		lblConfigSessionError.setFont(new Font("Dialog", Font.PLAIN, 7));
 		lblConfigSessionError.setBounds(166, 222, 139, 16);
@@ -187,10 +204,11 @@ public class SetupScreen {
 
 	// ****************** Adding Listeners to Components ********************* //
 
-	/** Adds an action listener to btnEnterDirectory 
+	/**
+	 * Adds an action listener to btnEnterDirectory
 	 * 
-	*/
-	private void addBtnEnterDirectoryListener(){
+	 */
+	private void addBtnEnterDirectoryListener() {
 		btnEnterDirectory.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				logic.directoryEntered(textFieldEnterDirectory.getText());
@@ -198,13 +216,15 @@ public class SetupScreen {
 		});
 	}
 
-	/** Adds Action Listeners to buttons relating to loading and creatig a session 
+	/**
+	 * Adds Action Listeners to buttons relating to loading and creatig a session
 	 * 
-	*/
-	private void addConfigSessionBtnListeners(){
+	 */
+	private void addConfigSessionBtnListeners() {
 		btnCreateSession.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				logic.createSession();;
+				logic.createSession();
+				;
 			}
 		});
 
@@ -215,9 +235,10 @@ public class SetupScreen {
 		});
 	}
 
-	/** Adds an Action Listener to btnContinue 
+	/**
+	 * Adds an Action Listener to btnContinue
 	 * 
-	*/
+	 */
 	private void addBtnContinueListener() {
 		btnContinue.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -226,68 +247,91 @@ public class SetupScreen {
 		});
 	}
 
-	/** Adds a Document listener to textFieldEnterName
+	/**
+	 * Adds a Document listener to textFieldEnterName
 	 * 
 	 */
-	private void addTextFieldEnterNameListener(){
+	private void addTextFieldEnterNameListener() {
 		textFieldEnterName.getDocument().addDocumentListener(new DocumentListener() {
 			public void changedUpdate(DocumentEvent e) {
-			 	logic.nameChanged();
+				logic.nameChanged();
 			}
+
 			public void removeUpdate(DocumentEvent e) {
 				logic.nameChanged();
 			}
+
 			public void insertUpdate(DocumentEvent e) {
 				logic.nameChanged();
 			}
-	    });
+		});
 	}
 
-	// *********************** Methods to control this screen ************************* //
+	// ****************** Methods to control this screen ******************** //
 
-	/** Returns the user name currently entered to load a session for 
+	/**
+	 * Returns the user name currently entered to load a session for
 	 * 
-	 * @return String for the user name currently entered 
+	 * @return String for the user name currently entered
 	 */
-	public String userName(){
+	public String userName() {
 		return textFieldEnterName.getText();
 	}
 
-	/** Displays a message in the label for displaying errors about
-	 * configurating a session
+	/**
+	 * Displays a message in the label for displaying errors about configurating a
+	 * session
 	 * 
 	 * @param msg String for the error message to be displayed
 	 */
-	public void displayConfigSessionError(String msg){
+	public void displayConfigSessionError(String msg) {
 		lblConfigSessionError.setText(msg);
 	}
-	
-	/** Toggles btnContinue to be enabled or not
+
+	/**
+	 * Getter method for btnCreateSession
 	 * 
-	 * @param setting boolean value for whether btnContinue should be enabled or not
+	 * @return JButton object for creating a new session
 	 */
-	public void toggleBtnContinue(boolean setting){
-		btnContinue.setEnabled(setting);
+	public JButton getBtnCreateSession() {
+		return btnCreateSession;
 	}
 
-	/** Toggles btnLoadSession to be enabled or not
+	/**
+	 * Getter method for btnLoadSession
 	 * 
-	 * @param setting boolean value for whether btnLoadSession should be enabled or not
+	 * @return JButton obejct for loading a new session
 	 */
-	public void toggleBtnLoadSession(boolean setting){
-		btnLoadSession.setEnabled(setting);
-	}
-	
-	/** Toggles btnCreateSession to be enabled or not
-	 * 
-	 * @param setting boolean value for whether btnCreateSession should be enabled or not
-	 */
-	public void toggleBtnCreateSession(boolean setting){
-		btnCreateSession.setEnabled(setting);
+	public JButton getBtnLoadSession() {
+		return btnLoadSession;
 	}
 
+	/**
+	 * Getter method for btnContinue
+	 * 
+	 * @return JButton to continue setting up an application
+	 */
+	public JButton getBtnContinue() {
+		return btnContinue;
+	}
 
-	public void dispose(){
+	/**
+	 * Getter method for textFieldEnterName
+	 * 
+	 * @return JTextField object for entering a name to configure a session
+	 */
+	public JTextField getTextFieldEnterName() {
+		return textFieldEnterName;
+	}
+
+	// *********** Methods to be implemented by Screen ******************* //
+
+	public void dispose() {
 		frame.dispose();
 	}
+
+	public void toggleComponent(JComponent component, boolean setting) {
+		component.setEnabled(setting);
+	}
+
 }
