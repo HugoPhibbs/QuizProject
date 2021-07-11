@@ -2,7 +2,6 @@ package gui.guiLogic;
 
 import java.io.FileNotFoundException;
 
-import gui.guiShell.MainScreen;
 import gui.guiShell.SetupScreen;
 import setup.Setup;
 
@@ -29,6 +28,7 @@ public class SetupScreenLogic extends ScreenLogic {
 	 */
 	public void createScreen() {
 		screen = new SetupScreen(this);
+		// screen.show();
 	}
 
 	// *********************** Handling Listener Events ************************* //
