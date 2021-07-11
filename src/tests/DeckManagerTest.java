@@ -62,7 +62,9 @@ class DeckManagerTest {
 		Deck testDeck4 = new Deck("testNameFour", "");
 
 		assertEquals(true, testDeckManager.addDeck(testDeck4));
-		assertEquals(false, testDeckManager.addDeck(testDeck1)); // testDeck1 already added
+		assertThrows(IllegalArgumentException.class, () -> {
+			testDeckManager.addDeck(testDeck1);
+		}); // testDeck1 already added
 	}
 
 	@Test
@@ -94,7 +96,9 @@ class DeckManagerTest {
 		assertEquals(true, testDeckManager.createDeck("testNameFour", ""));
 
 		// Test with a deck name that clashes with one already added
-		assertEquals(false, testDeckManager.createDeck("testNameOne", ""));
+		assertThrows(IllegalArgumentException.class, () -> {
+			testDeckManager.createDeck("testNameOne", "");
+		});
 
 		// Test with a deck name that is invalid
 		assertThrows(IllegalArgumentException.class, () -> {

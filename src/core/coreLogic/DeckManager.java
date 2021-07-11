@@ -56,14 +56,18 @@ public class DeckManager implements Serializable {
 	 * 
 	 * @param deck Deck to be added to the collection
 	 * @return boolean if deck was added or not
+	 * @throws IllegalArgumentException if: <br>
+	 *                                  - if the deck that is wanted to be added has
+	 *                                  the same name as a prexisting deck in this
+	 *                                  collection
 	 */
-	private boolean addDeck(Deck deck) {
+	public boolean addDeck(Deck deck) throws IllegalArgumentException {
 		if (containsDeck(deck)) {
-			// Deck is already contained in deckManager
-			return false;
+			throw new IllegalArgumentException("Another deck has the same name as this new deck!");
 		} else {
 			return deckCollection.add(deck);
 		}
+
 	}
 
 	/**
