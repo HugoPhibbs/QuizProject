@@ -8,11 +8,8 @@ import core.coreLogic.DeckManager;
 import core.coreLogic.FlashCardQuiz;
 import core.coreObjects.Deck;
 import core.coreObjects.User;
-import gui.guiShell.CreateDeckScreen;
 import gui.guiShell.EditDeckScreen;
-import gui.guiShell.EditFlashCardScreen;
 import gui.guiShell.MainScreen;
-import gui.guiShell.QuizzingScreen;
 import gui.guiShell.Screen;
 
 /**
@@ -113,7 +110,7 @@ public class MainScreenLogic extends ScreenLogic {
 		EditFlashCardScreenLogic editFlashCardScreenLogic = new EditFlashCardScreenLogic(null, chosenDeck, deckManager,
 				this);
 		editFlashCardScreenLogic.createScreen();
-		editFlashCardScreenLogic.switchScreens();
+		// editFlashCardScreenLogic.switchScreens();
 	}
 
 	/**
@@ -142,8 +139,9 @@ public class MainScreenLogic extends ScreenLogic {
 	}
 
 	public void createDeck() {
-		CreateDeckScreen createDeckScreen = new CreateDeckScreen(deckManager);
-		// switchScreens(createDeckScreen);
+		CreateDeckScreenLogic createDeckScreenLogic = new CreateDeckScreenLogic(this, deckManager);
+		createDeckScreenLogic.createScreen();
+		// createDeckScreenLogic.switchScreens();
 	}
 
 	/**
