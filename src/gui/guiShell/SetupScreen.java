@@ -80,8 +80,9 @@ public class SetupScreen {
 	 * Create the application.
 	 */
 	public SetupScreen(SetupScreenLogic setupScreenLogic) {
-		initialize();
+		super();
 		this.logic = setupScreenLogic;
+		initialize();
 	}
 
 	/**
