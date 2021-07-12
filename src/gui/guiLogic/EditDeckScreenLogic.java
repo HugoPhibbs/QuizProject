@@ -7,7 +7,6 @@ import core.coreLogic.DeckManager;
 import core.coreObjects.Deck;
 import core.coreObjects.FlashCard;
 import gui.guiShell.EditDeckScreen;
-import gui.guiShell.Screen;
 
 /**
  * ScreenLogic class to control an EditDeckScreen object
@@ -50,6 +49,27 @@ public class EditDeckScreenLogic extends ScreenLogic implements Updateable, Upda
         screen.show();
     }
 
+    /**
+     * Acts on recieving an update from an Updater object Instead of refereshing
+     * affected components, it creates a brand new screen, as this is simpler than
+     * configuring all of the components of and EditFlashCardScreen instance to be
+     * asnew
+     */
+    @Override
+    public void receivedUpdate() {
+        // TODO Auto-generated method stub
+        screen.quit();
+        createScreen();
+    }
+
+    @Override
+    public void update() {
+        // TODO Auto-generated method stub
+        updateable.receivedUpdate();
+    }
+
+    // ******************* Handling Listener Events ******************** //
+
     public void flashCardSelected(ListSelectionEvent lse) {
         // Bellow lines ensures that changing selection of a row counts as one change,
         // not two
@@ -71,12 +91,73 @@ public class EditDeckScreenLogic extends ScreenLogic implements Updateable, Upda
         }
     }
 
-    public void editFlashCard() {
-        // TODO implement
+    /**
+     * Handles pressing of btnDeleteDeck for the screen
+     */
+    public void deleteDeck() {
+        deckManager.removeDeck(deck);
+        screen.quit();
+    }
 
-        // Create a new editFlashCardScreen
+    /**
+     * Handles pressing of btnContinue for the screen
+     */
+    public void onContinue() {
+        // TODO implement!
+        try {
+            editDeckName();
+            screen.quit();
+            update();
+        } catch (Exception e) {
+            screen.displayError(e.getMessage());
+        }
+
+    }
+
+    /**
+     * Handles editting the name of the deck that is currently being editted.
+     */
+    private void editDeckName() {
+        deckManager.renameDeck(deckName(), enteredDeckName());
+    }
+
+    /**
+     * Finds the text that is currently entered in textFielEnterName for the Screen
+     * that this class is controlling
+     * 
+     * @return String as described
+     */
+    private String enteredDeckName() {
+        return screen.getTextFieldName().getText();
+    }
+
+    // ******************* Methods for Managing FlashCards ******************* //
+
+    /**
+     * Handles pressing of btnEditFlashCard for the screen
+     */
+    public void editFlashCard() {
         // When the FlashCard is changed, call updatePanelFlashCards()
-        EditFlashCardScreenLogic editFlashCardScreenLogic = new EditFlashCardScreenLogic(chosenFlashCard, deck,
+        newEditFlashCardScreen(chosenFlashCard);
+    }
+
+    /**
+     * Handles pressing of btnAddFlashCard for the screen
+     */
+    public void addFlashCard() {
+        newEditFlashCardScreen(null);
+    }
+
+    /**
+     * Creates a new EditFlashCardScreen object for the parameter flashCard.
+     * <p>
+     * If a new flashCard is wanted to be created, flashCard should be null
+     * 
+     * @param flashCard FlashCard object that is to have an EditFlashCardScreen
+     *                  created for
+     */
+    private void newEditFlashCardScreen(FlashCard flashCard) {
+        EditFlashCardScreenLogic editFlashCardScreenLogic = new EditFlashCardScreenLogic(this, flashCard, deck,
                 deckManager, this);
         editFlashCardScreenLogic.createScreen();
     }
@@ -89,29 +170,35 @@ public class EditDeckScreenLogic extends ScreenLogic implements Updateable, Upda
         screen.updatePanelFlashCards();
     }
 
-    public void onContinue() {
-        // TODO implement!
+    // **************** Helper methods *********************** //
 
-        updateable.receivedUpdate();
+    /**
+     * Finds the name of the deck that is currently being editted
+     * 
+     * @return String for the name of the deck that is currently being editted.
+     */
+    public String deckName() {
+        return deck.getName();
     }
 
-    public void deleteDeck() {
-        // TODO implement
+    /**
+     * Finds and returns the content to be shown in tableFlashCards for the Screen
+     * <p>
+     * Gets a nested array representation of all the FlashCards in the deck that is
+     * currently being editted
+     * 
+     * @return String[][] array containing info as described
+     */
+    public String[][] flashCardsTableDetails() {
+        return deck.flashCardsTableArray();
     }
 
-    public void addFlashCard() {
-        // TODO implement
-    }
-
-    @Override
-    public void receivedUpdate() {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public void update() {
-        // TODO Auto-generated method stub
-
+    /**
+     * Finds and returns the column headers for tableFlashCards for the Screen
+     * 
+     * @return Stringp[] array as described
+     */
+    public String[] flashCardsTableHeaders() {
+        return FlashCard.infoArrayHeaders();
     }
 }

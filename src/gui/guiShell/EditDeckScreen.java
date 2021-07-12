@@ -10,6 +10,7 @@ import javax.swing.JLabel;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 
+import java.awt.Container;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JTextField;
@@ -18,8 +19,6 @@ import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import core.coreLogic.DeckManager;
-import core.coreObjects.Deck;
 import gui.guiLogic.EditDeckScreenLogic;
 
 /**
@@ -40,6 +39,8 @@ public class EditDeckScreen {
 	private JTextField textFieldName;
 	/** JTextField where a user can enter and edit the description of a Deck */
 	private JTextField textFieldDescription;
+	/** Text pane to display any errors that occur while editing a Deck */
+	private JTextPane textPaneErrorMsg;
 	/**
 	 * JPanel to hold components relating to displaying FlashCards contained in a
 	 * Deck
@@ -131,7 +132,11 @@ public class EditDeckScreen {
 		lblFlashCards.setBounds(309, 13, 86, 16);
 		panelFlashCards.add(lblFlashCards);
 
-		tableFlashCards = new JTable();
+		createTableFlashCards();
+	}
+
+	public void createTableFlashCards() {
+		tableFlashCards = new JTable(logic.flashCardsTableDetails(), logic.flashCardsTableHeaders());
 		tableFlashCards.setBounds(12, 39, 718, 441);
 
 		JScrollPane sp = new JScrollPane(tableFlashCards);
@@ -182,7 +187,7 @@ public class EditDeckScreen {
 		lblName.setBounds(12, 13, 124, 16);
 		panelDeckDetails.add(lblName);
 
-		textFieldName = new JTextField();
+		textFieldName = new JTextField(logic.deckName());
 		textFieldName.setBounds(138, 10, 146, 22);
 		panelDeckDetails.add(textFieldName);
 		textFieldName.setColumns(10);
@@ -211,7 +216,7 @@ public class EditDeckScreen {
 		btnFinish.setBounds(129, 90, 103, 25);
 		panelFinish.add(btnFinish);
 
-		JTextPane textPaneErrorMsg = new JTextPane();
+		textPaneErrorMsg = new JTextPane();
 		textPaneErrorMsg.setBounds(12, 13, 220, 64);
 		panelFinish.add(textPaneErrorMsg);
 
@@ -224,7 +229,7 @@ public class EditDeckScreen {
 
 	/** Create Miscelaneous components that don't belong in any panelr */
 	private void createMiscComponents() {
-		JLabel lblTitle = new JLabel("Editing <deckName> ");
+		JLabel lblTitle = new JLabel(logic.deckName());
 		lblTitle.setBounds(341, 60, 138, 28);
 		frame.getContentPane().add(lblTitle);
 	}
@@ -317,6 +322,16 @@ public class EditDeckScreen {
 		return panelFlashCards;
 	}
 
+	/**
+	 * Getter method for textFieldName
+	 * 
+	 * @return JTextField object for textFieldName
+	 */
+	public JTextField getTextFieldName() {
+		return textFieldName;
+	}
+
+	// ******************************************************************
 	// Remove methods bellow once screen is extended by this class.
 
 	/**
@@ -325,6 +340,10 @@ public class EditDeckScreen {
 	 */
 	public void show() {
 		frame.setVisible(true);
+	}
+
+	public void displayError(String msg) {
+		textPaneErrorMsg.setText(msg);
 	}
 
 	/**
@@ -337,15 +356,17 @@ public class EditDeckScreen {
 		component.setEnabled(setting);
 	}
 
+	public void clearContainer(Container container) {
+		container.removeAll();
+		container.revalidate();
+		container.repaint();
+	}
+
 	/**
-	 * Removes and refreshes all the components of a panel Useful for clearing a
-	 * panel to prepare it for other uses
+	 * Disposes of the Screen's frame.
 	 * 
-	 * @param panel JPanel that is to be cleared
 	 */
-	public void clearPanel(JPanel panel) {
-		panel.removeAll();
-		panel.revalidate();
-		panel.repaint();
+	public void quit() {
+		frame.dispose();
 	}
 }
