@@ -228,15 +228,23 @@ public class DeckManager implements Serializable {
 	 * The current deck that is selected is placed at the front of the array for
 	 * ease of fuse
 	 * <p>
+	 * Only displays the name of a Deck
+	 * <p>
 	 * Used by GUI
 	 * 
 	 * @param currentDeck Deck currently chosen to add a FlashCard to or edit a
 	 *                    FlashCard
+	 * @return String[] containing the names of each deck in this collection
 	 */
-	public Deck[] deckArray(Deck currentDeck) {
+	public String[] deckNameArray(Deck currentDeck) {
 		int chosenDeckIndex = deckCollection.indexOf(currentDeck);
 		Collections.swap(deckCollection, 0, chosenDeckIndex);
-		return (Deck[]) deckCollection.toArray();
+
+		String[] deckNameArray = new String[size()];
+		for (int i = 0; i < size(); i++) {
+			deckNameArray[i] = deckCollection.get(i).getName();
+		}
+		return deckNameArray;
 	}
 
 	/**
