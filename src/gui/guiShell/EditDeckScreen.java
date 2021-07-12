@@ -93,17 +93,26 @@ public class EditDeckScreen {
 	 * Initialize the contents of the frame.
 	 */
 	protected void initialize() {
+		createFrame();
+		createComponents();
+	}
+
+	/**
+	 * Creates the frame for this screen
+	 */
+	public void createFrame() {
 		frame = new JFrame();
 		frame.getContentPane().setLayout(null);
 		frame.setBounds(100, 100, 900, 900);
 		frame.getContentPane().setLayout(null);
-
-		createComponents();
 	}
 
 	// ******************** Creating Components ******************* //
 
-	private void createComponents() {
+	/**
+	 * Creates the components for this screen
+	 */
+	public void createComponents() {
 		createFlashCardsPanel();
 		createFlashCardOptionsPanel();
 		createFinishPanel();
@@ -329,6 +338,15 @@ public class EditDeckScreen {
 	 */
 	public JTextField getTextFieldName() {
 		return textFieldName;
+	}
+
+	/**
+	 * Getter method for the frame of this screen
+	 * 
+	 * @return JFrame for this screen
+	 */
+	public JFrame getFrame() {
+		return frame;
 	}
 
 	// ******************************************************************
