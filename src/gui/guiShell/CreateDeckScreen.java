@@ -156,4 +156,23 @@ public class CreateDeckScreen {
 	public String nameText() {
 		return textFieldName.getText();
 	}
+
+	// Remove methods bellow once Screen has been implemented
+
+	/**
+	 * Makes the screen visible to the user.
+	 * 
+	 */
+	public void show() {
+		frame.setVisible(true);
+	}
+
+	/**
+	 * Disposes of the Screen's frame.
+	 * 
+	 */
+	public void quit() {
+		frame.dispose();
+	}
+
 }
