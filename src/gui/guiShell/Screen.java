@@ -1,6 +1,7 @@
 package gui.guiShell;
 
 import java.awt.Color;
+import java.awt.Container;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
@@ -9,7 +10,6 @@ import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-
 import setup.Setup;
 
 /**
@@ -43,6 +43,8 @@ public abstract class Screen {
 		frame.getContentPane().setBackground(new Color(255, 222, 173));
 		setFrameCharacteristics();
 	}
+
+	public abstract void createFrame();
 
 	/** Sets the characteristics of the frame that are common to all screens. */
 	private void setFrameCharacteristics() {
@@ -143,15 +145,16 @@ public abstract class Screen {
 	}
 
 	/**
-	 * Removes and refreshes all the components of a panel Useful for clearing a
-	 * panel to prepare it for other uses
+	 * Clears an Implementation of Container, this is so the Container implemenation
+	 * can be used again with different components. Useful for objects such as
+	 * JFrames and JPanels
 	 * 
-	 * @param panel JPanel that is to be cleared
+	 * @param container Container to be cleared
 	 */
-	public void clearPanel(JPanel panel) {
-		panel.removeAll();
-		panel.revalidate();
-		panel.repaint();
+	public void clearContainer(Container container) {
+		container.removeAll();
+		container.revalidate();
+		container.repaint();
 	}
 
 }
