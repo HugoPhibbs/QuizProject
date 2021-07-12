@@ -182,6 +182,25 @@ public class Deck implements Serializable {
 		}
 	}
 
+	/**
+	 * Creates a String[][] array providing a tabular represenation of the
+	 * FlashCards that are in this Deck.
+	 * <p>
+	 * Each nested String[] array is the result of calling getText() on each of the
+	 * FlashCards in this Deck.
+	 * 
+	 * @return String[][] representation of the FlashCards in this Deck
+	 */
+	public String[][] flashCardsTableArray() {
+		String[][] flashCardsTableArray = new String[size()][2];
+
+		for (int i = 0; i < size(); i++) {
+			FlashCard currFlashCard = flashCards.get(i);
+			flashCardsTableArray[i] = currFlashCard.infoArray();
+		}
+		return flashCardsTableArray;
+	}
+
 	// ********************** METHODS FOR QUIZZING ***************************** //
 
 	/**
@@ -255,8 +274,7 @@ public class Deck implements Serializable {
 		return dueFlashCards(currentDate).size();
 	}
 
-	// ********************************* GETTERS AND SETTERS
-	// ************************************** //
+	// ********************* GETTERS AND SETTERS ***************************** //
 
 	/**
 	 * Method that returns the size of a deck.

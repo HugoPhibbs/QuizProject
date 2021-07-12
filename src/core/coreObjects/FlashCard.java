@@ -45,36 +45,7 @@ public class FlashCard implements Serializable {
 		this.backText = backText;
 	}
 
-	/**
-	 * Method to decide if this card is due to be be quizzed.
-	 * <p>
-	 * Always returns false if a card hasn't been seen. As this functionality is
-	 * already covered in Deck.cardsToQuiz(int)
-	 * 
-	 * @param currentDate LocalDate object for the current date
-	 * @return boolean for if a card should be quizzed or not
-	 */
-	public boolean isDue(LocalDate currentDate) {
-		if (isNew()) {
-			return false;
-		} else if (currentDate.equals(nextReviewDate)) {
-			// Card is due
-			return true;
-		} else {
-			// Card is over due
-			return (currentDate.isAfter(nextReviewDate));
-		}
-	}
-
-	/**
-	 * Method that determines if a FlashCard is new or not- i.e. hasn't been seen
-	 * before
-	 * 
-	 * @return boolean value if a FlashCard is new or not
-	 */
-	public boolean isNew() {
-		return (nextReviewDate == null && timesReviewed == 0);
-	}
+	// **************** Methods to check for equality ****************** //
 
 	/**
 	 * Determines if an object is equal to this FlashCard object.
@@ -107,6 +78,8 @@ public class FlashCard implements Serializable {
 	public boolean hasText(String frontText, String backText) {
 		return (this.frontText.equals(frontText)) && (this.backText.equals(backText));
 	}
+
+	// **************** Methods for Quizzing ********************* //
 
 	/**
 	 * Sets the next review date of a flash card based on how many times that it has
@@ -148,6 +121,38 @@ public class FlashCard implements Serializable {
 	}
 
 	/**
+	 * Method to decide if this card is due to be be quizzed.
+	 * <p>
+	 * Always returns false if a card hasn't been seen. As this functionality is
+	 * already covered in Deck.cardsToQuiz(int)
+	 * 
+	 * @param currentDate LocalDate object for the current date
+	 * @return boolean for if a card should be quizzed or not
+	 */
+	public boolean isDue(LocalDate currentDate) {
+		if (isNew()) {
+			return false;
+		} else if (currentDate.equals(nextReviewDate)) {
+			// Card is due
+			return true;
+		} else {
+			// Card is over due
+			return (currentDate.isAfter(nextReviewDate));
+		}
+	}
+
+	/**
+	 * Method that determines if a FlashCard is new or not- i.e. hasn't been seen
+	 * before
+	 * 
+	 * @return boolean value if a FlashCard is new or not
+	 */
+	public boolean isNew() {
+		return (nextReviewDate == null && timesReviewed == 0);
+	}
+
+	// ************** Methods for representing FlashCards ***************** //
+	/**
 	 * Returns a String representation of a FlashCard object
 	 * 
 	 */
@@ -155,6 +160,30 @@ public class FlashCard implements Serializable {
 	public String toString() {
 		return String.format("FlashCard: (Front: %s; Back: %s)", frontText, backText);
 	}
+
+	/**
+	 * Provides an Array representation of this FlashCard in the format {frontText,
+	 * backText}
+	 *
+	 * @return String[] array representation of this FlashCard
+	 */
+	public String[] infoArray() {
+		return new String[] { frontText, backText };
+	}
+
+	/**
+	 * Provides an Array represenation details of the content that is returned by
+	 * infoArray
+	 * <p>
+	 * Intended to be used to form column titles, hence the method name
+	 * 
+	 * @return String[] representation the format of the result of infoArray()
+	 */
+	public static String[] infoArrayHeaders() {
+		return new String[] { "Front Text", "Back Text" };
+	}
+
+	// ****************** Getter and Setter Methods ********************* //
 
 	/**
 	 * Getter method for the front text of a flash card
