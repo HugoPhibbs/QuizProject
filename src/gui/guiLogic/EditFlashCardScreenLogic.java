@@ -4,7 +4,6 @@ import core.coreLogic.DeckManager;
 import core.coreObjects.Deck;
 import core.coreObjects.FlashCard;
 import gui.guiShell.EditFlashCardScreen;
-import gui.guiShell.Screen;
 
 /**
  * Handles logic for EditFlashCardScreen
@@ -36,6 +35,11 @@ public class EditFlashCardScreenLogic extends ScreenLogic implements Updater {
 	 * FlashCard object that is being editted
 	 */
 	FlashCard currentFlashCard;
+	/**
+	 * Dependent Updateable object to be updated when a FlashCard is finished being
+	 * editted
+	 */
+	Updateable updateable;
 
 	/**
 	 * Constructor for EditFlashCardScreenLogic
@@ -52,9 +56,10 @@ public class EditFlashCardScreenLogic extends ScreenLogic implements Updater {
 	 * @param editFlashCardScreen EditFlashCardScreen object that is being
 	 *                            controlled by this class.
 	 */
-	public EditFlashCardScreenLogic(FlashCard currentFlashCard, Deck currentDeck, DeckManager deckManager,
-			ScreenLogic parentLogic) {
+	public EditFlashCardScreenLogic(Updateable updateable, FlashCard currentFlashCard, Deck currentDeck,
+			DeckManager deckManager, ScreenLogic parentLogic) {
 		super(parentLogic);
+		this.updateable = updateable;
 		this.currentFlashCard = currentFlashCard;
 		this.currentDeck = currentDeck;
 		this.deckManager = deckManager;
@@ -68,6 +73,14 @@ public class EditFlashCardScreenLogic extends ScreenLogic implements Updater {
 	public void createScreen() {
 		this.screen = new EditFlashCardScreen(this);
 		screen.show();
+	}
+
+	/**
+	 * Updates dependent Updateable objects
+	 */
+	@Override
+	public void update() {
+		updateable.receivedUpdate();
 	}
 
 	// *************** Logic methods for EditFlashCardScreen ************ //
@@ -157,7 +170,7 @@ public class EditFlashCardScreenLogic extends ScreenLogic implements Updater {
 				editFlashCard();
 			}
 			screen.quit();
-			// screen.switchToParent()
+			update();
 		}
 		// Catch any exceptions to do with executing above code
 		catch (Exception e) {
@@ -182,21 +195,30 @@ public class EditFlashCardScreenLogic extends ScreenLogic implements Updater {
 		currentDeck.editFlashCard(currentFlashCard, screen.frontText(), screen.backText());
 	}
 
+	/**
+	 * Finds the front text of the FlashCard that is being editted
+	 * 
+	 * @return String for the front text of currentFlashCard
+	 */
 	public String currentFlashCardFrontText() {
 		return currentFlashCard.getFrontText();
 	}
 
+	/**
+	 * Finds the back text of the FlashCard that is being edited
+	 * 
+	 * @return String for the back text of currentFlashCard
+	 */
 	public String currentFlashCardBackText() {
 		return currentFlashCard.getBackText();
 	}
 
+	/**
+	 * Getter method for isCreating
+	 * 
+	 * @return boolean value for isCreating
+	 */
 	public boolean getIsCreating() {
 		return isCreating;
-	}
-
-	@Override
-	public void update() {
-		// TODO Auto-generated method stub
-
 	}
 }
