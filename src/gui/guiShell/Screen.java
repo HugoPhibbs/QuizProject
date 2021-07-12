@@ -8,6 +8,7 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 
 import setup.Setup;
 
@@ -128,7 +129,8 @@ public abstract class Screen {
 	}
 
 	public abstract void displayError(String msg);
-	// TODO make displayError concrete, ie have an attribute in all Screen implemenations called textPaneError?
+	// TODO make displayError concrete, ie have an attribute in all Screen
+	// implemenations called textPaneError?
 
 	/**
 	 * Disables or enables a JComponent according to parameter setting
@@ -138,6 +140,18 @@ public abstract class Screen {
 	 */
 	public void toggleComponent(JComponent component, boolean setting) {
 		component.setEnabled(setting);
+	}
+
+	/**
+	 * Removes and refreshes all the components of a panel Useful for clearing a
+	 * panel to prepare it for other uses
+	 * 
+	 * @param panel JPanel that is to be cleared
+	 */
+	public void clearPanel(JPanel panel) {
+		panel.removeAll();
+		panel.revalidate();
+		panel.repaint();
 	}
 
 }
