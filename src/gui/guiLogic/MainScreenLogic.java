@@ -26,7 +26,7 @@ import gui.guiShell.Screen;
  * @version 10/7/21
  * @since 10/7/21
  */
-public class MainScreenLogic extends ScreenLogic {
+public class MainScreenLogic extends ScreenLogic implements Updateable {
 
 	/**
 	 * AppEnvironment object for this application
@@ -62,7 +62,7 @@ public class MainScreenLogic extends ScreenLogic {
 		this.deckManager = appEnvironment.getDeckManager();
 	}
 
-	protected void createScreen() {
+	public void createScreen() {
 		screen = new MainScreen(this);
 		// screen.show();
 	}
@@ -85,10 +85,7 @@ public class MainScreenLogic extends ScreenLogic {
 	 *          application's DeckManager
 	 */
 	public String[][] decksTableDetails() {
-		// TODO uncomment bellow when class fully implemented
 		return appEnvironment.getDeckManager().deckCollectionInfo();
-		// return new String[][] { { "testName1", "3", "5" }, { "testName2", "4", "8" }
-		// };
 	}
 
 	// ***************** Methods to swtich the current screen ******************* //
@@ -96,7 +93,8 @@ public class MainScreenLogic extends ScreenLogic {
 	 * Refreshes the content of MainScreen, does this by re-initializing tableDecks
 	 */
 	public void refresh() {
-		screen.createDecksTable();
+		screen.clearPanel(screen.getPanelViewDecks());
+		screen.fillTablePanel();
 	}
 
 	/**
@@ -139,7 +137,8 @@ public class MainScreenLogic extends ScreenLogic {
 	 * @param chosenDeck Deck object to be edited
 	 */
 	public void editDeck() {
-		EditDeckScreen editDeckScreen = new EditDeckScreen(chosenDeck, deckManager);
+		EditDeckScreenLogic editDeckScreenLogic = new EditDeckScreenLogic(this, this, deckManager, chosenDeck);
+		editDeckScreenLogic.createScreen();
 		// switchScreen(editDeckScreen);
 	}
 
@@ -150,15 +149,15 @@ public class MainScreenLogic extends ScreenLogic {
 	}
 
 	/**
-	 * Handles showing of a new screen, and hides this MainScreen
-	 * 
-	 * @param newScreen Screen object to be switched to
+	 * Updates panelDecks to have up to date information of decks. I.e. if a deck is
+	 * editted or deleted, a deck is created, or any other changes to Decks that
+	 * affect their name or size
 	 */
-	public void swtichScreens(Screen newScreen) {
-		newScreen.show();
-		// mainScreen.hide();
+	public void decksChanged() {
+		screen.fillTablePanel();
 	}
 
+	// TODO make this a general method in ScreenLogic?
 	/**
 	 * Finds the name of the currently chosen Deck from the deck
 	 * 
@@ -188,6 +187,12 @@ public class MainScreenLogic extends ScreenLogic {
 			screen.toggleButton(screen.getBtnEditDeck(), true);
 			screen.toggleButton(screen.getBtnNewFlashCard(), true);
 		}
+	}
+
+	@Override
+	public void receivedUpdate() {
+		// TODO Auto-generated method stub
+
 	}
 
 }
