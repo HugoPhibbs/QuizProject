@@ -47,6 +47,16 @@ class DeckTest {
 		testCard8 = new FlashCard("A", "B");
 	}
 
+	@Test
+	public void findFlashCardTest() {
+		// Test with a FlashCard that exists in a Deck
+		testDeck1.addFlashCard(testCard1);
+		assertEquals(testCard1, testDeck1.findFlashCard("A", "B"));
+		// Test with a FlashCard that doesn't exist in a Deck
+		assertEquals(null, testDeck1.findFlashCard("", ""));
+
+	}
+
 	@SuppressWarnings("unlikely-arg-type")
 	@Test
 	public void equalsTest() {
