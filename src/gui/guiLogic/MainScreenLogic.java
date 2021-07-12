@@ -94,7 +94,7 @@ public class MainScreenLogic extends ScreenLogic implements Updateable {
 	 */
 	public void refresh() {
 		screen.clearPanel(screen.getPanelViewDecks());
-		screen.fillTablePanel();
+		screen.updatePanelViewDecks();
 	}
 
 	/**
