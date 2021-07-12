@@ -132,4 +132,9 @@ class DeckManagerTest {
 			testDeckManager.changeFlashCardDeck(testCard4, "testNameOne", "testNameTwo");
 		});
 	}
+
+	@Test
+	public void deckNameArrayTest() {
+		fail("Not yet implemented!");
+	}
 }
