@@ -105,7 +105,17 @@ public class DeckManager implements Serializable {
 	 */
 	public boolean removeDeck(String deckName) {
 		Deck foundDeck = findDeck(deckName);
-		return (deckCollection.remove(foundDeck));
+		return (removeDeck(foundDeck));
+	}
+
+	/**
+	 * Removes a Deck from the collection of a DeckManager
+	 * 
+	 * @param deck Deck object to be removed
+	 * @return boolean if the deck was found and removed.
+	 */
+	public boolean removeDeck(Deck deck) {
+		return (deckCollection.remove(deck));
 	}
 
 	/**
@@ -254,11 +264,11 @@ public class DeckManager implements Serializable {
 	 *         collection
 	 */
 	public String[][] deckCollectionInfo() {
-		ArrayList<String[]> deckCollectionInfo = new ArrayList<String[]>();
-		for (Deck deck : deckCollection) {
-			deckCollectionInfo.add((String[]) deck.infoArray());
+		String[][] deckCollectionInfo = new String[size()][3];
+		for (int i = 0; i < size(); i++) {
+			deckCollectionInfo[i] = deckCollection.get(i).infoArray();
 		}
-		return deckCollectionInfo.toArray(new String[size()][3]);
+		return deckCollectionInfo;
 	}
 
 	/**
