@@ -1,15 +1,16 @@
 package gui.guiLogic;
 
 import core.coreLogic.FlashCardQuiz;
-import core.coreObjects.FlashCard;
 import gui.guiShell.QuizzingScreen;
 
-public class QuizzingScreenLogic {
+public class QuizzingScreenLogic extends ScreenLogic {
 
 	private FlashCardQuiz flashCardQuiz;
 	private QuizzingScreen screen;
 
-	public QuizzingScreenLogic(FlashCardQuiz flashCardQuiz, QuizzingScreen quizzingScreen) {
+	public QuizzingScreenLogic(FlashCardQuiz flashCardQuiz, QuizzingScreen quizzingScreen,
+			ScreenLogic parentScreenLogic) {
+		super(parentScreenLogic);
 		this.flashCardQuiz = flashCardQuiz;
 		this.screen = quizzingScreen;
 	}
@@ -28,5 +29,11 @@ public class QuizzingScreenLogic {
 
 	public void finishQuiz() {
 		// TODO implement
+	}
+
+	@Override
+	public void createScreen() {
+		// TODO Auto-generated method stub
+
 	}
 }
