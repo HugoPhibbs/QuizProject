@@ -3,7 +3,7 @@ package gui.guiLogic;
 import core.coreLogic.FlashCardQuiz;
 import gui.guiShell.QuizzingScreen;
 
-public class QuizzingScreenLogic extends ScreenLogic {
+public class QuizzingScreenLogic extends ScreenLogic implements Updater {
 
 	private FlashCardQuiz flashCardQuiz;
 	private QuizzingScreen screen;
@@ -33,6 +33,12 @@ public class QuizzingScreenLogic extends ScreenLogic {
 
 	@Override
 	public void createScreen() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void update() {
 		// TODO Auto-generated method stub
 
 	}
