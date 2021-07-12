@@ -1,7 +1,6 @@
 package setup;
 
 import gui.guiLogic.SetupScreenLogic;
-import gui.guiShell.SetupScreen;
 
 /**
  * Class to start the application
@@ -25,7 +24,6 @@ public class Main {
 	public static void main(String[] args) {
 		SetupScreenLogic setupScreenLogic = new SetupScreenLogic();
 		setupScreenLogic.createScreen();
-		// setupScreen.show(); // TODO Remove later when setupScreen implements Screen
 	}
 
 }
