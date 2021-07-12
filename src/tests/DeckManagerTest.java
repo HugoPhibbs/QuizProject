@@ -135,6 +135,16 @@ class DeckManagerTest {
 
 	@Test
 	public void deckNameArrayTest() {
-		fail("Not yet implemented!");
+		// Test with a deckManager with only one deck
+		testDeckManager.removeDeck(testDeck2);
+		String[] result = testDeckManager.deckNameArray(testDeck1);
+		assertEquals(1, result.length);
+		assertEquals("testNameOne", result[0]);
+		// Test with a deckManager with multiple decks
+		testDeckManager.addDeck(testDeck2);
+		testDeckManager.addDeck(testDeck3);
+		result = testDeckManager.deckNameArray(testDeck2);
+		assertEquals(3, result.length);
+		assertEquals(testDeck2.getName(), result[0]);
 	}
 }
