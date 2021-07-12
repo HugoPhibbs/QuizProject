@@ -30,7 +30,7 @@ public class CreateDeckScreenLogic extends ScreenLogic {
     }
 
     @Override
-    protected void createScreen() {
+    public void createScreen() {
         screen = new CreateDeckScreen(this);
         // screen.show();
 
@@ -43,8 +43,10 @@ public class CreateDeckScreenLogic extends ScreenLogic {
     public void createDeck() {
         try {
             deckManager.createDeck(screen.nameText(), screen.descriptionText());
+            screen.quit();
         } catch (IllegalArgumentException iae) {
             screen.displayError(iae.getMessage());
         }
     }
+
 }
