@@ -99,25 +99,45 @@
 - ScreenLogic children handle switching from different screens, Screen children just act like a shell, with no real state
 - attribute for the parent screen of a screen
 
+### Updateable
+
+- Interface for ScreenLogic classes that can have their states become out of date by actions on other screens.
+- A sort of observr in observer pattern
+- method recievedUpdate() to act on any updates from an Updater implementation
+
+### Updater
+
+- Interface for ScreenLogic classes can change the state of other ScreenLogic classes
+- A sort of subject in an observer pattern
+- method update() to notify any Updateable dependents
+
 ### EditFlashCardScreenLogic
 
 - Any logic to do with manipulating EditFlashCardScreen
+- Has a parameter updateable of type Updateable that is updated on finishing editing a deck
+- Implements Updater
 
 ### MainScreenLogic
 
 - Any logic to do with manipulating MainScreen
+- Implements Updateable
 
 ### EditDeckScreenLogic
 
 - Any logic to do with manipulating EditDeckScreen
+- Has a parameter updateable of type Updateable that is updated on finishing editing a deck
+- Implements both Updateable and Updater. As editFlashCardScreen can change it too
 
 ### QuizzingScreenLogic
 
 - Any logic to do with manipulating QuizzingScreen
+- Impements updater to update mainScreen at the end of quiz
 
 ### CreateDeckScreenLogic
 
 - Any logic to do with manipulating CreateDeckScreen
+- Has a parameter updateable of type Updateable that is updated on finishing editing a deck
+- Implements Updater
 
 ### SetupScreenLogic
 
