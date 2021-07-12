@@ -67,8 +67,24 @@ public class Deck implements Serializable {
 		return false;
 	}
 
-	// ******************************** METHODS FOR CRUD OF FLASHCARDS
-	// ******************************
+	// ******************* METHODS FOR CRUD OF FLASHCARDS ******************* //
+
+	/**
+	 * Returns the FlashCard object that has text matching the parameters frontText
+	 * or backText
+	 * 
+	 * @param frontText String for the front text of a FlashCard
+	 * @param backText  String for the back text of a FlashCard
+	 * @return FlashCard object if one was found matching, otherwise null
+	 */
+	public FlashCard findFlashCard(String frontText, String backText) {
+		for (FlashCard flashCard : flashCards) {
+			if (flashCard.hasText(frontText, backText)) {
+				return flashCard;
+			}
+		}
+		return null;
+	}
 
 	/**
 	 * Checks if a deck contains a given FlashCard object
@@ -104,14 +120,17 @@ public class Deck implements Serializable {
 	 * text as the new flashCard is the same.
 	 * 
 	 * @param flashCard FlashCard object to be added to a deck
-	 * @return boolean if a flashCard was added or not, false if deck already
-	 *         contains a FlashCard identical to flashCard
+	 * @return boolean if a flashCard was added or not,
+	 * @throws IllegalArgumentException if:<br>
+	 *                                  a FlashCard already exists in Deck that is
+	 *                                  the same as flashCard (the one wanting to be
+	 *                                  added)
 	 */
-	public boolean addFlashCard(FlashCard flashCard) {
+	public boolean addFlashCard(FlashCard flashCard) throws IllegalArgumentException {
 		if (!contains(flashCard)) {
 			return (flashCards.add(flashCard));
 		} else {
-			return false;
+			throw new IllegalArgumentException("A FlashCard in this Deck matches this new FlashCard!");
 		}
 	}
 
@@ -163,8 +182,7 @@ public class Deck implements Serializable {
 		}
 	}
 
-	// ******************************** METHODS FOR QUIZZING
-	// *************************************************
+	// ********************** METHODS FOR QUIZZING ***************************** //
 
 	/**
 	 * Returns the FlashCards that a user is to be quizzed on.
