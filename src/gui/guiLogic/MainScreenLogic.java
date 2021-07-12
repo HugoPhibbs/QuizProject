@@ -93,7 +93,7 @@ public class MainScreenLogic extends ScreenLogic implements Updateable {
 	 * Refreshes the content of MainScreen, does this by re-initializing tableDecks
 	 */
 	public void refresh() {
-		screen.clearPanel(screen.getPanelViewDecks());
+		screen.clearContainer(screen.getPanelViewDecks());
 		screen.updatePanelViewDecks();
 	}
 
@@ -110,8 +110,8 @@ public class MainScreenLogic extends ScreenLogic implements Updateable {
 	 */
 	public void createFlashCard() {
 		// TODO use chosenDeck!
-		EditFlashCardScreenLogic editFlashCardScreenLogic = new EditFlashCardScreenLogic(null, chosenDeck, deckManager,
-				this);
+		EditFlashCardScreenLogic editFlashCardScreenLogic = new EditFlashCardScreenLogic(this, null, chosenDeck,
+				deckManager, this);
 		editFlashCardScreenLogic.createScreen();
 		// editFlashCardScreenLogic.switchScreens();
 	}
@@ -189,10 +189,16 @@ public class MainScreenLogic extends ScreenLogic implements Updateable {
 		}
 	}
 
+	/**
+	 * Creates an Entirely new MainScreen for this Logic class. Easier to do it this
+	 * way instead of reseting all the buttons and necessary components in
+	 * MainScreen
+	 */
 	@Override
 	public void receivedUpdate() {
 		// TODO Auto-generated method stub
-
+		screen.quit();
+		createScreen();
 	}
 
 }

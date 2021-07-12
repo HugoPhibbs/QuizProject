@@ -7,11 +7,9 @@ import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-
-import core.coreLogic.AppEnvironment;
-import core.coreObjects.Deck;
 import gui.guiLogic.MainScreenLogic;
 
+import java.awt.Container;
 import javax.swing.JLabel;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
@@ -92,20 +90,27 @@ public class MainScreen {
 	}
 
 	/**
-	 * Initialize the contents of the frame.
+	 * Creates the frame for this Screen
 	 */
-	protected void initialize() {
+	public void createFrame() {
+		// TODO @Override
 		frame = new JFrame();
 		frame.setBounds(100, 100, 720, 492);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		frame.setVisible(true);
+	}
 
+	/**
+	 * Initialize the contents of the frame.
+	 */
+	protected void initialize() {
+		createFrame();
 		createComponents();
 	}
 
 	/** Calls methods to create components for this Screen */
-	private void createComponents() {
+	public void createComponents() {
 		createTablePanel();
 		createOptionsPanel();
 	}
@@ -250,6 +255,10 @@ public class MainScreen {
 		return tableDecks;
 	}
 
+	public JFrame getFrame() {
+		return frame;
+	}
+
 	// *************** Methods to remove once Screen implemented ****** //
 	public void toggleButton(JButton btn, boolean setting) {
 		btn.setEnabled(setting);
@@ -262,8 +271,25 @@ public class MainScreen {
 	 * @param panel JPanel that is to be cleared
 	 */
 	public void clearPanel(JPanel panel) {
-		panel.removeAll();
-		panel.revalidate();
-		panel.repaint();
+		clearContainer(panel);
 	}
+
+	/**
+	 * Disposes of the Screen's frame.
+	 * 
+	 */
+	public void quit() {
+		frame.dispose();
+	}
+
+	public void clearContainer(Container container) {
+		container.removeAll();
+		container.revalidate();
+		container.repaint();
+	}
+
+	public void clearFrame(JFrame frame) {
+		clearContainer(frame);
+	}
+
 }
