@@ -33,7 +33,7 @@ public abstract class ScreenLogic {
      * <p>
      * Allows a user to initialize the value of screen for this class.
      */
-    protected abstract void createScreen();
+    public abstract void createScreen();
 
     /**
      * Handles deleting the screen of this ScreenLogic class
@@ -72,5 +72,4 @@ public abstract class ScreenLogic {
             // parentLogic.getScreen().hide();
         }
     }
-
 }
