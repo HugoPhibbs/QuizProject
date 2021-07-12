@@ -8,6 +8,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JLabel;
 import javax.swing.JButton;
+import javax.swing.JComponent;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JTextField;
@@ -18,23 +20,30 @@ import javax.swing.event.ListSelectionListener;
 
 import core.coreLogic.DeckManager;
 import core.coreObjects.Deck;
+import gui.guiLogic.EditDeckScreenLogic;
 
-/** Represents a Screen for editing a Deck
+/**
+ * Represents a Screen for editing a Deck
  * 
  * @author Hugo Phibbs
  * 
  */
 public class EditDeckScreen {
-	
+
 	JFrame frame;
-	/** JTable to contain FlashCards that are contained in a Deck
-	 * User can select FlashCards from this Table to edit */
+	/**
+	 * JTable to contain FlashCards that are contained in a Deck User can select
+	 * FlashCards from this Table to edit
+	 */
 	private JTable tableFlashCards;
 	/** JTextField where a user can enter and edit the name of a Deck */
 	private JTextField textFieldName;
 	/** JTextField where a user can enter and edit the description of a Deck */
 	private JTextField textFieldDescription;
-	/** JPanel to hold components relating to displaying FlashCards contained in a Deck */
+	/**
+	 * JPanel to hold components relating to displaying FlashCards contained in a
+	 * Deck
+	 */
 	JPanel panelFlashCards;
 	/** JButton to add a new FlashCard to a Deck */
 	JButton btnAddFlashCard;
@@ -46,13 +55,8 @@ public class EditDeckScreen {
 	JButton btnFinish;
 	/** JButton to delete a Deck */
 	JButton btnDeleteDeck;
-
-	/** Deck object that is being editted */
-	private Deck deck;
-	/** DeckManager object for this application, makes sure that CRUD actions to do with a Deck are
-	 * permittable with respect to other Decks in this application */
-	private DeckManager deckManager;
-
+	/** EditDeckScreenLogic object to control this screen */
+	EditDeckScreenLogic logic;
 
 	/**
 	 * Launch the application.
@@ -77,10 +81,11 @@ public class EditDeckScreen {
 		super();
 		initialize();
 	}
-	
-	public EditDeckScreen(Deck deck, DeckManager deckManager) {
-		this.deck = deck;
-		this.deckManager = deckManager;
+
+	public EditDeckScreen(EditDeckScreenLogic editDeckScreenLogic) {
+		super();
+		this.logic = editDeckScreenLogic;
+		initialize();
 	}
 
 	/**
@@ -95,33 +100,37 @@ public class EditDeckScreen {
 		createComponents();
 	}
 
-	// ******************** Creating Components  ******************* //
+	// ******************** Creating Components ******************* //
 
-	private void createComponents(){
+	private void createComponents() {
 		createFlashCardsPanel();
 		createFlashCardOptionsPanel();
 		createFinishPanel();
 		createMiscComponents();
 		createDeckDetailsPanel();
 	}
-	
-	/** Create Panel and fill it with components displaying FlashCards
-	 * contained in a Deck 
+
+	/**
+	 * Create Panel and then fill it with components displaying FlashCards contained
+	 * in a Deck
 	 */
-	private void createFlashCardsPanel(){
+	private void createFlashCardsPanel() {
 		panelFlashCards = new JPanel();
 		panelFlashCards.setBounds(63, 101, 742, 493);
 		frame.getContentPane().add(panelFlashCards);
 		panelFlashCards.setLayout(null);
-		
+
+		updatePanelFlashCards();
+	}
+
+	/**
+	 * Updates panelFlashCards by filling it with necessary components
+	 */
+	public void updatePanelFlashCards() {
 		JLabel lblFlashCards = new JLabel("FlashCards");
 		lblFlashCards.setBounds(309, 13, 86, 16);
 		panelFlashCards.add(lblFlashCards);
 
-		createFlashCardsTable();
-	}
-
-	private void createFlashCardsTable(){
 		tableFlashCards = new JTable();
 		tableFlashCards.setBounds(12, 39, 718, 441);
 
@@ -132,62 +141,67 @@ public class EditDeckScreen {
 		addFlashCardsTableListener();
 	}
 
-    /** Create Panel and fill it with components relating to Editing 
-	 * FlashCards in a Deck 
+	/**
+	 * Create Panel and fill it with components relating to Editing FlashCards in a
+	 * Deck
 	 */
-	private void createFlashCardOptionsPanel(){
+	private void createFlashCardOptionsPanel() {
 		JPanel panelFlashCardOptions = new JPanel();
 		panelFlashCardOptions.setBounds(367, 622, 182, 129);
 		frame.getContentPane().add(panelFlashCardOptions);
 		panelFlashCardOptions.setLayout(null);
-		
-		btnAddFlashCard= new JButton("Add FlashCard");
+
+		btnAddFlashCard = new JButton("Add FlashCard");
 		btnAddFlashCard.setBounds(12, 13, 160, 28);
 		panelFlashCardOptions.add(btnAddFlashCard);
-		
+
 		btnEditFlashCard = new JButton("Edit FlashCard");
 		btnEditFlashCard.setBounds(12, 54, 160, 25);
 		panelFlashCardOptions.add(btnEditFlashCard);
-		
+		btnEditFlashCard.setEnabled(false);
+
 		btnDeleteFlashCard = new JButton("Delete FlashCard");
 		btnDeleteFlashCard.setBounds(12, 92, 160, 25);
 		panelFlashCardOptions.add(btnDeleteFlashCard);
+		btnDeleteFlashCard.setEnabled(false);
 
 		adFlashCardPanelOptionsBtnListeners();
 	}
 
-	/** Create panel and fill it with components relating to editing
-	 * the details of a Deck, i.e it's name and the description
+	/**
+	 * Create panel and fill it with components relating to editing the details of a
+	 * Deck, i.e it's name and the description
 	 */
-	private void createDeckDetailsPanel(){
+	private void createDeckDetailsPanel() {
 		JPanel panelDeckDetails = new JPanel();
 		panelDeckDetails.setBounds(63, 622, 296, 129);
 		frame.getContentPane().add(panelDeckDetails);
 		panelDeckDetails.setLayout(null);
-		
+
 		JLabel lblName = new JLabel("Deck name:");
 		lblName.setBounds(12, 13, 124, 16);
 		panelDeckDetails.add(lblName);
-		
+
 		textFieldName = new JTextField();
 		textFieldName.setBounds(138, 10, 146, 22);
 		panelDeckDetails.add(textFieldName);
 		textFieldName.setColumns(10);
-		
+
 		textFieldDescription = new JTextField();
 		textFieldDescription.setBounds(12, 60, 272, 56);
 		panelDeckDetails.add(textFieldDescription);
 		textFieldDescription.setColumns(10);
-		
+
 		JLabel lblDescription = new JLabel("Description:");
 		lblDescription.setBounds(12, 42, 110, 16);
 		panelDeckDetails.add(lblDescription);
 	}
 
-	/** Create JPanel and fill it with components relating to finish editing a deck
-	 * Along with an option to delete a deck. 
+	/**
+	 * Create JPanel and fill it with components relating to finish editing a deck
+	 * Along with an option to delete a deck.
 	 */
-	private void createFinishPanel(){
+	private void createFinishPanel() {
 		JPanel panelFinish = new JPanel();
 		panelFinish.setBounds(561, 622, 244, 129);
 		frame.getContentPane().add(panelFinish);
@@ -196,101 +210,142 @@ public class EditDeckScreen {
 		btnFinish = new JButton("Continue");
 		btnFinish.setBounds(129, 90, 103, 25);
 		panelFinish.add(btnFinish);
-		
+
 		JTextPane textPaneErrorMsg = new JTextPane();
 		textPaneErrorMsg.setBounds(12, 13, 220, 64);
 		panelFinish.add(textPaneErrorMsg);
-		
+
 		btnDeleteDeck = new JButton("Delete Deck");
 		btnDeleteDeck.setBounds(12, 90, 103, 25);
 		panelFinish.add(btnDeleteDeck);
-		
+
 		addFinishPanelBtnListeners();
 	}
 
 	/** Create Miscelaneous components that don't belong in any panelr */
-	private void createMiscComponents(){
+	private void createMiscComponents() {
 		JLabel lblTitle = new JLabel("Editing <deckName> ");
 		lblTitle.setBounds(341, 60, 138, 28);
 		frame.getContentPane().add(lblTitle);
 	}
 
-	// ********************** Adding Listeners to Components ************************ // 
+	// ********************** Adding Listeners to Components
+	// ************************ //
 
 	/** Adds a Selection Listener to tableFlashCards */
-	private void addFlashCardsTableListener(){
+	private void addFlashCardsTableListener() {
 		ListSelectionModel selectionModel = tableFlashCards.getSelectionModel();
 		selectionModel.addListSelectionListener(new ListSelectionListener() {
-		    public void valueChanged(ListSelectionEvent lse) {
-		    	flashCardSelected(lse);
-		    }
+			public void valueChanged(ListSelectionEvent lse) {
+				logic.flashCardSelected(lse);
+			}
 		});
 	}
 
 	/** Adds Action Listeners to all of the buttons in panelFlashCardOptions */
-	private void adFlashCardPanelOptionsBtnListeners(){
+	private void adFlashCardPanelOptionsBtnListeners() {
 		btnAddFlashCard.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				addFlashCard();
+				logic.addFlashCard();
 			}
 		});
 
 		btnEditFlashCard.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				editFlashCard();
+				logic.editFlashCard();
 			}
 		});
 
 		btnDeleteFlashCard.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				deleteFlashCard();
+				logic.deleteFlashCard();
 			}
 		});
 	}
 
 	/** Adds Actions listeners onto buttons in panelFinish */
-	private void addFinishPanelBtnListeners(){
-		
+	private void addFinishPanelBtnListeners() {
+
 		btnFinish.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				onContinue();
+				logic.onContinue();
 			}
 		});
 
 		btnDeleteDeck.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				deleteDeck();
+				logic.deleteDeck();
 			}
 		});
 	}
 
-	// ********************** Handling Listener Events ************************* //
+	// *********************** Getter Methods *********************** //
 
-	private void flashCardSelected(ListSelectionEvent lse){
-		// Bellow lines ensures that changing selection of a row counts as one change, not two
-		if (!lse.getValueIsAdjusting()) {
-			// Do something
-			// TODO implement
-		}
+	/**
+	 * Getter method for btnEditFlashCard
+	 * 
+	 * @return JButton object for btnEditFlashCard
+	 */
+	public JButton getBtnEditFlashCard() {
+		return btnEditFlashCard;
 	}
 
-	private void onContinue(){
-		// TODO implement!
+	/**
+	 * Getter method for btnDeleteFlashCard
+	 * 
+	 * @return JButton object for btnDeleteFlashCard
+	 */
+	public JButton getBtnDeleteFlashCard() {
+		return btnDeleteFlashCard;
 	}
 
-	private void deleteDeck(){
-		// TODO implement
+	/**
+	 * Getter method for tableFlashCards
+	 * 
+	 * @return JTable object for tableFlashCards
+	 */
+	public JTable getTableFlashCards() {
+		return tableFlashCards;
 	}
 
-	private void editFlashCard(){
-		// TODO implement
+	/**
+	 * Getter method for panelFlashCards
+	 * 
+	 * @return JPanel object for panelFlashCards
+	 */
+	public JPanel getPanelFlashCards() {
+		return panelFlashCards;
 	}
 
-	private void deleteFlashCard(){
-		// TODO implement
+	// Remove methods bellow once screen is extended by this class.
+
+	/**
+	 * Makes the screen visible to the user.
+	 * 
+	 */
+	public void show() {
+		frame.setVisible(true);
 	}
 
-	private void addFlashCard(){
-		// TODO implement
+	/**
+	 * Disables or enables a JComponent according to parameter setting
+	 * 
+	 * @param component JComponent to be enabled or not
+	 * @param setting   Boolean value for if a JButton is to be enabled or not
+	 */
+	public void toggleComponent(JComponent component, boolean setting) {
+		component.setEnabled(setting);
+	}
+
+	/**
+	 * Removes and refreshes all the components of a panel Useful for clearing a
+	 * panel to prepare it for other uses
+	 * 
+	 * @param panel JPanel that is to be cleared
+	 */
+	public void clearPanel(JPanel panel) {
+		panel.removeAll();
+		panel.revalidate();
+		panel.repaint();
 	}
 }
