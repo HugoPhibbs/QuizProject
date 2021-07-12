@@ -13,7 +13,7 @@ import gui.guiShell.Screen;
  * @version 10/7/21
  * @since 10/7/21
  */
-public class EditFlashCardScreenLogic extends ScreenLogic {
+public class EditFlashCardScreenLogic extends ScreenLogic implements Updater {
 
 	/**
 	 * boolean value for if a FlashCard object is being created or editted
@@ -65,9 +65,9 @@ public class EditFlashCardScreenLogic extends ScreenLogic {
 	 * Implementation of abstract method for ScreenLogic Creates a new
 	 * EditFlashCardScreen and sets it as the Screen for this class.
 	 */
-	protected void createScreen() {
+	public void createScreen() {
 		this.screen = new EditFlashCardScreen(this);
-		// screen.show();
+		screen.show();
 	}
 
 	// *************** Logic methods for EditFlashCardScreen ************ //
@@ -106,14 +106,14 @@ public class EditFlashCardScreenLogic extends ScreenLogic {
 	}
 
 	/**
-	 * Returns the Deck's that can be selected from when choosing which Deck a
-	 * FlashCard belongs to
+	 * Returns the name of Decks that can be selected from when choosing which Deck
+	 * a FlashCard belongs to
 	 * 
-	 * @return Deck[] containing deck objects as described in
+	 * @return String[] containing deck objects as described in
 	 *         deckManager.deckArray(Deck)
 	 */
-	public Deck[] deckArray() {
-		return (deckManager.deckArray(currentDeck));
+	public String[] deckArray() {
+		return (deckManager.deckNameArray(currentDeck));
 	}
 
 	/**
@@ -130,34 +130,48 @@ public class EditFlashCardScreenLogic extends ScreenLogic {
 	}
 
 	/**
-	 * Handles pressing of "CONTINUE" button, when creating a flashCard
-	 * 
+	 * Handles when a user enters a text for the front or back of a FlashCard, If
+	 * both the front text and back text fields aren't empty then it enables
+	 * btnFinish of the screen
 	 */
-	public void createFlashCard() {
-		currentFlashCard.setText(screen.frontText(), screen.backText());
-		currentDeck.addFlashCard(currentFlashCard);
+	public void textEntered() {
+		if (!screen.frontText().equals("") && !screen.backText().equals("")) {
+			screen.toggleComponent(screen.getBtnFinish(), true);
+		} else {
+			screen.toggleComponent(screen.getBtnFinish(), false);
+		}
 	}
 
 	/**
-	 * Handles what happens when a user presses continue
+	 * Handles what happens when a user presses finish
 	 * <p>
 	 * Diverts flow to either create a FlashCard or edit a FlashCard.
 	 * <p>
 	 * Handles any exceptions if they are thrown
 	 */
-	public void onContinuePressed() {
+	public void onFinishedPressed() {
 		try {
 			if (isCreating) {
 				createFlashCard();
 			} else {
 				editFlashCard();
 			}
+			screen.quit();
 			// screen.switchToParent()
 		}
 		// Catch any exceptions to do with executing above code
 		catch (Exception e) {
 			screen.displayError(e.getMessage());
 		}
+	}
+
+	/**
+	 * Handles pressing of "FINISH" button, when creating a flashCard
+	 * 
+	 */
+	public void createFlashCard() {
+		currentFlashCard.setText(screen.frontText(), screen.backText());
+		currentDeck.addFlashCard(currentFlashCard);
 	}
 
 	/**
@@ -178,5 +192,11 @@ public class EditFlashCardScreenLogic extends ScreenLogic {
 
 	public boolean getIsCreating() {
 		return isCreating;
+	}
+
+	@Override
+	public void update() {
+		// TODO Auto-generated method stub
+
 	}
 }
