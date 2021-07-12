@@ -11,10 +11,14 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
+
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 import javax.swing.JTextPane;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 import core.coreLogic.DeckManager;
 import core.coreObjects.Deck;
@@ -87,8 +91,8 @@ public class EditFlashCardScreen {
 	 */
 	public EditFlashCardScreen(EditFlashCardScreenLogic editFlashCardScreenLogic) {
 		super();
-		initialize();
 		this.logic = editFlashCardScreenLogic;
+		initialize();
 	}
 
 	/**
@@ -99,6 +103,7 @@ public class EditFlashCardScreen {
 		frame.setBounds(100, 100, 450, 300);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
+		show();
 
 		createMiscComponents();
 		createChangeTextPanel();
@@ -128,15 +133,6 @@ public class EditFlashCardScreen {
 		frame.getContentPane().add(textPaneErrorMsg);
 	}
 
-	/** Adds Action Listener to btnFinish */
-	private void addFinishBtnListener() {
-		btnFinish.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				logic.onContinuePressed();
-			}
-		});
-	}
-
 	/**
 	 * Create components relating to changing the text of a flashCard
 	 * 
@@ -147,8 +143,7 @@ public class EditFlashCardScreen {
 		frame.getContentPane().add(panelChangeText);
 		panelChangeText.setLayout(null);
 
-		// textFieldFrontText = new JTextField(logic.currentFlashCardFrontText());
-		textFieldFrontText = new JTextField("<frontText>");
+		textFieldFrontText = new JTextField(logic.currentFlashCardFrontText());
 		textFieldFrontText.setBounds(7, 7, 106, 27);
 		panelChangeText.add(textFieldFrontText);
 		textFieldFrontText.setColumns(10);
@@ -157,8 +152,7 @@ public class EditFlashCardScreen {
 		lblFrontText.setBounds(17, 41, 77, 9);
 		panelChangeText.add(lblFrontText);
 
-		// textFieldBackText = new JTextField(logic.currentFlashCardFrontText());
-		textFieldBackText = new JTextField("<backText>");
+		textFieldBackText = new JTextField(logic.currentFlashCardFrontText());
 		textFieldBackText.setBounds(120, 7, 95, 27);
 		panelChangeText.add(textFieldBackText);
 		textFieldBackText.setColumns(10);
@@ -166,6 +160,9 @@ public class EditFlashCardScreen {
 		JLabel lblBackText = new JLabel("Back Text");
 		lblBackText.setBounds(130, 41, 85, 9);
 		panelChangeText.add(lblBackText);
+
+		addTextFieldFrontTextListener();
+		addTextFieldBackTextListener();
 	}
 
 	/**
@@ -179,10 +176,7 @@ public class EditFlashCardScreen {
 		panelChooseDeck.setLayout(null);
 
 		// Keep track of if combo box selection has changed.
-		// JComboBox<Object> comboBoxSelectDeck = new
-		// JComboBox<Object>(editFlashCardScreenLogic.deckArray());
-		String[] testArray = new String[] { "testDeck1", "testDeck2" };
-		JComboBox<Object> comboBoxSelectDeck = new JComboBox<Object>(testArray);
+		JComboBox<Object> comboBoxSelectDeck = new JComboBox<Object>(logic.deckArray());
 		comboBoxSelectDeck.setBounds(19, 24, 95, 14);
 		panelChooseDeck.add(comboBoxSelectDeck);
 		// TODO whenever a deck is selected, currentDeck is updated!
@@ -192,14 +186,54 @@ public class EditFlashCardScreen {
 		panelChooseDeck.add(lblChooseDeck);
 	}
 
+	/** Adds Action Listener to btnFinish */
+	private void addFinishBtnListener() {
+		btnFinish.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				logic.onFinishedPressed();
+			}
+		});
+	}
+
+	public void addTextFieldFrontTextListener() {
+		textFieldFrontText.getDocument().addDocumentListener(new DocumentListener() {
+			public void changedUpdate(DocumentEvent e) {
+				logic.textEntered();
+			}
+
+			public void removeUpdate(DocumentEvent e) {
+				logic.textEntered();
+			}
+
+			public void insertUpdate(DocumentEvent e) {
+				logic.textEntered();
+			}
+		});
+	}
+
+	public void addTextFieldBackTextListener() {
+		textFieldBackText.getDocument().addDocumentListener(new DocumentListener() {
+			public void changedUpdate(DocumentEvent e) {
+				logic.textEntered();
+			}
+
+			public void removeUpdate(DocumentEvent e) {
+				logic.textEntered();
+			}
+
+			public void insertUpdate(DocumentEvent e) {
+				logic.textEntered();
+			}
+		});
+	}
+
 	/**
 	 * Displays an error message to a user
 	 * 
 	 * @param msg String for the error message to be displayed
 	 */
 	public void displayError(String msg) {
-		// textPaneErrorMsg.setText(msg);
-		textPaneErrorMsg.setText("ERROR TEST");
+		textPaneErrorMsg.setText(msg);
 	}
 
 	/**
@@ -219,4 +253,42 @@ public class EditFlashCardScreen {
 	public String backText() {
 		return textFieldBackText.getText();
 	}
+
+	/**
+	 * Getter method for btnFinish
+	 * 
+	 * @return JButton btnFinish
+	 */
+	public JButton getBtnFinish() {
+		return btnFinish;
+	}
+
+	// Remove bellow methods later.
+
+	/**
+	 * Makes the screen visible to the user.
+	 * 
+	 */
+	public void show() {
+		frame.setVisible(true);
+	}
+
+	/**
+	 * Disables or enables a JComponent according to parameter setting
+	 * 
+	 * @param component JComponent to be enabled or not
+	 * @param setting   Boolean value for if a JButton is to be enabled or not
+	 */
+	public void toggleComponent(JComponent component, boolean setting) {
+		component.setEnabled(setting);
+	}
+
+	/**
+	 * Disposes of the Screen's frame.
+	 * 
+	 */
+	public void quit() {
+		frame.dispose();
+	}
+
 }
