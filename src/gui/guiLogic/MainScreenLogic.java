@@ -154,7 +154,7 @@ public class MainScreenLogic extends ScreenLogic implements Updateable {
 	 * affect their name or size
 	 */
 	public void decksChanged() {
-		screen.fillTablePanel();
+		screen.updatePanelViewDecks();
 	}
 
 	// TODO make this a general method in ScreenLogic?

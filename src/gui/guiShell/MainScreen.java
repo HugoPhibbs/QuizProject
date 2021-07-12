@@ -120,20 +120,21 @@ public class MainScreen {
 		frame.getContentPane().add(panelViewDecks);
 		panelViewDecks.setLayout(null);
 
-		JLabel lblSelectDeck = new JLabel("Select a Deck!");
-		lblSelectDeck.setBounds(91, 25, 148, 9);
-		panelViewDecks.add(lblSelectDeck);
-
-		createDecksTable();
+		updatePanelViewDecks();
 	}
 
 	/**
-	 * Creates Table to store info on decks
+	 * Fills panelViewDecks with components, including a title label and a table to
+	 * view decks
 	 * <p>
 	 * User can then select a row from the table to quiz themselves on a deck
 	 * 
 	 */
-	public void createDecksTable() {
+	public void updatePanelViewDecks() {
+		JLabel lblSelectDeck = new JLabel("Select a Deck!");
+		lblSelectDeck.setBounds(91, 25, 148, 9);
+		panelViewDecks.add(lblSelectDeck);
+
 		tableDecks = new JTable(logic.decksTableDetails(), logic.decksTableHeaders());
 		tableDecks.setBounds(7, 24, 253, 144);
 		JScrollPane sp = new JScrollPane(tableDecks);
@@ -229,6 +230,10 @@ public class MainScreen {
 
 	// ********************* Getter methods ************************** //
 
+	public JPanel getPanelViewDecks() {
+		return panelViewDecks;
+	}
+
 	public JButton getBtnEditDeck() {
 		return btnEditDeck;
 	}
@@ -248,5 +253,17 @@ public class MainScreen {
 	// *************** Methods to remove once Screen implemented ****** //
 	public void toggleButton(JButton btn, boolean setting) {
 		btn.setEnabled(setting);
+	}
+
+	/**
+	 * Removes and refreshes all the components of a panel Useful for clearing a
+	 * panel to prepare it for other uses
+	 * 
+	 * @param panel JPanel that is to be cleared
+	 */
+	public void clearPanel(JPanel panel) {
+		panel.removeAll();
+		panel.revalidate();
+		panel.repaint();
 	}
 }
