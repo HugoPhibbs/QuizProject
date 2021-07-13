@@ -9,12 +9,14 @@ import gui.guiShell.CreateDeckScreen;
  * @author Hugo Phibbs
  * 
  */
-public class CreateDeckScreenLogic extends ScreenLogic {
+public class CreateDeckScreenLogic extends ScreenLogic implements Updater {
 
     /** DeckManager object for this application */
     DeckManager deckManager;
     /** CreateDeckScreen object that is being controlled by this class */
     CreateDeckScreen screen;
+    /** Updateable object dependent on this class */
+    Updateable updateable;
 
     /**
      * Constructor for CreateDeckScreenLogic
@@ -23,9 +25,10 @@ public class CreateDeckScreenLogic extends ScreenLogic {
      *                          ScreenLogic object
      * @param deckManager       DeckManager object for this application
      */
-    public CreateDeckScreenLogic(ScreenLogic parentScreenLogic, DeckManager deckManager) {
+    public CreateDeckScreenLogic(ScreenLogic parentScreenLogic, DeckManager deckManager, Updateable updateable) {
         super(parentScreenLogic);
         this.deckManager = deckManager;
+        this.updateable = updateable;
         // TODO Auto-generated constructor stub
     }
 
@@ -33,6 +36,7 @@ public class CreateDeckScreenLogic extends ScreenLogic {
     public void createScreen() {
         screen = new CreateDeckScreen(this);
         // screen.show();
+        super.setScreen(null);
 
     }
 
@@ -43,10 +47,23 @@ public class CreateDeckScreenLogic extends ScreenLogic {
     public void createDeck() {
         try {
             deckManager.createDeck(screen.nameText(), screen.descriptionText());
-            screen.quit();
+            closeScreen();
         } catch (IllegalArgumentException iae) {
             screen.displayError(iae.getMessage());
         }
+    }
+
+    @Override
+    public void update() {
+        // TODO Auto-generated method stub
+        updateable.receiveUpdate();
+    }
+
+    @Override
+    public void closeScreen() {
+        // TODO Auto-generated method stub
+        update();
+        screen.quit();
     }
 
 }

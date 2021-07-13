@@ -32,22 +32,8 @@ public class CreateDeckScreen {
 	private JTextPane textPaneErrorMsg;
 	/** CrateDeckScreenLogic object to manipulate this Screen */
 	private CreateDeckScreenLogic logic;
-
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					CreateDeckScreen window = new CreateDeckScreen(null);
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+	/** JButton to press to create a new Deck */
+	JButton btnCreateDeck;
 
 	/**
 	 * Create the application.
@@ -71,6 +57,8 @@ public class CreateDeckScreen {
 		createContinuePanel();
 		createMiscComponents();
 	}
+
+	// ******************** Creating Components ************************ //
 
 	/**
 	 * Creates components contains in panelDeckDetails
@@ -114,15 +102,12 @@ public class CreateDeckScreen {
 		JButton btnCreateDeck = new JButton("Create Deck");
 		btnCreateDeck.setBounds(30, 119, 128, 25);
 		panelContinue.add(btnCreateDeck);
-		btnCreateDeck.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				logic.createDeck();
-			}
-		});
 
 		textPaneErrorMsg = new JTextPane();
 		textPaneErrorMsg.setBounds(17, 13, 156, 93);
 		panelContinue.add(textPaneErrorMsg);
+
+		addBtnCreateDeckListener();
 	}
 
 	/**
@@ -135,6 +120,26 @@ public class CreateDeckScreen {
 		frame.getContentPane().add(lblTitle);
 	}
 
+	// ********** Adding Listeners to Components **************** //
+
+	/**
+	 * Adds an Action Listener to btnCreateDeck
+	 */
+	private void addBtnCreateDeckListener() {
+		btnCreateDeck.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				logic.createDeck();
+			}
+		});
+	}
+
+	// *************** Other General Methods ********************** //
+
+	/**
+	 * Displays an error message to a user
+	 * 
+	 * @param msg String for the error message to be displayed
+	 */
 	public void displayError(String msg) {
 		textPaneErrorMsg.setText(msg);
 	}
