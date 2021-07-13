@@ -13,13 +13,14 @@ import javax.swing.JTextPane;
 import core.coreLogic.FlashCardQuiz;
 import gui.guiLogic.QuizzingScreenLogic;
 
-/** Represents a Screen to quiz a user
+/**
+ * Represents a Screen to quiz a user
  * 
  * @author Hugo Phibbs
  *
  */
 public class QuizzingScreen {
-	
+
 	JFrame frame;
 
 	/** JBUtton that finishes a quiz when pressed */
@@ -30,7 +31,7 @@ public class QuizzingScreen {
 	private JButton btnFlashCardAgain;
 	/** JBUtton to flip the current FlashCard */
 	private JButton btnFlipFlashCard;
-	
+
 	/** QuizzingScreenLogic object to control logic operations of this Screen */
 	private QuizzingScreenLogic logic;
 
@@ -57,11 +58,11 @@ public class QuizzingScreen {
 		super();
 		initialize();
 	}
-	
+
 	public QuizzingScreen(FlashCardQuiz flashCardQuiz) {
 		super();
 		initialize();
-		logic = new QuizzingScreenLogic(flashCardQuiz, this);
+		logic = new QuizzingScreenLogic(flashCardQuiz, this, this);
 	}
 
 	/**
@@ -72,20 +73,21 @@ public class QuizzingScreen {
 		frame.setBounds(100, 100, 886, 592);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
-		
+
 		createComponents();
 	}
 
-	// *********************** Creating Components ************************ // 
+	// *********************** Creating Components ************************ //
 
-	/** Calls methods to create components for this Screen */ 
-	private void createComponents(){
+	/** Calls methods to create components for this Screen */
+	private void createComponents() {
 		createContentPanel();
 		createMiscComponents();
 		createOptionsPanel();
 	}
-	
-	/** Creates components contained in the options panel
+
+	/**
+	 * Creates components contained in the options panel
 	 * 
 	 */
 	private void createOptionsPanel() {
@@ -93,15 +95,15 @@ public class QuizzingScreen {
 		panelOptions.setBounds(157, 405, 516, 122);
 		frame.getContentPane().add(panelOptions);
 		panelOptions.setLayout(null);
-		
+
 		btnFlashCardOk = new JButton("OK");
 		btnFlashCardOk.setBounds(407, 63, 97, 25);
 		panelOptions.add(btnFlashCardOk);
-		
+
 		btnFlashCardAgain = new JButton("AGAIN");
 		btnFlashCardAgain.setBounds(12, 63, 97, 25);
 		panelOptions.add(btnFlashCardAgain);
-		
+
 		btnFlipFlashCard = new JButton("Flip FlashCard");
 		btnFlipFlashCard.setBounds(186, 13, 140, 25);
 		panelOptions.add(btnFlipFlashCard);
@@ -131,35 +133,36 @@ public class QuizzingScreen {
 			}
 		});
 	}
-	
+
 	/** Creates and fills panelContent with components */
 	private void createContentPanel() {
 		JPanel panelContent = new JPanel();
 		panelContent.setBounds(157, 94, 516, 285);
 		frame.getContentPane().add(panelContent);
 		panelContent.setLayout(null);
-		
+
 		JTextPane textPaneCurrentSide = new JTextPane();
 		textPaneCurrentSide.setText("<current text side of FlashCard >");
 		textPaneCurrentSide.setBounds(84, 126, 341, 45);
 		panelContent.add(textPaneCurrentSide);
 	}
-	
-	/** Creates various components that aren't contained in a panel
+
+	/**
+	 * Creates various components that aren't contained in a panel
 	 * 
 	 */
 	private void createMiscComponents() {
 		JLabel lblCurrentDeck = new JLabel("Currently being quizzed on <deckName>");
 		lblCurrentDeck.setBounds(283, 65, 233, 16);
 		frame.getContentPane().add(lblCurrentDeck);
-		
+
 		btnFinishQuiz = new JButton("Finish Quiz");
 		btnFinishQuiz.setBounds(761, 515, 97, 25);
 		frame.getContentPane().add(btnFinishQuiz);
 		addBtnFinishQuizListener();
 	}
 
-	private void addBtnFinishQuizListener(){
+	private void addBtnFinishQuizListener() {
 		btnFinishQuiz.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				logic.finishQuiz();
@@ -167,7 +170,6 @@ public class QuizzingScreen {
 		});
 	}
 
-	// ****************** Handling Listener Events ******************* // 
-	
+	// ****************** Handling Listener Events ******************* //
 
 }

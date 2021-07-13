@@ -10,7 +10,7 @@ public class QuizzingScreenLogic extends ScreenLogic implements Updater {
 
 	public QuizzingScreenLogic(FlashCardQuiz flashCardQuiz, QuizzingScreen quizzingScreen,
 			ScreenLogic parentScreenLogic) {
-		super(parentScreenLogic);
+		super(parentScreenLogic, null);
 		this.flashCardQuiz = flashCardQuiz;
 		this.screen = quizzingScreen;
 	}
@@ -39,6 +39,12 @@ public class QuizzingScreenLogic extends ScreenLogic implements Updater {
 
 	@Override
 	public void update() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void closeScreen() {
 		// TODO Auto-generated method stub
 
 	}

@@ -10,25 +10,47 @@ import setup.Setup;
  * SetupScreen
  * 
  * @author Hugo Phibbs
- * 
+ * @version 13/7/21
+ * @since 9/7/21
  */
 public class SetupScreenLogic extends ScreenLogic {
 
-	/** Setup object to set up this application */
-	Setup setup;
-	/** SetupScreen object that this class is controlling */
-	SetupScreen screen;
+	/**
+	 * Setup object to set up this application
+	 */
+	private Setup setup;
+	/**
+	 * SetupScreen object that this class is controlling
+	 */
+	private SetupScreen screen;
 
+	/**
+	 * Constuctor for SetupScreenLogic
+	 * <p>
+	 * Since this screen doesn't have any parent, call to constructor has null as
+	 * parentLogic
+	 */
 	public SetupScreenLogic() {
 		super(null);
 	}
+
+	// ************** Creating and closing the Screen ********************** //
 
 	/**
 	 * Creates an new SetupScreen
 	 */
 	public void createScreen() {
 		screen = new SetupScreen(this);
+		screen.initialize();
+		super.setScreen(screen);
 		// screen.show();
+	}
+
+	/**
+	 * Handles closing this SetupScreen
+	 */
+	public void closeScreen() {
+		deleteScreen();
 	}
 
 	// *********************** Handling Listener Events ************************* //
@@ -47,11 +69,11 @@ public class SetupScreenLogic extends ScreenLogic {
 	/** Handles pressing of btnCreateSession */
 	public void createSession() {
 		try {
-			setup.createSession(screen.userName());
+			setup.createNewSession(screen.userName());
 			screen.toggleComponent(screen.getBtnContinue(), true);
 			screen.toggleComponent(screen.getBtnLoadSession(), false);
 		} catch (IllegalArgumentException iae) {
-			screen.displayConfigSessionError(iae.getMessage());
+			screen.displayError(iae.getMessage());
 		}
 	}
 
@@ -65,7 +87,7 @@ public class SetupScreenLogic extends ScreenLogic {
 			screen.toggleComponent(screen.getBtnContinue(), true);
 			screen.toggleComponent(screen.getBtnCreateSession(), false);
 		} catch (FileNotFoundException fnfe) {
-			screen.displayConfigSessionError(fnfe.getMessage());
+			screen.displayError(fnfe.getMessage());
 		}
 	}
 
@@ -73,7 +95,7 @@ public class SetupScreenLogic extends ScreenLogic {
 	public void onContinue() {
 		MainScreenLogic mainScreenLogic = new MainScreenLogic(setup.getAppEnvironment());
 		mainScreenLogic.createScreen();
-		screen.dispose(); // TODO implement this into Screen later, when design is finished!
+		closeScreen();
 	}
 
 	/**
@@ -81,9 +103,11 @@ public class SetupScreenLogic extends ScreenLogic {
 	 * 
 	 */
 	public void nameChanged() {
-		screen.displayConfigSessionError("");
+		screen.displayError("");
 		enableConfigSessionButtons();
 	}
+
+	// **************** Helper methods ************** //
 
 	/**
 	 * Handles enabling JButtons to to create or load a session
