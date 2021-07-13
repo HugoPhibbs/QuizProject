@@ -12,7 +12,6 @@ import javax.swing.event.DocumentListener;
 import gui.guiLogic.SetupScreenLogic;
 
 import javax.swing.JButton;
-import javax.swing.JComponent;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -28,9 +27,7 @@ import javax.swing.JPanel;
  * @author Hugo Phibbs
  *
  */
-public class SetupScreen {
-
-	private JFrame frame;
+public class SetupScreen extends Screen {
 
 	/**
 	 * JTextField for entering the working directory of this application
@@ -80,23 +77,24 @@ public class SetupScreen {
 	 * Create the application.
 	 */
 	public SetupScreen(SetupScreenLogic setupScreenLogic) {
-		super();
+		super("Setup", setupScreenLogic);
 		this.logic = setupScreenLogic;
-		initialize();
 	}
 
 	/**
 	 * Initialize the contents of the frame.
 	 */
-	private void initialize() {
-		frame = new JFrame();
+	public void initialize() {
+		configFrame();
+		createComponents();
+	}
+
+	/**
+	 * Handles configurating the properties of the Frame for this Screen
+	 */
+	protected void configFrame() {
 		frame.getContentPane().setFont(new Font("Dialog", Font.BOLD, 12));
 		frame.setBounds(100, 100, 450, 300);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.getContentPane().setLayout(null);
-		frame.setVisible(true);
-
-		createComponents();
 	}
 
 	// ******************** Creating Components ******************* //
@@ -268,7 +266,18 @@ public class SetupScreen {
 		});
 	}
 
-	// ****************** Methods to control this screen ******************** //
+	// **************** General helper methods ************** //
+
+	/**
+	 * Displays an error message to a user for any errors that may happen while
+	 * setting up the application
+	 * 
+	 * @param msg String for the error message to be displayed
+	 */
+	@Override
+	public void displayError(String msg) {
+		lblConfigSessionError.setText(msg);
+	}
 
 	/**
 	 * Returns the user name currently entered to load a session for
@@ -279,15 +288,7 @@ public class SetupScreen {
 		return textFieldEnterName.getText();
 	}
 
-	/**
-	 * Displays a message in the label for displaying errors about configurating a
-	 * session
-	 * 
-	 * @param msg String for the error message to be displayed
-	 */
-	public void displayConfigSessionError(String msg) {
-		lblConfigSessionError.setText(msg);
-	}
+	// ****************** Getter Methods ******************** //
 
 	/**
 	 * Getter method for btnCreateSession
@@ -324,15 +325,4 @@ public class SetupScreen {
 	public JTextField getTextFieldEnterName() {
 		return textFieldEnterName;
 	}
-
-	// *********** Methods to be implemented by Screen ******************* //
-
-	public void dispose() {
-		frame.dispose();
-	}
-
-	public void toggleComponent(JComponent component, boolean setting) {
-		component.setEnabled(setting);
-	}
-
 }
