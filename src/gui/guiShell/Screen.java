@@ -5,12 +5,11 @@ import java.awt.Container;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import setup.Setup;
+
+import gui.guiLogic.ScreenLogic;
 
 /**
  * Represents a Screen object for GUI
@@ -28,28 +27,37 @@ public abstract class Screen {
 	/** Screen object that is the parent Screen for this Screen */
 	Screen parent;
 
-	/**
-	 * Empty Constructor for Screen, used until extensions of Screen need full
-	 * constructor
-	 * 
-	 */
-	Screen() {
-		// TODO Delete later!
+	/** ScreenLogic Class for this class */
+	ScreenLogic logic;
+
+	protected Screen(String title, ScreenLogic logic) {
+		this.logic = logic;
+		createFrame(title);
 	}
 
-	protected Screen(String title) {
+	/**
+	 * This is where the bounds of your frame will be set and methods which create
+	 * the components will be called. Is called at the end of the constructor
+	 * method.
+	 */
+	public abstract void initialize();
+
+	// **************** Methods for the Frame ****************** //
+
+	protected abstract void configFrame();
+
+	/**
+	 * Handles creating a frame for this Screen
+	 */
+	private void createFrame(String title) {
 		this.frame = new JFrame();
 		frame.setTitle(title);
-		frame.getContentPane().setBackground(new Color(255, 222, 173));
 		setFrameCharacteristics();
 	}
-
-	public abstract void createFrame();
 
 	/** Sets the characteristics of the frame that are common to all screens. */
 	private void setFrameCharacteristics() {
 		// Prevent the user from quiting immediately when quit is clicked.
-		// Code copied from Rocket Manager Example
 		frame.addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
@@ -59,14 +67,29 @@ public abstract class Screen {
 
 		frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
+		frame.setVisible(true);
 	}
 
 	/**
-	 * This is where the bounds of your frame will be set and methods which create
-	 * the components will be called. Is called at the end of the constructor
-	 * method.
+	 * Displays a Dialog to allow the user to confirm whether they would like to
+	 * quit
+	 * 
+	 * @return Boolean true if would like to quit, else false
 	 */
-	protected abstract void initialize();
+	protected void confirmQuit() {
+		int selection = JOptionPane.showConfirmDialog(frame, "Are you sure you want to quit?", "Quit?",
+				JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+
+		if (selection == JOptionPane.YES_OPTION) {
+			logic.closeScreen();
+		}
+	}
+
+	// ************* General helper methods ******************** //
+
+	public abstract void displayError(String msg);
+	// TODO make displayError concrete, ie have an attribute in all Screen
+	// implemenations called textPaneError?
 
 	/**
 	 * Disposes of the Screen's frame.
@@ -93,21 +116,6 @@ public abstract class Screen {
 	}
 
 	/**
-	 * Displays a Dialog to allow the user to confirm whether they would like to
-	 * quit
-	 * 
-	 * @return Boolean true if would like to quit, else false
-	 */
-	protected void confirmQuit() {
-		int selection = JOptionPane.showConfirmDialog(frame, "Are you sure you want to quit?", "Quit?",
-				JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-
-		if (selection == JOptionPane.YES_OPTION) {
-			quit();
-		}
-	}
-
-	/**
 	 * Handles showing of a new screen, and hides this screen
 	 * 
 	 * @param newScreen Screen object to be switched to
@@ -130,10 +138,6 @@ public abstract class Screen {
 		}
 	}
 
-	public abstract void displayError(String msg);
-	// TODO make displayError concrete, ie have an attribute in all Screen
-	// implemenations called textPaneError?
-
 	/**
 	 * Disables or enables a JComponent according to parameter setting
 	 * 
@@ -155,6 +159,28 @@ public abstract class Screen {
 		container.removeAll();
 		container.revalidate();
 		container.repaint();
+	}
+
+	/**
+	 * Removes a top level component from the frame of this screen
+	 * <p>
+	 * For example a Panel or a title label
+	 * 
+	 * @param component JComponent to be removed
+	 */
+	public void removeComponent(JComponent component) {
+		frame.remove(component);
+	}
+
+	// ***************** Getter Methods ************************** //
+
+	/**
+	 * Getter method for the JFrame object for this Screen
+	 * 
+	 * @return JFrame object
+	 */
+	public JFrame getFrame() {
+		return frame;
 	}
 
 }
