@@ -51,13 +51,13 @@ class SetupTest {
 	void createSessionTest() {
 		// Create a session with a name that doesn't already exist
 		String testName = "Tom";
-		testSetup.createSession(testName);
+		testSetup.createNewSession(testName);
 		assertEquals(testSetup.getAppEnvironment().getUser().getName(), testName);
 		assertTrue(Setup.sessionExists(testSetup.sessionFilePath(testName)));
 
 		// Create a session with a name that already exists
 		assertThrows(IllegalArgumentException.class, () -> {
-			testSetup.createSession(testName);
+			testSetup.createNewSession(testName);
 		});
 	}
 
@@ -70,7 +70,7 @@ class SetupTest {
 		assertFalse(testSetup.deleteSession(testName));
 
 		// Test with a session that does exist
-		testSetup.createSession(testName);
+		testSetup.createNewSession(testName);
 		assertTrue(testSetup.deleteSession(testName));
 		testSessionFilePath = testSetup.sessionFilePath(testName);
 		assertFalse(Setup.sessionExists(testSessionFilePath));
@@ -85,7 +85,7 @@ class SetupTest {
 		});
 
 		// Test with a session that does exist
-		testSetup.createSession(testName);
+		testSetup.createNewSession(testName);
 		assertTrue(testSetup.loadSession(testName));
 		assertEquals(testName, testSetup.getAppEnvironment().getUser().getName());
 	}
@@ -99,7 +99,12 @@ class SetupTest {
 
 		// Test with a session that already exists
 		String testName2 = "Rudy";
-		testSetup.createSession(testName2);
+		testSetup.createNewSession(testName2);
 		assertTrue(Setup.sessionExists(testSetup.sessionFilePath(testName2)));
+	}
+
+	@Test
+	void saveSessionTest() {
+		fail("Implement!");
 	}
 }

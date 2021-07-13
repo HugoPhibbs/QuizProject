@@ -76,7 +76,9 @@ class DeckTest {
 		// Test normally
 		assertEquals(true, testDeck1.addFlashCard(testCard1));
 		// Test with a duplicate card already in deck
-		assertEquals(false, testDeck1.addFlashCard(testCard8));
+		assertThrows(IllegalArgumentException.class, () -> {
+			testDeck1.addFlashCard(testCard8);
+		});
 	}
 
 	@Test
