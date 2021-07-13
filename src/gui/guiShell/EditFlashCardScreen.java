@@ -36,20 +36,29 @@ public class EditFlashCardScreen {
 
 	JFrame frame;
 
-	/** Text field for the front text of the FlashCard that is being edited */
+	/**
+	 * Text field for the front text of the FlashCard that is being edited
+	 */
 	JTextField textFieldBackText;
-	/** Text field for the back text of the FlashCard that is being edited */
+	/**
+	 * Text field for the back text of the FlashCard that is being edited
+	 */
 	JTextField textFieldFrontText;
-	/** Text pane to display any messages for errors that may occur */
+	/**
+	 * Text pane to display any messages for errors that may occur
+	 */
 	JTextPane textPaneErrorMsg;
 	/**
 	 * Label describing the current operation being done with regards to a FlashCard
 	 */
 	JLabel lblAction;
-	/** JButton to finish editing a FlashCard */
+	/**
+	 * JButton to finish editing a FlashCard
+	 */
 	JButton btnFinish;
-
-	/** EditFlashCardScreenLogic object to handle logic for this Screen */
+	/**
+	 * EditFlashCardScreenLogic object to handle logic for this Screen
+	 */
 	EditFlashCardScreenLogic logic;
 
 	/**
@@ -86,8 +95,8 @@ public class EditFlashCardScreen {
 	 * <p>
 	 * For creating a new FlashCard, currentFlashCard should be set to null
 	 *
-	 * @param parent Screen object to be set as this Screen's parent, to easily back
-	 *               navigate
+	 * @param editFlashCardScreenLogic EditFlashCardScreenLogic object to control
+	 *                                 this Screen
 	 */
 	public EditFlashCardScreen(EditFlashCardScreenLogic editFlashCardScreenLogic) {
 		super();
@@ -99,22 +108,28 @@ public class EditFlashCardScreen {
 	 * Initialize the contents of the frame.
 	 */
 	protected void initialize() {
-		frame = new JFrame();
-		frame.setBounds(100, 100, 450, 300);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.getContentPane().setLayout(null);
-		show();
-
+		createFrame();
 		createMiscComponents();
 		createChangeTextPanel();
 		createChooseDeckPanel();
 	}
 
 	/**
-	 * Creates various components all around the frame
-	 * <p>
-	 * Didn't belong in any other method, so create them here
-	 * 
+	 * Handles creating the JFrame for this Screen
+	 */
+	private void createFrame() {
+		frame = new JFrame();
+		frame.setBounds(100, 100, 450, 300);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.getContentPane().setLayout(null);
+		show();
+	}
+
+	// ***************** Creating Components ************************* //
+
+	/**
+	 * Creates various components all around the frame that don't belong in a
+	 * particular Panel
 	 */
 	private void createMiscComponents() {
 
@@ -186,6 +201,8 @@ public class EditFlashCardScreen {
 		panelChooseDeck.add(lblChooseDeck);
 	}
 
+	// ************ Adding Listeners to Components ********************* //
+
 	/** Adds Action Listener to btnFinish */
 	private void addFinishBtnListener() {
 		btnFinish.addActionListener(new ActionListener() {
@@ -227,6 +244,8 @@ public class EditFlashCardScreen {
 		});
 	}
 
+	// ************* General Helper Methods *************** //
+
 	/**
 	 * Displays an error message to a user
 	 * 
@@ -254,6 +273,8 @@ public class EditFlashCardScreen {
 		return textFieldBackText.getText();
 	}
 
+	// **************** Getter methods ****************** //
+
 	/**
 	 * Getter method for btnFinish
 	 * 
@@ -263,6 +284,7 @@ public class EditFlashCardScreen {
 		return btnFinish;
 	}
 
+	// *****************************************************
 	// Remove bellow methods later.
 
 	/**

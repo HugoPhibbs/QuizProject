@@ -7,9 +7,12 @@ import gui.guiShell.EditFlashCardScreen;
 
 /**
  * Handles logic for EditFlashCardScreen
+ * <p>
+ * When a FlashCard is editted or created, it notifies any dependent Updateable
+ * objects on changes to the Application state
  * 
  * @author Hugo Phibbs
- * @version 10/7/21
+ * @version 13/7/21
  * @since 10/7/21
  */
 public class EditFlashCardScreenLogic extends ScreenLogic implements Updater {
@@ -46,6 +49,8 @@ public class EditFlashCardScreenLogic extends ScreenLogic implements Updater {
 	 * <p>
 	 * Sets attributes and creates a new EditFlashCardScreen
 	 * 
+	 * @param updateable          Updateable object that is dependent on this Screen
+	 *                            for changes
 	 * @param currentFlashCard    FlashCard object that is currently being editted,
 	 *                            null if a FlashCard is being created
 	 * @param currentDeck         Deck object that a user wants to add a FlashCard
@@ -67,23 +72,35 @@ public class EditFlashCardScreenLogic extends ScreenLogic implements Updater {
 	}
 
 	/**
-	 * Implementation of abstract method for ScreenLogic Creates a new
-	 * EditFlashCardScreen and sets it as the Screen for this class.
-	 */
-	public void createScreen() {
-		this.screen = new EditFlashCardScreen(this);
-		screen.show();
-	}
-
-	/**
 	 * Updates dependent Updateable objects
 	 */
 	@Override
 	public void update() {
-		updateable.receivedUpdate();
+		updateable.receiveUpdate();
 	}
 
-	// *************** Logic methods for EditFlashCardScreen ************ //
+	// ****************** Creating and closing the Screen ******************* //
+
+	/**
+	 * Implementation of abstract method for ScreenLogic
+	 * <p>
+	 * Creates a new EditFlashCardScreen and sets it as the Screen for this class.
+	 */
+	public void createScreen() {
+		this.screen = new EditFlashCardScreen(this);
+		super.setScreen(null);
+		screen.show();
+	}
+
+	/**
+	 * Handles the closing of this screen
+	 */
+	public void closeScreen() {
+		update();
+		screen.quit();
+	}
+
+	// *************** Handling editing or creating a FlashCard ************ //
 
 	/**
 	 * Handles whether a user is creating or editing a FlashCard
@@ -110,37 +127,13 @@ public class EditFlashCardScreenLogic extends ScreenLogic implements Updater {
 
 	/**
 	 * Adjusts components for when a FlashCard is being editted, not created
-	 * 
+	 *
 	 */
 	private void isEditing() {
 		isCreating = false;
-
-		// TODO Set combo box to have current deck to be selected
 	}
 
-	/**
-	 * Returns the name of Decks that can be selected from when choosing which Deck
-	 * a FlashCard belongs to
-	 * 
-	 * @return String[] containing deck objects as described in
-	 *         deckManager.deckArray(Deck)
-	 */
-	public String[] deckArray() {
-		return (deckManager.deckNameArray(currentDeck));
-	}
-
-	/**
-	 * Returns a String presentation of what is currently being done to a flash card
-	 * 
-	 * @return String as specified
-	 */
-	public String operation() {
-		if (isCreating) {
-			return "Creating";
-		} else {
-			return "Editing";
-		}
-	}
+	// ****************** Handling Listener events ******************* //
 
 	/**
 	 * Handles when a user enters a text for the front or back of a FlashCard, If
@@ -169,8 +162,7 @@ public class EditFlashCardScreenLogic extends ScreenLogic implements Updater {
 			} else {
 				editFlashCard();
 			}
-			screen.quit();
-			update();
+			closeScreen();
 		}
 		// Catch any exceptions to do with executing above code
 		catch (Exception e) {
@@ -193,6 +185,32 @@ public class EditFlashCardScreenLogic extends ScreenLogic implements Updater {
 	 */
 	public void editFlashCard() {
 		currentDeck.editFlashCard(currentFlashCard, screen.frontText(), screen.backText());
+	}
+
+	// ******************* Helper methods ******************** //
+
+	/**
+	 * Returns a String presentation of what is currently being done to a flash card
+	 * 
+	 * @return String as specified
+	 */
+	public String operation() {
+		if (isCreating) {
+			return "Creating";
+		} else {
+			return "Editing";
+		}
+	}
+
+	/**
+	 * Returns the name of Decks that can be selected from when choosing which Deck
+	 * a FlashCard belongs to
+	 * 
+	 * @return String[] containing deck objects as described in
+	 *         deckManager.deckArray(Deck)
+	 */
+	public String[] deckArray() {
+		return (deckManager.deckNameArray(currentDeck));
 	}
 
 	/**
