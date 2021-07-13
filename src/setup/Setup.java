@@ -7,10 +7,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 
 import core.coreLogic.AppEnvironment;
 import core.coreObjects.User;
-import gui.guiShell.MainScreen;
 
 /**
  * Class to start the Quiz Application
@@ -24,14 +24,16 @@ import gui.guiShell.MainScreen;
  * @since 25/6/21
  *
  */
-public class Setup {
+public class Setup implements Serializable {
 
 	/**
 	 * String for the absolute working directory for this application, where session
 	 * files are stored for each user
 	 */
 	private String workingDirectory;
-	/** AppEnvironment object for this application */
+	/**
+	 * AppEnvironment object for this application
+	 */
 	private AppEnvironment appEnvironment;
 
 	/**
@@ -110,19 +112,60 @@ public class Setup {
 		return file.delete();
 	}
 
+	// ************************* Saving a Session ************************ //
+
+	/**
+	 * Handles saving a session with progress
+	 * <p>
+	 * Deletes the previous save and resaves it under the same file name
+	 * <p>
+	 * This assumes that appEnvironment has already been initialized for this class
+	 */
+	public void saveSession() {
+		String userName = appEnvironment.getUser().getName();
+		// Delete the old session and replace it with this one!
+		deleteSession(userName);
+		createSession(userName, appEnvironment);
+	}
+
 	// *********************** Creating a Session *************************** //
 
 	/**
-	 * Creates a session for a user
+	 * Handles creating a brand new session from a blank slate.
+	 * <p>
+	 * This means creating a new AppEnvironment object for this class
+	 * 
+	 * @param appEnvironment
+	 */
+	public void createNewSession(String userName) {
+		createAppEnvironment(userName);
+		createSession(userName, appEnvironment);
+	}
+
+	/**
+	 * Creates an AppEnvironment object for this class
+	 * 
+	 * @param userName String for the name of a User to be created for the to be
+	 *                 created AppEnvironment
+	 */
+	public void createAppEnvironment(String userName) {
+		appEnvironment = new AppEnvironment(new User(userName), this);
+	}
+
+	/**
+	 * Creates a session for a user and an inputted appEnvironment.
+	 * <p>
+	 * This allows a user to create a session for a AppEnvironment object that they
+	 * have already created
 	 * 
 	 * @param userName String for the name of a User object that a user wants to
 	 *                 create a session for
 	 */
-	public void createSession(String userName) {
+	public void createSession(String userName, AppEnvironment appEnvironment) {
 		String sessionFilePath = sessionFilePath(userName);
 		if (!sessionExists(sessionFilePath)) {
 			try {
-				createSessionHelper(sessionFilePath, userName);
+				createSessionHelper(sessionFilePath, userName, appEnvironment);
 			} catch (IOException ioe) {
 				ioe.printStackTrace();
 			}
@@ -139,11 +182,10 @@ public class Setup {
 	 * @param sessionFilePath String for the file path of a session to be created
 	 * @param userName        String for the name of a user to create a Session for
 	 */
-	private void createSessionHelper(String sessionFilePath, String userName) throws IOException {
+	private void createSessionHelper(String sessionFilePath, String userName, AppEnvironment appEnvironment)
+			throws IOException {
 		FileOutputStream fileOut = new FileOutputStream(sessionFilePath);
 		ObjectOutputStream objOut = new ObjectOutputStream(fileOut);
-
-		appEnvironment = new AppEnvironment(new User(userName));
 
 		objOut.writeObject(appEnvironment);
 		objOut.close();
@@ -152,7 +194,6 @@ public class Setup {
 	}
 
 	// ************************* Other General Methods ************************* //
-
 	/**
 	 * Returns the file directory that a serialized session would be saved under
 	 * using userName
