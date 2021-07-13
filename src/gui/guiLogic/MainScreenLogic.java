@@ -8,9 +8,7 @@ import core.coreLogic.DeckManager;
 import core.coreLogic.FlashCardQuiz;
 import core.coreObjects.Deck;
 import core.coreObjects.User;
-import gui.guiShell.EditDeckScreen;
 import gui.guiShell.MainScreen;
-import gui.guiShell.Screen;
 
 /**
  * Class to handle logic for MainScreen
@@ -23,7 +21,7 @@ import gui.guiShell.Screen;
  * minimal refactoring
  * 
  * @author Hugo Phibbs
- * @version 10/7/21
+ * @version 13/7/21
  * @since 10/7/21
  */
 public class MainScreenLogic extends ScreenLogic implements Updateable {
@@ -58,44 +56,33 @@ public class MainScreenLogic extends ScreenLogic implements Updateable {
 	public MainScreenLogic(AppEnvironment appEnvironment) {
 		super(null); // Won't need to go back to setupScreen
 		this.appEnvironment = appEnvironment;
-		this.user = appEnvironment.getUser();
 		this.deckManager = appEnvironment.getDeckManager();
+		this.user = appEnvironment.getUser();
 	}
 
+	// *************** Creating and closing the Screen **************** //
+
+	/**
+	 * Handles creating a new MainScreen instance for this class
+	 */
 	public void createScreen() {
 		screen = new MainScreen(this);
-		// screen.show();
-	}
-
-	// ********************* Helpers for creating components ***********************
-
-	/**
-	 * Finds and returns the column titles for tableDecks
-	 * 
-	 * @returns String[] array containing column titles for Deck details
-	 */
-	public String[] decksTableHeaders() {
-		return Deck.infoArrayHeaders();
+		screen.initialize();
+		super.setScreen(screen);
+		configScreenBtns(false);
 	}
 
 	/**
-	 * Finds and returns the row content for tableDecks
-	 * 
-	 * @returns String[][] nested array containing info on decks contained in this
-	 *          application's DeckManager
+	 * Handles closing of this screen
+	 * <p>
+	 * Quits this screen, and saves the progress of this app via AppEnvironment
 	 */
-	public String[][] decksTableDetails() {
-		return appEnvironment.getDeckManager().deckCollectionInfo();
+	public void closeScreen() {
+		screen.quit();
+		appEnvironment.save();
 	}
 
-	// ***************** Methods to swtich the current screen ******************* //
-	/**
-	 * Refreshes the content of MainScreen, does this by re-initializing tableDecks
-	 */
-	public void refresh() {
-		screen.clearContainer(screen.getPanelViewDecks());
-		screen.updatePanelViewDecks();
-	}
+	// ***************** Methods to create new Screens ******************* //
 
 	/**
 	 * Handles creating a new screen to create a flash card
@@ -109,7 +96,6 @@ public class MainScreenLogic extends ScreenLogic implements Updateable {
 	 * @param chosenDeck Deck object that a user has chosen to add a FlashCard to
 	 */
 	public void createFlashCard() {
-		// TODO use chosenDeck!
 		EditFlashCardScreenLogic editFlashCardScreenLogic = new EditFlashCardScreenLogic(this, null, chosenDeck,
 				deckManager, this);
 		editFlashCardScreenLogic.createScreen();
@@ -123,6 +109,7 @@ public class MainScreenLogic extends ScreenLogic implements Updateable {
 	 *                                  the deckManager of this AppEnviornment
 	 */
 	public void newQuiz() {
+		// TODO implement!
 		FlashCardQuiz newQuiz = new FlashCardQuiz(chosenDeck, user.getUserStats());
 		// QuizzingScreen quizzingScreen = new QuizzingScreen(chosenDeck);
 		// switchScreens(quizzingScreen);
@@ -143,21 +130,29 @@ public class MainScreenLogic extends ScreenLogic implements Updateable {
 	}
 
 	public void createDeck() {
-		CreateDeckScreenLogic createDeckScreenLogic = new CreateDeckScreenLogic(this, deckManager);
+		CreateDeckScreenLogic createDeckScreenLogic = new CreateDeckScreenLogic(this, deckManager, this);
 		createDeckScreenLogic.createScreen();
 		// createDeckScreenLogic.switchScreens();
 	}
 
+	// ************** Methods to selecting a Deck from tableDecks ************ //
+
 	/**
-	 * Updates panelDecks to have up to date information of decks. I.e. if a deck is
-	 * editted or deleted, a deck is created, or any other changes to Decks that
-	 * affect their name or size
+	 * Handles selection of row from decksTable
+	 * <p>
+	 * Makes sure that the changing of a selection only counts as one event, with if
+	 * statement
+	 * 
+	 * @param lse ListSelection that occurred to select a Deck from tableDecks
 	 */
-	public void decksChanged() {
-		screen.updatePanelViewDecks();
+	public void deckSelected(ListSelectionEvent lse) {
+		// Make sure a selection counts as one event, not two
+		if (!lse.getValueIsAdjusting()) {
+			updateChosenDeck();
+		}
+		configScreenBtns(true);
 	}
 
-	// TODO make this a general method in ScreenLogic?
 	/**
 	 * Finds the name of the currently chosen Deck from the deck
 	 * 
@@ -170,35 +165,62 @@ public class MainScreenLogic extends ScreenLogic implements Updateable {
 		chosenDeck = appEnvironment.getDeckManager().findDeck(deckName);
 	}
 
+	// ****************** Helpers for filling decksTable *********************** //
+
 	/**
-	 * Handles selection of row from decksTable
-	 * <p>
-	 * Makes sure that the changing of a selection only counts as one event, with if
-	 * statement
+	 * Finds and returns the column titles for tableDecks
 	 * 
-	 * @param lse ListSelection that occurred to select a Deck from tableDecks
+	 * @returns String[] array containing column titles for Deck details
 	 */
-	public void deckSelected(ListSelectionEvent lse) {
-		// Bellow lines ensures that changing selection of a row counts as one change,
-		// not two
-		if (!lse.getValueIsAdjusting()) {
-			updateChosenDeck();
-			screen.toggleButton(screen.getBtnStartQuiz(), true);
-			screen.toggleButton(screen.getBtnEditDeck(), true);
-			screen.toggleButton(screen.getBtnNewFlashCard(), true);
-		}
+	public String[] decksTableHeaders() {
+		return Deck.infoArrayHeaders();
 	}
 
 	/**
-	 * Creates an Entirely new MainScreen for this Logic class. Easier to do it this
-	 * way instead of reseting all the buttons and necessary components in
-	 * MainScreen
+	 * Finds and returns the row content for tableDecks
+	 * 
+	 * @returns String[][] nested array containing info on decks contained in this
+	 *          application's DeckManager
+	 */
+	public String[][] decksTableDetails() {
+		return appEnvironment.getDeckManager().deckCollectionInfo();
+	}
+
+	// *********** Methods for refreshing MainScreen and this Class ********** //
+
+	/**
+	 * Resets the components for this screen
+	 * <p>
+	 * Instead of creating an entirely new Screen, it disables affectected buttons
+	 * and resets tableDecks in the Screen
 	 */
 	@Override
-	public void receivedUpdate() {
-		// TODO Auto-generated method stub
-		screen.quit();
-		createScreen();
+	public void receiveUpdate() {
+		resetTableDecks();
+		configScreenBtns(false);
+		chosenDeck = null; // null until another deck is selected
+	}
+
+	/**
+	 * Refreshes MainScreen's tableDecks, does this by removing components from
+	 * panelViewDecks, and then refilling it
+	 */
+	private void resetTableDecks() {
+		screen.clearContainer(screen.getPanelViewDecks());
+		screen.updatePanelViewDecks();
+	}
+
+	/**
+	 * Handles enabling or disabling any buttons on MainScreen that may be enabled
+	 * or disabled.
+	 * 
+	 * @param setting boolean value for if affected MainScreen buttons should be
+	 *                enabled or not
+	 */
+	public void configScreenBtns(boolean setting) {
+		screen.toggleComponent(screen.getBtnStartQuiz(), setting);
+		screen.toggleComponent(screen.getBtnNewFlashCard(), setting);
+		screen.toggleComponent(screen.getBtnEditDeck(), setting);
 	}
 
 }

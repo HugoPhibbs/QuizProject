@@ -2,6 +2,7 @@ package core.coreLogic;
 
 import java.io.Serializable;
 import core.coreObjects.User;
+import setup.Setup;
 
 /**
  * Class to manage the environment of the application. Holds all the objects
@@ -21,6 +22,8 @@ public class AppEnvironment implements Serializable {
 	private DeckManager deckManager = new DeckManager();
 	/** User object for this AppEnvironment */
 	private User user = new User();
+	/** Setup object that was used to create this application */
+	private Setup setup;
 
 	/**
 	 * Constructor for AppEnvironment
@@ -29,14 +32,15 @@ public class AppEnvironment implements Serializable {
 	 * 
 	 * @param user User object for this AppEnvironment
 	 */
-	public AppEnvironment(User user) {
+	public AppEnvironment(User user, Setup setup) {
 		this.user = user;
+		this.setup = setup;
 	}
 
 	/**
 	 * Returns the DeckManager for this AppEnvironment.
 	 * 
-	 * @return the deckManager
+	 * @return DeckManager object
 	 */
 	public DeckManager getDeckManager() {
 		return deckManager;
@@ -45,7 +49,7 @@ public class AppEnvironment implements Serializable {
 	/**
 	 * Sets the DeckManager for this AppEnvironment.
 	 * 
-	 * @param deckManager the deckManager to set
+	 * @param deckManager DeckManager to be set
 	 */
 	public void setDeckManager(DeckManager deckManager) {
 		this.deckManager = deckManager;
@@ -54,7 +58,7 @@ public class AppEnvironment implements Serializable {
 	/**
 	 * Getter method for a User
 	 * 
-	 * @return the user
+	 * @return User object
 	 */
 	public User getUser() {
 		return user;
@@ -63,10 +67,27 @@ public class AppEnvironment implements Serializable {
 	/**
 	 * Setter method for a User
 	 * 
-	 * @param user the user to set
+	 * @param user User object to be set
 	 */
 	public void setUser(User user) {
 		this.user = user;
 	}
 
+	/**
+	 * Getter method for the Setup object for AppEnvironment
+	 * 
+	 * @return Setup object
+	 */
+	public Setup getSetup() {
+		return setup;
+	}
+
+	/**
+	 * Saves the current state of the app to the Setup object for this class.
+	 * <p>
+	 * Called when MainScreen is closed
+	 */
+	public void save() {
+		setup.saveSession();
+	}
 }

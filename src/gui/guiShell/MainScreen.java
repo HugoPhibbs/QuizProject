@@ -1,7 +1,5 @@
 package gui.guiShell;
 
-import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
@@ -9,9 +7,9 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import gui.guiLogic.MainScreenLogic;
 
-import java.awt.Container;
 import javax.swing.JLabel;
 import javax.swing.JButton;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JPanel;
@@ -26,9 +24,7 @@ import javax.swing.JScrollPane;
  * @author Hugo Phibbs
  *
  */
-public class MainScreen {
-
-	JFrame frame;
+public class MainScreen extends Screen {
 
 	/**
 	 * JTable to hold any decks belonging to a user for this application
@@ -64,50 +60,29 @@ public class MainScreen {
 	MainScreenLogic logic;
 
 	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					MainScreen window = new MainScreen(null);
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
 	 * Create the application.
 	 */
 	public MainScreen(MainScreenLogic mainScreenLogic) {
-		// TODO Implement!
-		super();
+		super("Main options", mainScreenLogic);
 		this.logic = mainScreenLogic;
-		initialize();
-	}
-
-	/**
-	 * Creates the frame for this Screen
-	 */
-	public void createFrame() {
-		// TODO @Override
-		frame = new JFrame();
-		frame.setBounds(100, 100, 720, 492);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.getContentPane().setLayout(null);
-		frame.setVisible(true);
 	}
 
 	/**
 	 * Initialize the contents of the frame.
 	 */
-	protected void initialize() {
-		createFrame();
+	public void initialize() {
+		configFrame();
 		createComponents();
 	}
+
+	/**
+	 * Configurates the frame for this Screen
+	 */
+	public void configFrame() {
+		frame.setBounds(100, 100, 720, 492);
+	}
+
+	// ******************** Creating Components ************** //
 
 	/** Calls methods to create components for this Screen */
 	public void createComponents() {
@@ -119,7 +94,7 @@ public class MainScreen {
 	 * Create and fill panel for components relating to displaying a Deck collection
 	 * to a user
 	 */
-	private void createTablePanel() {
+	public void createTablePanel() {
 		this.panelViewDecks = new JPanel();
 		panelViewDecks.setBounds(114, 48, 408, 292);
 		frame.getContentPane().add(panelViewDecks);
@@ -164,12 +139,10 @@ public class MainScreen {
 		btnEditDeck = new JButton("Edit Deck");
 		btnEditDeck.setBounds(12, 7, 90, 25);
 		panelOptions.add(btnEditDeck);
-		btnEditDeck.setEnabled(false); // Disabled until a deck is selected
 
 		btnNewFlashCard = new JButton("Add FlashCard");
 		btnNewFlashCard.setBounds(107, 7, 137, 25);
 		panelOptions.add(btnNewFlashCard);
-		btnNewFlashCard.setEnabled(false); // Disabled until a deck is selected
 
 		btnCreateDeck = new JButton("Create Deck");
 		btnCreateDeck.setBounds(256, 7, 140, 25);
@@ -178,11 +151,6 @@ public class MainScreen {
 		btnStartQuiz = new JButton("Start new Quiz!");
 		btnStartQuiz.setBounds(107, 40, 137, 25);
 		panelOptions.add(btnStartQuiz);
-		btnStartQuiz.setEnabled(false); // Disabled until a deck is selected
-
-		btnRefresh = new JButton("Refresh");
-		btnRefresh.setBounds(12, 40, 90, 25);
-		panelOptions.add(btnRefresh);
 
 		addOptionsPanelBtnListeners();
 	}
@@ -215,12 +183,6 @@ public class MainScreen {
 				logic.newQuiz();
 			}
 		});
-		btnRefresh.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				logic.refresh();
-			}
-		});
-
 	}
 
 	/** Adds a seletion listener to tableDecks */
@@ -231,6 +193,14 @@ public class MainScreen {
 				logic.deckSelected(lse);
 			}
 		});
+	}
+
+	// *************** General Helper Methods ********************* //
+
+	@Override
+	public void displayError(String msg) {
+		// TODO Auto-generated method stub
+
 	}
 
 	// ********************* Getter methods ************************** //
@@ -258,38 +228,4 @@ public class MainScreen {
 	public JFrame getFrame() {
 		return frame;
 	}
-
-	// *************** Methods to remove once Screen implemented ****** //
-	public void toggleButton(JButton btn, boolean setting) {
-		btn.setEnabled(setting);
-	}
-
-	/**
-	 * Removes and refreshes all the components of a panel Useful for clearing a
-	 * panel to prepare it for other uses
-	 * 
-	 * @param panel JPanel that is to be cleared
-	 */
-	public void clearPanel(JPanel panel) {
-		clearContainer(panel);
-	}
-
-	/**
-	 * Disposes of the Screen's frame.
-	 * 
-	 */
-	public void quit() {
-		frame.dispose();
-	}
-
-	public void clearContainer(Container container) {
-		container.removeAll();
-		container.revalidate();
-		container.repaint();
-	}
-
-	public void clearFrame(JFrame frame) {
-		clearContainer(frame);
-	}
-
 }
