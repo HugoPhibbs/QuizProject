@@ -243,8 +243,7 @@ public class EditDeckScreen {
 		frame.getContentPane().add(lblTitle);
 	}
 
-	// ********************** Adding Listeners to Components
-	// ************************ //
+	// **************** Adding Listeners to Components ****************** //
 
 	/** Adds a Selection Listener to tableFlashCards */
 	private void addFlashCardsTableListener() {

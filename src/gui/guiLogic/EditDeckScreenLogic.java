@@ -47,25 +47,16 @@ public class EditDeckScreenLogic extends ScreenLogic implements Updateable, Upda
     public void createScreen() {
         screen = new EditDeckScreen(this);
         screen.show();
+        super.setScreen(null);
     }
 
     /**
-     * Acts on recieving an update from an Updater object Instead of refereshing
-     * affected components, it creates a brand new screen, as this is simpler than
-     * configuring all of the components of and EditFlashCardScreen instance to be
-     * asnew
+     * Handles the closing of an EditDeckScreen instance. Updates any dependents and
+     * then closes this screen
      */
-    @Override
-    public void receivedUpdate() {
-        // TODO Auto-generated method stub
+    public void closeScreen() {
+        update();
         screen.quit();
-        createScreen();
-    }
-
-    @Override
-    public void update() {
-        // TODO Auto-generated method stub
-        updateable.receivedUpdate();
     }
 
     // ******************* Handling Listener Events ******************** //
@@ -96,7 +87,7 @@ public class EditDeckScreenLogic extends ScreenLogic implements Updateable, Upda
      */
     public void deleteDeck() {
         deckManager.removeDeck(deck);
-        screen.quit();
+        closeScreen();
     }
 
     /**
@@ -106,8 +97,7 @@ public class EditDeckScreenLogic extends ScreenLogic implements Updateable, Upda
         // TODO implement!
         try {
             editDeckName();
-            screen.quit();
-            update();
+            closeScreen();
         } catch (Exception e) {
             screen.displayError(e.getMessage());
         }
@@ -170,7 +160,7 @@ public class EditDeckScreenLogic extends ScreenLogic implements Updateable, Upda
         screen.updatePanelFlashCards();
     }
 
-    // **************** Helper methods *********************** //
+    // ******************* Helper methods *********************** //
 
     /**
      * Finds the name of the deck that is currently being editted
@@ -201,4 +191,24 @@ public class EditDeckScreenLogic extends ScreenLogic implements Updateable, Upda
     public String[] flashCardsTableHeaders() {
         return FlashCard.infoArrayHeaders();
     }
+
+    // ************ Methods to update EditDeckScreen ******************** //
+
+    /**
+     * Acts on recieving an update from an Updater object Instead of refereshing
+     * affected components, it creates a brand new screen, as this is simpler than
+     * configuring all of the components of and EditFlashCardScreen instance to be
+     * asnew
+     */
+    @Override
+    public void receiveUpdate() {
+        screen.quit();
+        createScreen();
+    }
+
+    @Override
+    public void update() {
+        updateable.receiveUpdate();
+    }
+
 }
