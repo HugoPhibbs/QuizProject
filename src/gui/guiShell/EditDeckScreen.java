@@ -20,6 +20,9 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import gui.guiLogic.EditDeckScreenLogic;
+import java.awt.Color;
+import javax.swing.UIManager;
+import java.awt.Font;
 
 /**
  * Represents a Screen for editing a Deck
@@ -27,7 +30,7 @@ import gui.guiLogic.EditDeckScreenLogic;
  * @author Hugo Phibbs
  * 
  */
-public class EditDeckScreen {
+public class EditDeckScreen extends Screen {
 
 	JFrame frame;
 	/**
@@ -60,31 +63,12 @@ public class EditDeckScreen {
 	EditDeckScreenLogic logic;
 
 	/**
-	 * Launch the application.
+	 * Constructor for EditFlashCardScreen
+	 * 
+	 * @param editDeckScreenLogic EditDeckScreenLogic object to control this Screen
 	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					EditDeckScreen window = new EditDeckScreen();
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
-	 * Create the application.
-	 */
-	public EditDeckScreen() {
-		super();
-		initialize();
-	}
-
 	public EditDeckScreen(EditDeckScreenLogic editDeckScreenLogic) {
-		super();
+		super(null, editDeckScreenLogic);
 		this.logic = editDeckScreenLogic;
 		initialize();
 	}
@@ -92,19 +76,18 @@ public class EditDeckScreen {
 	/**
 	 * Initialize the contents of the frame.
 	 */
-	protected void initialize() {
-		createFrame();
+	public void initialize() {
+		configFrame();
 		createComponents();
+		logic.configScreenBtns(false);
 	}
 
 	/**
-	 * Creates the frame for this screen
+	 * Configurates the Frame
 	 */
-	public void createFrame() {
-		frame = new JFrame();
-		frame.getContentPane().setLayout(null);
-		frame.setBounds(100, 100, 900, 900);
-		frame.getContentPane().setLayout(null);
+	@Override
+	protected void configFrame() {
+		frame.setBounds(100, 100, 778, 543);
 	}
 
 	// ******************** Creating Components ******************* //
@@ -126,7 +109,7 @@ public class EditDeckScreen {
 	 */
 	private void createFlashCardsPanel() {
 		panelFlashCards = new JPanel();
-		panelFlashCards.setBounds(63, 101, 742, 493);
+		panelFlashCards.setBounds(22, 83, 423, 410);
 		frame.getContentPane().add(panelFlashCards);
 		panelFlashCards.setLayout(null);
 
@@ -138,19 +121,21 @@ public class EditDeckScreen {
 	 */
 	public void updatePanelFlashCards() {
 		JLabel lblFlashCards = new JLabel("FlashCards");
-		lblFlashCards.setBounds(309, 13, 86, 16);
+		lblFlashCards.setBounds(170, 26, 86, 16);
 		panelFlashCards.add(lblFlashCards);
 
 		createTableFlashCards();
 	}
 
-	public void createTableFlashCards() {
+	private void createTableFlashCards() {
 		tableFlashCards = new JTable(logic.flashCardsTableDetails(), logic.flashCardsTableHeaders());
 		tableFlashCards.setBounds(12, 39, 718, 441);
 
 		JScrollPane sp = new JScrollPane(tableFlashCards);
-		sp.setBounds(7, 49, 394, 236);
+		sp.setBounds(10, 53, 403, 346);
 		panelFlashCards.add(sp);
+
+		disableTableEditting(tableFlashCards);
 
 		addFlashCardsTableListener();
 	}
@@ -161,23 +146,21 @@ public class EditDeckScreen {
 	 */
 	private void createFlashCardOptionsPanel() {
 		JPanel panelFlashCardOptions = new JPanel();
-		panelFlashCardOptions.setBounds(367, 622, 182, 129);
+		panelFlashCardOptions.setBounds(455, 123, 296, 89);
 		frame.getContentPane().add(panelFlashCardOptions);
 		panelFlashCardOptions.setLayout(null);
 
 		btnAddFlashCard = new JButton("Add FlashCard");
-		btnAddFlashCard.setBounds(12, 13, 160, 28);
+		btnAddFlashCard.setBounds(12, 13, 128, 28);
 		panelFlashCardOptions.add(btnAddFlashCard);
 
 		btnEditFlashCard = new JButton("Edit FlashCard");
-		btnEditFlashCard.setBounds(12, 54, 160, 25);
+		btnEditFlashCard.setBounds(150, 15, 136, 25);
 		panelFlashCardOptions.add(btnEditFlashCard);
-		btnEditFlashCard.setEnabled(false);
 
 		btnDeleteFlashCard = new JButton("Delete FlashCard");
-		btnDeleteFlashCard.setBounds(12, 92, 160, 25);
+		btnDeleteFlashCard.setBounds(150, 47, 136, 25);
 		panelFlashCardOptions.add(btnDeleteFlashCard);
-		btnDeleteFlashCard.setEnabled(false);
 
 		adFlashCardPanelOptionsBtnListeners();
 	}
@@ -188,7 +171,7 @@ public class EditDeckScreen {
 	 */
 	private void createDeckDetailsPanel() {
 		JPanel panelDeckDetails = new JPanel();
-		panelDeckDetails.setBounds(63, 622, 296, 129);
+		panelDeckDetails.setBounds(455, 223, 296, 129);
 		frame.getContentPane().add(panelDeckDetails);
 		panelDeckDetails.setLayout(null);
 
@@ -201,7 +184,7 @@ public class EditDeckScreen {
 		panelDeckDetails.add(textFieldName);
 		textFieldName.setColumns(10);
 
-		textFieldDescription = new JTextField();
+		textFieldDescription = new JTextField(logic.deckDescription());
 		textFieldDescription.setBounds(12, 60, 272, 56);
 		panelDeckDetails.add(textFieldDescription);
 		textFieldDescription.setColumns(10);
@@ -217,16 +200,18 @@ public class EditDeckScreen {
 	 */
 	private void createFinishPanel() {
 		JPanel panelFinish = new JPanel();
-		panelFinish.setBounds(561, 622, 244, 129);
+		panelFinish.setBounds(455, 363, 296, 129);
 		frame.getContentPane().add(panelFinish);
 		panelFinish.setLayout(null);
 
 		btnFinish = new JButton("Continue");
-		btnFinish.setBounds(129, 90, 103, 25);
+		btnFinish.setBounds(183, 90, 103, 25);
 		panelFinish.add(btnFinish);
 
 		textPaneErrorMsg = new JTextPane();
-		textPaneErrorMsg.setBounds(12, 13, 220, 64);
+		textPaneErrorMsg.setForeground(Color.RED);
+		textPaneErrorMsg.setBackground(UIManager.getColor("Button.background"));
+		textPaneErrorMsg.setBounds(12, 13, 274, 64);
 		panelFinish.add(textPaneErrorMsg);
 
 		btnDeleteDeck = new JButton("Delete Deck");
@@ -238,8 +223,9 @@ public class EditDeckScreen {
 
 	/** Create Miscelaneous components that don't belong in any panelr */
 	private void createMiscComponents() {
-		JLabel lblTitle = new JLabel(logic.deckName());
-		lblTitle.setBounds(341, 60, 138, 28);
+		JLabel lblTitle = new JLabel(logic.title());
+		lblTitle.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		lblTitle.setBounds(331, 33, 138, 28);
 		frame.getContentPane().add(lblTitle);
 	}
 
@@ -337,6 +323,15 @@ public class EditDeckScreen {
 	 */
 	public JTextField getTextFieldName() {
 		return textFieldName;
+	}
+
+	/**
+	 * Getter method for textFieldDescription
+	 * 
+	 * @return JTextField object for textFieldDescription
+	 */
+	public JTextField getTextFieldDescription() {
+		return textFieldDescription;
 	}
 
 	/**

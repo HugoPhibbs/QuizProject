@@ -94,14 +94,13 @@ public class EditDeckScreenLogic extends ScreenLogic implements Updateable, Upda
      * Handles pressing of btnContinue for the screen
      */
     public void onContinue() {
-        // TODO implement!
         try {
             editDeckName();
+            editDeckDescription();
             closeScreen();
         } catch (Exception e) {
             screen.displayError(e.getMessage());
         }
-
     }
 
     /**
@@ -109,6 +108,23 @@ public class EditDeckScreenLogic extends ScreenLogic implements Updateable, Upda
      */
     private void editDeckName() {
         deckManager.renameDeck(deckName(), enteredDeckName());
+    }
+
+    /**
+     * Handles editting the description of the Deck that is currently being editted
+     */
+    private void editDeckDescription() {
+        deck.setDescription(enteredDeckDescription());
+    }
+
+    /**
+     * Finds the text that is currently entered in textFieldDescription for the
+     * Screen that this class is controlling
+     * 
+     * @return String as described
+     */
+    private String enteredDeckDescription() {
+        return screen.getTextFieldDescription().getText();
     }
 
     /**
@@ -120,8 +136,6 @@ public class EditDeckScreenLogic extends ScreenLogic implements Updateable, Upda
     private String enteredDeckName() {
         return screen.getTextFieldName().getText();
     }
-
-    // ******************* Methods for Managing FlashCards ******************* //
 
     /**
      * Handles pressing of btnEditFlashCard for the screen
@@ -150,6 +164,7 @@ public class EditDeckScreenLogic extends ScreenLogic implements Updateable, Upda
         EditFlashCardScreenLogic editFlashCardScreenLogic = new EditFlashCardScreenLogic(this, flashCard, deck,
                 deckManager, this);
         editFlashCardScreenLogic.createScreen();
+        hideParent();
     }
 
     /**
@@ -157,10 +172,19 @@ public class EditDeckScreenLogic extends ScreenLogic implements Updateable, Upda
      */
     public void deleteFlashCard() {
         deck.removeFlashCard(chosenFlashCard);
-        screen.updatePanelFlashCards();
+        resetPanelFlashCards();
     }
 
     // ******************* Helper methods *********************** //
+
+    /**
+     * Finds the title for the Screen
+     * 
+     * @return String for the title of EditDeckScreen
+     */
+    public String title() {
+        return String.format("Editing %s", deckName());
+    }
 
     /**
      * Finds the name of the deck that is currently being editted
@@ -169,6 +193,16 @@ public class EditDeckScreenLogic extends ScreenLogic implements Updateable, Upda
      */
     public String deckName() {
         return deck.getName();
+    }
+
+    /**
+     * Finds the description of the Deck that is currently being editted
+     * 
+     * @return String for the description of the deck that is currently being
+     *         editted
+     */
+    public String deckDescription() {
+        return deck.getDescription();
     }
 
     /**
@@ -199,16 +233,44 @@ public class EditDeckScreenLogic extends ScreenLogic implements Updateable, Upda
      * affected components, it creates a brand new screen, as this is simpler than
      * configuring all of the components of and EditFlashCardScreen instance to be
      * asnew
+     * <p>
+     * Also shows the parent to this screen, which would have been hidden upon
+     * creating another Screen from this Screen.
      */
     @Override
     public void receiveUpdate() {
+        showParent();
         screen.quit();
         createScreen();
     }
 
+    /**
+     * Updates dependent Updateable objects
+     */
     @Override
     public void update() {
         updateable.receiveUpdate();
     }
 
+    /**
+     * Resets panelFlashCards belonging to the Screen. Does this by removing all
+     * components from the panel and then filling it back up with necessary
+     * components
+     */
+    public void resetPanelFlashCards() {
+        screen.clearContainer(screen.getPanelFlashCards());
+        screen.updatePanelFlashCards();
+    }
+
+    /**
+     * Enables or diables specific buttons belonging to Screen, so that they can be
+     * reset to normal when this Screen is refreshed, or enabled when a FlashCard is
+     * selected from tableFlashCards belonging to the Screen
+     * 
+     * @param setting boolean value if buttons will be enabled or not
+     */
+    public void configScreenBtns(boolean setting) {
+        screen.toggleComponent(screen.getBtnDeleteFlashCard(), setting);
+        screen.toggleComponent(screen.getBtnEditFlashCard(), setting);
+    }
 }
