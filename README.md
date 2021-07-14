@@ -159,13 +159,13 @@ Can have multiple choice, where the front of the flash card is the question, and
 
 Implement a priority queue with viewing cards (min or max heap), to get O(logn) performance. extra extra as O(n) to find min anyways.
 
-Could have more than one user for this quiz, eg log in with two different users.
-
 On setup screen, fields for working directory and a users name can be preentered with the last used directories
 
 User can use keys on keyboard to do simple tasks in with the GUI, without using the mouse
 
 Concurrent programming instead of observer pattern
+
+Default text in text boxes, eg enter front text for flashcard. Text then disappears when user selects the textbox
 
 ## Conventions and Code Style
 
