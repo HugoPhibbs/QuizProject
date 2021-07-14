@@ -50,17 +50,25 @@ public class CreateDeckScreen {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		frame = new JFrame();
-		frame.setBounds(100, 100, 450, 300);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.getContentPane().setLayout(null);
-		frame.setVisible(true);
-
+		createFrame();
 		createDetailsPanel();
 		createContinuePanel();
 		createMiscComponents();
 	}
 
+	private void createFrame() {
+		// TODO remove later
+		frame = new JFrame();
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.getContentPane().setLayout(null);
+		frame.setVisible(true);
+
+	}
+
+	// @Override
+	protected void configFrame() {
+		frame.setBounds(100, 100, 450, 300);
+	}
 	// ******************** Creating Components ************************ //
 
 	/**

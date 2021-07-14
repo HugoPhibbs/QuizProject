@@ -112,7 +112,6 @@ public class MainScreenLogic extends ScreenLogic implements Updateable {
 		// TODO implement!
 		FlashCardQuiz newQuiz = new FlashCardQuiz(chosenDeck, user.getUserStats());
 		// QuizzingScreen quizzingScreen = new QuizzingScreen(chosenDeck);
-		// switchScreens(quizzingScreen);
 
 	}
 
@@ -126,16 +125,17 @@ public class MainScreenLogic extends ScreenLogic implements Updateable {
 	public void editDeck() {
 		EditDeckScreenLogic editDeckScreenLogic = new EditDeckScreenLogic(this, this, deckManager, chosenDeck);
 		editDeckScreenLogic.createScreen();
-		// switchScreen(editDeckScreen);
 	}
 
+	/**
+	 * Handles creating a new CreateDeckScreen
+	 */
 	public void createDeck() {
 		CreateDeckScreenLogic createDeckScreenLogic = new CreateDeckScreenLogic(this, deckManager, this);
 		createDeckScreenLogic.createScreen();
-		// createDeckScreenLogic.switchScreens();
 	}
 
-	// ************** Methods to selecting a Deck from tableDecks ************ //
+	// *********** Methods to handle Listener events ********** //
 
 	/**
 	 * Handles selection of row from decksTable
@@ -186,7 +186,7 @@ public class MainScreenLogic extends ScreenLogic implements Updateable {
 		return appEnvironment.getDeckManager().deckCollectionInfo();
 	}
 
-	// *********** Methods for refreshing MainScreen and this Class ********** //
+	// *********** Methods for refreshing the Screen and this class ********** //
 
 	/**
 	 * Resets the components for this screen

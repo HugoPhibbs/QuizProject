@@ -67,17 +67,13 @@ public class MainScreen extends Screen {
 		this.logic = mainScreenLogic;
 	}
 
-	/**
-	 * Initialize the contents of the frame.
-	 */
+	@Override
 	public void initialize() {
 		configFrame();
 		createComponents();
 	}
 
-	/**
-	 * Configurates the frame for this Screen
-	 */
+	@Override
 	public void configFrame() {
 		frame.setBounds(100, 100, 720, 492);
 	}
@@ -85,7 +81,7 @@ public class MainScreen extends Screen {
 	// ******************** Creating Components ************** //
 
 	/** Calls methods to create components for this Screen */
-	public void createComponents() {
+	protected void createComponents() {
 		createTablePanel();
 		createOptionsPanel();
 	}
@@ -121,7 +117,6 @@ public class MainScreen extends Screen {
 		sp.setBounds(7, 49, 394, 236);
 		panelViewDecks.add(sp);
 
-		// Set the table so it can't be edited
 		disableTableEditting(tableDecks);
 
 		addDecksTableListener();
@@ -248,9 +243,5 @@ public class MainScreen extends Screen {
 	 */
 	public JTable getTableDecks() {
 		return tableDecks;
-	}
-
-	public JFrame getFrame() {
-		return frame;
 	}
 }

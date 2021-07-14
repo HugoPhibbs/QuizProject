@@ -11,11 +11,17 @@ import gui.guiShell.CreateDeckScreen;
  */
 public class CreateDeckScreenLogic extends ScreenLogic implements Updater {
 
-    /** DeckManager object for this application */
+    /**
+     * DeckManager object for this application
+     */
     DeckManager deckManager;
-    /** CreateDeckScreen object that is being controlled by this class */
+    /**
+     * CreateDeckScreen object that is being controlled by this class
+     */
     CreateDeckScreen screen;
-    /** Updateable object dependent on this class */
+    /**
+     * Updateable object dependent on this class
+     */
     Updateable updateable;
 
     /**
@@ -29,8 +35,9 @@ public class CreateDeckScreenLogic extends ScreenLogic implements Updater {
         super(parentScreenLogic);
         this.deckManager = deckManager;
         this.updateable = updateable;
-        // TODO Auto-generated constructor stub
     }
+
+    // **************** Creating and closing the Screen ******************* //
 
     @Override
     public void createScreen() {
@@ -39,6 +46,14 @@ public class CreateDeckScreenLogic extends ScreenLogic implements Updater {
         super.setScreen(null);
 
     }
+
+    @Override
+    public void closeScreen() {
+        update();
+        screen.quit();
+    }
+
+    // ******************* Handling Listener Events ********************** //
 
     /**
      * Handles creating a new deck, if there is an error while creating, then an
@@ -68,6 +83,8 @@ public class CreateDeckScreenLogic extends ScreenLogic implements Updater {
         screen.toggleComponent(screen.getBtnCreateDeck(), btnSetting);
     }
 
+    // ************** General Helper Methods ******************* //
+
     /**
      * Finds the description text entered for a new Deck
      * 
@@ -86,17 +103,11 @@ public class CreateDeckScreenLogic extends ScreenLogic implements Updater {
         return screen.getTextFieldName().getText();
     }
 
-    @Override
-    public void update() {
-        // TODO Auto-generated method stub
-        updateable.receiveUpdate();
-    }
+    // ********** Methods to update Updateable Object ************* //
 
     @Override
-    public void closeScreen() {
-        // TODO Auto-generated method stub
-        update();
-        screen.quit();
+    public void update() {
+        updateable.receiveUpdate();
     }
 
 }

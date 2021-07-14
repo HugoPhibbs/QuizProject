@@ -42,6 +42,8 @@ public abstract class ScreenLogic {
      * Abstract method for creating Screen for this ScreenLogic class
      * <p>
      * Allows a user to initialize the value of screen for this class.
+     * <p>
+     * Likely place where user sets the Screen object for this class (ScreenLogic0
      */
     public abstract void createScreen();
 
@@ -111,7 +113,7 @@ public abstract class ScreenLogic {
         parentLogic.showScreen();
     }
 
-    // ************** Setter and getter methods ****************** //
+    // ************** Setter and Getter methods ****************** //
 
     /**
      * Getter method for the Screen of this class

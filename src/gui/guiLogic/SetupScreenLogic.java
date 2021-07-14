@@ -27,7 +27,7 @@ public class SetupScreenLogic extends ScreenLogic {
 	/**
 	 * Constuctor for SetupScreenLogic
 	 * <p>
-	 * Since this screen doesn't have any parent, call to constructor has null as
+	 * Since this screen doesn't have any parent, call to constructor has null for
 	 * parentLogic
 	 */
 	public SetupScreenLogic() {
@@ -36,9 +36,7 @@ public class SetupScreenLogic extends ScreenLogic {
 
 	// ************** Creating and closing the Screen ********************** //
 
-	/**
-	 * Creates an new SetupScreen
-	 */
+	@Override
 	public void createScreen() {
 		screen = new SetupScreen(this);
 		screen.initialize();
@@ -46,9 +44,7 @@ public class SetupScreenLogic extends ScreenLogic {
 		// screen.show();
 	}
 
-	/**
-	 * Handles closing this SetupScreen
-	 */
+	@Override
 	public void closeScreen() {
 		deleteScreen();
 	}

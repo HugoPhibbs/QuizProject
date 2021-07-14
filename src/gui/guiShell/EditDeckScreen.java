@@ -32,34 +32,51 @@ import java.awt.Font;
  */
 public class EditDeckScreen extends Screen {
 
-	JFrame frame;
 	/**
 	 * JTable to contain FlashCards that are contained in a Deck User can select
 	 * FlashCards from this Table to edit
 	 */
 	private JTable tableFlashCards;
-	/** JTextField where a user can enter and edit the name of a Deck */
+	/**
+	 * JTextField where a user can enter and edit the name of a Deck
+	 */
 	private JTextField textFieldName;
-	/** JTextField where a user can enter and edit the description of a Deck */
+	/**
+	 * JTextField where a user can enter and edit the description of a Deck
+	 */
 	private JTextField textFieldDescription;
-	/** Text pane to display any errors that occur while editing a Deck */
+	/**
+	 * Text pane to display any errors that occur while editing a Deck
+	 */
 	private JTextPane textPaneErrorMsg;
 	/**
 	 * JPanel to hold components relating to displaying FlashCards contained in a
 	 * Deck
 	 */
 	JPanel panelFlashCards;
-	/** JButton to add a new FlashCard to a Deck */
+	/**
+	 * JButton to add a new FlashCard to a Deck
+	 */
 	JButton btnAddFlashCard;
-	/** JButton to edit a FlashCard from a Deck */
+	/**
+	 * JButton to edit a FlashCard from a Deck
+	 */
 	JButton btnEditFlashCard;
-	/** JButton to delete a FlashCard from a Deck */
+	/**
+	 * JButton to delete a FlashCard from a Deck
+	 */
 	JButton btnDeleteFlashCard;
-	/** JButton to finish editing a Deck */
+	/**
+	 * JButton to finish editing a Deck
+	 */
 	JButton btnFinish;
-	/** JButton to delete a Deck */
+	/**
+	 * JButton to delete a Deck
+	 */
 	JButton btnDeleteDeck;
-	/** EditDeckScreenLogic object to control this screen */
+	/**
+	 * EditDeckScreenLogic object to control this screen
+	 */
 	EditDeckScreenLogic logic;
 
 	/**
@@ -73,21 +90,21 @@ public class EditDeckScreen extends Screen {
 		initialize();
 	}
 
-	/**
-	 * Initialize the contents of the frame.
-	 */
+	@Override
 	public void initialize() {
 		configFrame();
 		createComponents();
 		logic.configScreenBtns(false);
 	}
 
-	/**
-	 * Configurates the Frame
-	 */
 	@Override
 	protected void configFrame() {
 		frame.setBounds(100, 100, 778, 543);
+	}
+
+	@Override
+	public void displayError(String msg) {
+		textPaneErrorMsg.setText(msg);
 	}
 
 	// ******************** Creating Components ******************* //
@@ -341,44 +358,5 @@ public class EditDeckScreen extends Screen {
 	 */
 	public JFrame getFrame() {
 		return frame;
-	}
-
-	// ******************************************************************
-	// Remove methods bellow once screen is extended by this class.
-
-	/**
-	 * Makes the screen visible to the user.
-	 * 
-	 */
-	public void show() {
-		frame.setVisible(true);
-	}
-
-	public void displayError(String msg) {
-		textPaneErrorMsg.setText(msg);
-	}
-
-	/**
-	 * Disables or enables a JComponent according to parameter setting
-	 * 
-	 * @param component JComponent to be enabled or not
-	 * @param setting   Boolean value for if a JButton is to be enabled or not
-	 */
-	public void toggleComponent(JComponent component, boolean setting) {
-		component.setEnabled(setting);
-	}
-
-	public void clearContainer(Container container) {
-		container.removeAll();
-		container.revalidate();
-		container.repaint();
-	}
-
-	/**
-	 * Disposes of the Screen's frame.
-	 * 
-	 */
-	public void quit() {
-		frame.dispose();
 	}
 }

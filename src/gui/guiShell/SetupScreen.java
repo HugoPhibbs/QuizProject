@@ -81,17 +81,13 @@ public class SetupScreen extends Screen {
 		this.logic = setupScreenLogic;
 	}
 
-	/**
-	 * Initialize the contents of the frame.
-	 */
+	@Override
 	public void initialize() {
 		configFrame();
 		createComponents();
 	}
 
-	/**
-	 * Handles configurating the properties of the Frame for this Screen
-	 */
+	@Override
 	protected void configFrame() {
 		frame.getContentPane().setFont(new Font("Dialog", Font.BOLD, 12));
 		frame.setBounds(100, 100, 450, 300);
@@ -99,8 +95,8 @@ public class SetupScreen extends Screen {
 
 	// ******************** Creating Components ******************* //
 
-	/** Calls methods to create components for this Screen */
-	private void createComponents() {
+	@Override
+	protected void createComponents() {
 		createMiscComponents();
 		createEnterNamePanel();
 		createConfigSessionPanel();

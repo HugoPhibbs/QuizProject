@@ -14,15 +14,10 @@ import javax.swing.JComboBox;
 import javax.swing.JComponent;
 
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 import javax.swing.JTextPane;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-
-import core.coreLogic.DeckManager;
-import core.coreObjects.Deck;
-import core.coreObjects.FlashCard;
 
 /**
  * Represents a Screen to edit a FlashCard object
@@ -119,10 +114,15 @@ public class EditFlashCardScreen {
 	 */
 	private void createFrame() {
 		frame = new JFrame();
-		frame.setBounds(100, 100, 450, 300);
+
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		show();
+	}
+
+	// @Override
+	protected void configFrame() {
+		frame.setBounds(100, 100, 450, 300);
 	}
 
 	// ***************** Creating Components ************************* //

@@ -31,16 +31,26 @@ public class EditDeckScreenLogic extends ScreenLogic implements Updateable, Upda
      * EditDeckScreen object that this class controls
      */
     EditDeckScreen screen;
-
+    /**
+     * Updateable object that is updated when a Deck is edited
+     */
     Updateable updateable;
 
+    /**
+     * Constuctor for EditDeckScreenLogic
+     * 
+     * @param parentScreenLogic ScreenLogic object that created this object
+     * @param updateable        Updateable object that this class updates upon
+     *                          closing
+     * @param deckManager       DeckManager object for this Application
+     * @param deck              Deck object that is currently being
+     */
     public EditDeckScreenLogic(ScreenLogic parentScreenLogic, Updateable updateable, DeckManager deckManager,
             Deck deck) {
         super(parentScreenLogic);
         this.updateable = updateable;
         this.deck = deck;
         this.deckManager = deckManager;
-        // TODO Auto-generated constructor stub
     }
 
     @Override
@@ -50,10 +60,7 @@ public class EditDeckScreenLogic extends ScreenLogic implements Updateable, Upda
         super.setScreen(null);
     }
 
-    /**
-     * Handles the closing of an EditDeckScreen instance. Updates any dependents and
-     * then closes this screen
-     */
+    @Override
     public void closeScreen() {
         update();
         screen.quit();
@@ -61,6 +68,11 @@ public class EditDeckScreenLogic extends ScreenLogic implements Updateable, Upda
 
     // ******************* Handling Listener Events ******************** //
 
+    /**
+     * Handles a FlashCard being selected on EditDeckScreen
+     * 
+     * @param lse ListSelectionEvent that was created from selecting a FlashCard
+     */
     public void flashCardSelected(ListSelectionEvent lse) {
         // Bellow lines ensures that changing selection of a row counts as one change,
         // not two
@@ -71,6 +83,10 @@ public class EditDeckScreenLogic extends ScreenLogic implements Updateable, Upda
         }
     }
 
+    /**
+     * Updates the value of the chosenFlashCard, whenever a user chooses a FlashCard
+     * from the table, this method is called
+     */
     private void updateChosenFlashCard() {
         JTable table = screen.getTableFlashCards();
         int selectedRow = table.getSelectedRow();
@@ -226,7 +242,7 @@ public class EditDeckScreenLogic extends ScreenLogic implements Updateable, Upda
         return FlashCard.infoArrayHeaders();
     }
 
-    // ************ Methods to update EditDeckScreen ******************** //
+    // ************** Methods to update EditDeckScreen ******************** //
 
     /**
      * Acts on recieving an update from an Updater object Instead of refereshing
@@ -242,14 +258,6 @@ public class EditDeckScreenLogic extends ScreenLogic implements Updateable, Upda
         showParent();
         screen.quit();
         createScreen();
-    }
-
-    /**
-     * Updates dependent Updateable objects
-     */
-    @Override
-    public void update() {
-        updateable.receiveUpdate();
     }
 
     /**
@@ -272,5 +280,15 @@ public class EditDeckScreenLogic extends ScreenLogic implements Updateable, Upda
     public void configScreenBtns(boolean setting) {
         screen.toggleComponent(screen.getBtnDeleteFlashCard(), setting);
         screen.toggleComponent(screen.getBtnEditFlashCard(), setting);
+    }
+
+    // ************* Methods to notify Updateable object ********************** //
+
+    /**
+     * Updates dependent Updateable objects
+     */
+    @Override
+    public void update() {
+        updateable.receiveUpdate();
     }
 }

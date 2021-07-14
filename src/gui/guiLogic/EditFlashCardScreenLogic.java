@@ -71,14 +71,6 @@ public class EditFlashCardScreenLogic extends ScreenLogic implements Updater {
 		handleEditingOrCreating();
 	}
 
-	/**
-	 * Updates dependent Updateable objects
-	 */
-	@Override
-	public void update() {
-		updateable.receiveUpdate();
-	}
-
 	// ****************** Creating and closing the Screen ******************* //
 
 	/**
@@ -187,7 +179,7 @@ public class EditFlashCardScreenLogic extends ScreenLogic implements Updater {
 		currentDeck.editFlashCard(currentFlashCard, screen.frontText(), screen.backText());
 	}
 
-	// ******************* Helper methods ******************** //
+	// ******************* General Helper methods ******************** //
 
 	/**
 	 * Returns a String presentation of what is currently being done to a flash card
@@ -238,5 +230,15 @@ public class EditFlashCardScreenLogic extends ScreenLogic implements Updater {
 	 */
 	public boolean getIsCreating() {
 		return isCreating;
+	}
+
+	// ************* Methods to update Updateable objects *************** //
+
+	/**
+	 * Updates dependent Updateable objects
+	 */
+	@Override
+	public void update() {
+		updateable.receiveUpdate();
 	}
 }
