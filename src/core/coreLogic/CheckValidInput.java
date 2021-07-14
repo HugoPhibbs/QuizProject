@@ -5,8 +5,8 @@ import java.io.Serializable;
 /**
  * Class to containing methods to check if input from a user is valid
  * 
+ * @author Jordan Vegar
  * @author Hugo Phibbs
- * @author Tom Berry
  * @version 28/6/21
  * @since 27/6/21
  *
@@ -17,8 +17,8 @@ public class CheckValidInput implements Serializable {
 	 * String for the requirements for a valid name, has a template field %s so
 	 * Programmers can specify which object doesn't currently have a valid name
 	 */
-	private static String VALID_NAME_REQUIREMENTS = "%s name must have no more than 2 consequtive white spaces"
-			+ "and be between 1 and 15 characters long" + " with no numbers";
+	private static String VALID_NAME_REQUIREMENTS = "%s name must have no more than 2 consecutive white spaces"
+			+ " and be between 1 and 15 characters long, with no numbers";
 
 	/**
 	 * Checks if an inputed name is valid. Name must have no more than 2 consecutive
