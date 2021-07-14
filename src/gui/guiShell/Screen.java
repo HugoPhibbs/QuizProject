@@ -1,6 +1,5 @@
 package gui.guiShell;
 
-import java.awt.Color;
 import java.awt.Container;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -8,6 +7,7 @@ import java.awt.event.WindowEvent;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
 
 import gui.guiLogic.ScreenLogic;
 
@@ -30,6 +30,12 @@ public abstract class Screen {
 	/** ScreenLogic Class for this class */
 	ScreenLogic logic;
 
+	/**
+	 * Constructor for a Screen
+	 * 
+	 * @param title String for the title of a Screen
+	 * @param logic ScreenLogic object that controls this Screen
+	 */
 	protected Screen(String title, ScreenLogic logic) {
 		this.logic = logic;
 		createFrame(title);
@@ -44,6 +50,9 @@ public abstract class Screen {
 
 	// **************** Methods for the Frame ****************** //
 
+	/**
+	 * Method to set any special characteristics of the Frame e.g. size
+	 */
 	protected abstract void configFrame();
 
 	/**
@@ -170,6 +179,15 @@ public abstract class Screen {
 	 */
 	public void removeComponent(JComponent component) {
 		frame.remove(component);
+	}
+
+	/**
+	 * Disables editting of entries for a JTable
+	 * 
+	 * @param table JTable to have editting disabled
+	 */
+	public void disableTableEditting(JTable table) {
+		table.setDefaultEditor(Object.class, null);
 	}
 
 	// ***************** Getter Methods ************************** //
