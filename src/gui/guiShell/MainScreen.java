@@ -122,7 +122,7 @@ public class MainScreen extends Screen {
 		panelViewDecks.add(sp);
 
 		// Set the table so it can't be edited
-		tableDecks.setDefaultEditor(Object.class, null);
+		disableTableEditting(tableDecks);
 
 		addDecksTableListener();
 	}
@@ -205,22 +205,47 @@ public class MainScreen extends Screen {
 
 	// ********************* Getter methods ************************** //
 
+	/**
+	 * Getter method for panelViewDecks
+	 * 
+	 * @return JPanel object for panelViewDecks
+	 */
 	public JPanel getPanelViewDecks() {
 		return panelViewDecks;
 	}
 
+	/**
+	 * Getter method for btnEditFlashCard
+	 * 
+	 * @return JButton object for btnEditFlashCard
+	 */
 	public JButton getBtnEditDeck() {
 		return btnEditDeck;
 	}
 
+	/**
+	 * Getter method for btnStartQuiz
+	 * 
+	 * @return JButton object for btnStartQuiz
+	 */
 	public JButton getBtnStartQuiz() {
 		return btnStartQuiz;
 	}
 
+	/**
+	 * Getter method for btnNewFlashCard
+	 * 
+	 * @return JButton object for btnNewFlashCard
+	 */
 	public JButton getBtnNewFlashCard() {
 		return btnNewFlashCard;
 	}
 
+	/**
+	 * Getter method for tableDecks
+	 * 
+	 * @return JTable object for tableDecks
+	 */
 	public JTable getTableDecks() {
 		return tableDecks;
 	}

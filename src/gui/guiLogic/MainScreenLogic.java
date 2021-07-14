@@ -196,16 +196,16 @@ public class MainScreenLogic extends ScreenLogic implements Updateable {
 	 */
 	@Override
 	public void receiveUpdate() {
-		resetTableDecks();
+		resetPanelViewDecks();
 		configScreenBtns(false);
 		chosenDeck = null; // null until another deck is selected
 	}
 
 	/**
-	 * Refreshes MainScreen's tableDecks, does this by removing components from
-	 * panelViewDecks, and then refilling it
+	 * Refreshes MainScreen's panelViewDecks, does this by removing components from
+	 * panelViewDecks, and then refilling it with relevant info
 	 */
-	private void resetTableDecks() {
+	private void resetPanelViewDecks() {
 		screen.clearContainer(screen.getPanelViewDecks());
 		screen.updatePanelViewDecks();
 	}
