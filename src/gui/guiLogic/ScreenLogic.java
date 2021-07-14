@@ -59,6 +59,20 @@ public abstract class ScreenLogic {
         screen.quit();
     }
 
+    /**
+     * Hides the Screen object for this class
+     */
+    public void hideScreen() {
+        screen.hide();
+    }
+
+    /**
+     * Shows the Screen object for this class
+     */
+    public void showScreen() {
+        screen.show();
+    }
+
     // ************* Switching Between Screens *********************** //
 
     /**
@@ -81,6 +95,20 @@ public abstract class ScreenLogic {
         if (parentLogic != null) {
             // parentLogic.getScreen().hide();
         }
+    }
+
+    /**
+     * Hides the parent Screen for this class
+     */
+    protected void hideParent() {
+        parentLogic.hideScreen();
+    }
+
+    /**
+     * Shows the parent Screen for this class
+     */
+    protected void showParent() {
+        parentLogic.showScreen();
     }
 
     // ************** Setter and getter methods ****************** //
