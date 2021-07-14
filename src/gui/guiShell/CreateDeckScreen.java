@@ -7,7 +7,10 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.JLabel;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JTextPane;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 import core.coreLogic.DeckManager;
 import gui.guiLogic.CreateDeckScreenLogic;
@@ -87,6 +90,7 @@ public class CreateDeckScreen {
 		JLabel lblDescription = new JLabel("Description:");
 		lblDescription.setBounds(5, 56, 92, 16);
 		panelDeckDetails.add(lblDescription);
+		addTextFieldNameListener();
 	}
 
 	/**
@@ -99,9 +103,10 @@ public class CreateDeckScreen {
 		frame.getContentPane().add(panelContinue);
 		panelContinue.setLayout(null);
 
-		JButton btnCreateDeck = new JButton("Create Deck");
+		btnCreateDeck = new JButton("Create Deck");
 		btnCreateDeck.setBounds(30, 119, 128, 25);
 		panelContinue.add(btnCreateDeck);
+		btnCreateDeck.setEnabled(false);
 
 		textPaneErrorMsg = new JTextPane();
 		textPaneErrorMsg.setBounds(17, 13, 156, 93);
@@ -133,6 +138,22 @@ public class CreateDeckScreen {
 		});
 	}
 
+	private void addTextFieldNameListener() {
+		textFieldName.getDocument().addDocumentListener(new DocumentListener() {
+			public void changedUpdate(DocumentEvent e) {
+				logic.nameChanged();
+			}
+
+			public void removeUpdate(DocumentEvent e) {
+				logic.nameChanged();
+			}
+
+			public void insertUpdate(DocumentEvent e) {
+				logic.nameChanged();
+			}
+		});
+	}
+
 	// *************** Other General Methods ********************** //
 
 	/**
@@ -144,24 +165,19 @@ public class CreateDeckScreen {
 		textPaneErrorMsg.setText(msg);
 	}
 
-	/**
-	 * Finds the description text entered for a new Deck
-	 * 
-	 * @return String for the description of a new Decks
-	 */
-	public String descriptionText() {
-		return textFieldDescription.getText();
+	public JTextField getTextFieldDescription() {
+		return textFieldDescription;
 	}
 
-	/**
-	 * Finds the name entered for a new Deck
-	 * 
-	 * @return String for the name of a new Deck
-	 */
-	public String nameText() {
-		return textFieldName.getText();
+	public JTextField getTextFieldName() {
+		return textFieldName;
 	}
 
+	public JButton getBtnCreateDeck() {
+		return btnCreateDeck;
+	}
+
+	// *******************************************
 	// Remove methods bellow once Screen has been implemented
 
 	/**
@@ -178,6 +194,16 @@ public class CreateDeckScreen {
 	 */
 	public void quit() {
 		frame.dispose();
+	}
+
+	/**
+	 * Disables or enables a JComponent according to parameter setting
+	 * 
+	 * @param component JComponent to be enabled or not
+	 * @param setting   Boolean value for if a JButton is to be enabled or not
+	 */
+	public void toggleComponent(JComponent component, boolean setting) {
+		component.setEnabled(setting);
 	}
 
 }

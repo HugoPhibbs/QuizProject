@@ -46,11 +46,44 @@ public class CreateDeckScreenLogic extends ScreenLogic implements Updater {
      */
     public void createDeck() {
         try {
-            deckManager.createDeck(screen.nameText(), screen.descriptionText());
+            deckManager.createDeck(nameText(), descriptionText());
             closeScreen();
         } catch (IllegalArgumentException iae) {
             screen.displayError(iae.getMessage());
         }
+    }
+
+    /**
+     * Handles text being entered for a deck name by a user
+     * <p>
+     * Makes sure that if the name entered isn't empty before enabling the button
+     * for a user to create a deck
+     * 
+     */
+    public void nameChanged() {
+        boolean btnSetting = false;
+        if (!nameText().equals("")) {
+            btnSetting = true;
+        }
+        screen.toggleComponent(screen.getBtnCreateDeck(), btnSetting);
+    }
+
+    /**
+     * Finds the description text entered for a new Deck
+     * 
+     * @return String for the description of a new Decks
+     */
+    public String descriptionText() {
+        return screen.getTextFieldDescription().getText();
+    }
+
+    /**
+     * Finds the name entered for a new Deck
+     * 
+     * @return String for the name of a new Deck
+     */
+    public String nameText() {
+        return screen.getTextFieldName().getText();
     }
 
     @Override
