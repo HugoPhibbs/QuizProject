@@ -96,6 +96,11 @@ public abstract class Screen {
 
 	// ************* General helper methods ******************** //
 
+	/**
+	 * Calls methods to create components for this Screen
+	 */
+	protected abstract void createComponents();
+
 	public abstract void displayError(String msg);
 	// TODO make displayError concrete, ie have an attribute in all Screen
 	// implemenations called textPaneError?
