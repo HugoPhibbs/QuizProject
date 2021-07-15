@@ -91,6 +91,15 @@
 
 - Any logic to do with the graphical user interface
 
+### GuiManager
+
+- Managing class for GUI,
+- Ensures that there is no more than one instance of a type of Screen at once
+- Shouldn't be able to edit a deck while you are being quizzed on the same deck, may complicate things, so just don't allow it.
+- When MainScreen is closed, all other GUI screens are closed too. Can have a method shutdown() to do something like this
+- ArrayList of all the current screens that are open, closes all of these screens when shutdown() is called.
+- If a screen closes by itself or by the user quitting it, then it should remove this Scren from the current screens that are open.
+
 ### ScreenLogic
 
 - Super abstract class that is implemented by logic classes in guiLogic
