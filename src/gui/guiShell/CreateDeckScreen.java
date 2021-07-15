@@ -7,12 +7,9 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.JLabel;
 import javax.swing.JButton;
-import javax.swing.JComponent;
 import javax.swing.JTextPane;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-
-import core.coreLogic.DeckManager;
 import gui.guiLogic.CreateDeckScreenLogic;
 
 import java.awt.event.ActionListener;
@@ -24,52 +21,55 @@ import java.awt.event.ActionEvent;
  * @author Hugo Phibbs
  *
  */
-public class CreateDeckScreen {
-
-	private JFrame frame;
-	/** TextField for entering the name of a new Deck */
+public class CreateDeckScreen extends Screen {
+	/**
+	 * TextField for entering the name of a new Deck
+	 */
 	private JTextField textFieldName;
-	/** TextField for entering the description of a new Deck */
+	/**
+	 * TextField for entering the description of a new Deck
+	 */
 	private JTextField textFieldDescription;
-	/** TextPane to display an error to a */
+	/**
+	 * TextPane to display an error to a
+	 */
 	private JTextPane textPaneErrorMsg;
-	/** CrateDeckScreenLogic object to manipulate this Screen */
+	/**
+	 * CrateDeckScreenLogic object to manipulate this Screen
+	 */
 	private CreateDeckScreenLogic logic;
-	/** JButton to press to create a new Deck */
+	/**
+	 * JButton to press to create a new Deck
+	 */
 	JButton btnCreateDeck;
 
 	/**
 	 * Create the application.
 	 */
 	public CreateDeckScreen(CreateDeckScreenLogic createDeckScreenLogic) {
+		super("Creating a deck", createDeckScreenLogic, false);
 		this.logic = createDeckScreenLogic;
 		initialize();
 	}
 
-	/**
-	 * Initialize the contents of the frame.
-	 */
-	private void initialize() {
-		createFrame();
-		createDetailsPanel();
-		createContinuePanel();
-		createMiscComponents();
+	@Override
+	public void initialize() {
+		createComponents();
+		configFrame();
 	}
 
-	private void createFrame() {
-		// TODO remove later
-		frame = new JFrame();
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.getContentPane().setLayout(null);
-		frame.setVisible(true);
-
-	}
-
-	// @Override
+	@Override
 	protected void configFrame() {
 		frame.setBounds(100, 100, 450, 300);
 	}
 	// ******************** Creating Components ************************ //
+
+	@Override
+	protected void createComponents() {
+		createDetailsPanel();
+		createContinuePanel();
+		createMiscComponents();
+	}
 
 	/**
 	 * Creates components contains in panelDeckDetails
@@ -146,6 +146,9 @@ public class CreateDeckScreen {
 		});
 	}
 
+	/**
+	 * Adds a Document Listener to textFieldName
+	 */
 	private void addTextFieldNameListener() {
 		textFieldName.getDocument().addDocumentListener(new DocumentListener() {
 			public void changedUpdate(DocumentEvent e) {
@@ -173,45 +176,31 @@ public class CreateDeckScreen {
 		textPaneErrorMsg.setText(msg);
 	}
 
+	/**
+	 * Getter method for textFieldDescription
+	 * 
+	 * @return JTextField object for textFieldDescription
+	 */
 	public JTextField getTextFieldDescription() {
 		return textFieldDescription;
 	}
 
+	/**
+	 * Getter method for textFieldName
+	 * 
+	 * @return JTextField object for textFieldName
+	 */
 	public JTextField getTextFieldName() {
 		return textFieldName;
 	}
 
+	/**
+	 * Getter method for btnCreateDeck
+	 * 
+	 * @return JTextField object for btnCreateDeck
+	 */
 	public JButton getBtnCreateDeck() {
 		return btnCreateDeck;
-	}
-
-	// *******************************************
-	// Remove methods bellow once Screen has been implemented
-
-	/**
-	 * Makes the screen visible to the user.
-	 * 
-	 */
-	public void show() {
-		frame.setVisible(true);
-	}
-
-	/**
-	 * Disposes of the Screen's frame.
-	 * 
-	 */
-	public void quit() {
-		frame.dispose();
-	}
-
-	/**
-	 * Disables or enables a JComponent according to parameter setting
-	 * 
-	 * @param component JComponent to be enabled or not
-	 * @param setting   Boolean value for if a JButton is to be enabled or not
-	 */
-	public void toggleComponent(JComponent component, boolean setting) {
-		component.setEnabled(setting);
 	}
 
 }

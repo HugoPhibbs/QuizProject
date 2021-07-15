@@ -25,17 +25,6 @@ public class FlashCard implements Serializable {
 
 	/**
 	 * Constructor for a FlashCard object
-	 * <p>
-	 * Useful for when you are creating a FlashCard when you dont immediately know
-	 * what the front and back texts will be.
-	 * <p>
-	 * Can easily set front and back text later with setter methods
-	 */
-	public FlashCard() {
-	}
-
-	/**
-	 * Constructor for a FlashCard object
 	 * 
 	 * @param frontText String for the front text of a flash card
 	 * @param backText  String for the back text of a flash card
@@ -183,7 +172,7 @@ public class FlashCard implements Serializable {
 		return new String[] { "Front Text", "Back Text" };
 	}
 
-	// ****************** Getter and Setter Methods ********************* //
+	// ****************** Getter methods ********************* //
 
 	/**
 	 * Getter method for the front text of a flash card
@@ -218,6 +207,8 @@ public class FlashCard implements Serializable {
 	public int getTimesReviewed() {
 		return timesReviewed;
 	}
+
+	// ******************* Setter methods ********8******* //
 
 	/**
 	 * Setter method for the next review date of a flash card

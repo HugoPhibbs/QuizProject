@@ -44,59 +44,66 @@ import core.stats.UserStats;
  * of QuizStats.
  * 
  * @author Hugo Phibbs
- * @author Tom Berry
  * @version 2/7/21
  * @since 25/6/21
  * 
  */
 public class FlashCardQuiz {
 
-	/** Deck that is currently being quizzed on */
+	/**
+	 * Deck that is currently being quizzed on
+	 */
 	private Deck deck;
-
-	/** FlashCard for the current flash card for this quiz */
+	/**
+	 * FlashCard for the current flash card for this quiz
+	 */
 	private FlashCard currentFlashCard;
-
-	/** Current side of currentFlashCard being shown to a user */
+	/**
+	 * Current side of currentFlashCard being shown to a user
+	 */
 	private String currentFlashCardSide = "FRONT";
-
 	/**
 	 * Queue for cards that have not yet been viewed in this quiz. <br>
 	 * Cards are added and removed from the initialQueue only once
 	 */
 	private Queue<FlashCard> initialQueue = new LinkedList<FlashCard>();
-
-	/** Queue for cards that are to be viewed again for this quiz */
+	/**
+	 * Queue for cards that are to be viewed again for this quiz
+	 */
 	private Queue<FlashCard> againQueue = new LinkedList<FlashCard>();
-
-	/** Queue for cards on their final view for this quiz */
+	/**
+	 * Queue for cards on their final view for this quiz
+	 */
 	private Queue<FlashCard> finalQueue = new LinkedList<FlashCard>();
-
 	/**
 	 * Queue that the currentFlashCard was taken from. Merely acts as a pointer, it
 	 * isn't actually operated on i.e. operations are used with it
 	 */
 	private Queue<FlashCard> currentQueue;
-
-	/** ArrayList<FlashCard> for all the cards to be quizzed on throughout a quiz */
+	/**
+	 * ArrayList<FlashCard> for all the cards to be quizzed on throughout a quiz
+	 */
 	private ArrayList<FlashCard> cardsToQuiz;
-
-	/** Instance of QuizStats for current quiz */
+	/**
+	 * Instance of QuizStats for current quiz
+	 */
 	private QuizStats quizStats = new QuizStats();
-
-	/** Boolean value to keep track of if if the quiz is finished or not */
+	/**
+	 * Boolean value to keep track of if if the quiz is finished or not
+	 */
 	private Boolean quizIsFinished = false;
-
 	/**
 	 * UserStats object for this this quiz application is updated at the end of the
 	 * quiz
 	 */
 	private UserStats userStats;
-
-	/** int keeping track of how many times 'again' has been selected each quiz */
+	/**
+	 * int keeping track of how many times 'again' has been selected each quiz
+	 */
 	private int numAgain = 0;
-
-	/** int keeping track of how many times 'final' has been selected each quiz */
+	/**
+	 * int keeping track of how many times 'final' has been selected each quiz
+	 */
 	private int numFinal = 0;
 
 	/**
@@ -108,6 +115,8 @@ public class FlashCardQuiz {
 		this.deck = deck;
 		this.userStats = userStats;
 	}
+
+	// ************ Starting and ending a Quiz ***************** //
 
 	/**
 	 * Starts a new Quiz
@@ -149,6 +158,8 @@ public class FlashCardQuiz {
 		// TODO implement!
 	}
 
+	// ***************** Helper methods ****************** //
+
 	/**
 	 * Updates all the review dates of the cards that have been seen once the quiz
 	 * is over
@@ -163,30 +174,6 @@ public class FlashCardQuiz {
 		for (FlashCard flashCard : cardsToQuiz) {
 			flashCard.updateNextReviewDate();
 		}
-	}
-
-	/**
-	 * Handles request of pressing NEXT in the GUI.
-	 * <p>
-	 * If the quiz is finished, then the currentFlashCard is null. This will be
-	 * dealt with in the GUI.
-	 * 
-	 * @return FlashCard object that is next, i.e. the currentFlashCard
-	 */
-	public FlashCard nextFlashCard() {
-		updateCurrentFlashCard();
-		resetCurrentFlashCardSide();
-		return currentFlashCard;
-	}
-
-	/**
-	 * Checks if a quiz is finished or not.
-	 * <p>
-	 * 
-	 * @return boolean value if a quiz is finished or not
-	 */
-	public boolean quizIsFinished() {
-		return quizIsFinished;
 	}
 
 	/**
@@ -215,6 +202,17 @@ public class FlashCardQuiz {
 	}
 
 	/**
+	 * Resets the currentFlashCardSide to "FRONT"
+	 * <p>
+	 * Put it into a separate method to make it more clear to read
+	 */
+	private void resetCurrentFlashCardSide() {
+		currentFlashCardSide = "FRONT";
+	}
+
+	// ************** Handling user requests ************** //
+
+	/**
 	 * Handles request of wanting to flip a flash card. If the current flash card
 	 * has it's front showing.
 	 * <p>
@@ -233,15 +231,6 @@ public class FlashCardQuiz {
 			currentFlashCardSide = "FRONT";
 			return currentFlashCard.getFrontText();
 		}
-	}
-
-	/**
-	 * Resets the currentFlashCardSide to "FRONT"
-	 * <p>
-	 * Put it into a separate method to make it more clear to read
-	 */
-	private void resetCurrentFlashCardSide() {
-		currentFlashCardSide = "FRONT";
 	}
 
 	/**
@@ -283,7 +272,31 @@ public class FlashCardQuiz {
 		// Otherwise do nothing
 	}
 
-	// NOTE below getters and setters may only be useful for testing
+	/**
+	 * Handles request of pressing NEXT in the GUI.
+	 * <p>
+	 * If the quiz is finished, then the currentFlashCard is null. This will be
+	 * dealt with in the GUI.
+	 * 
+	 * @return FlashCard object that is next, i.e. the currentFlashCard
+	 */
+	public FlashCard nextFlashCard() {
+		updateCurrentFlashCard();
+		resetCurrentFlashCardSide();
+		return currentFlashCard;
+	}
+
+	// ***************** Getter methods ********************** //
+
+	/**
+	 * Checks if a quiz is finished or not.
+	 * <p>
+	 * 
+	 * @return boolean value if a quiz is finished or not
+	 */
+	public boolean getQuizIsFinished() {
+		return quizIsFinished;
+	}
 
 	/**
 	 * Getter method for cardsToQuiz
@@ -292,17 +305,6 @@ public class FlashCardQuiz {
 	 */
 	public ArrayList<FlashCard> getCardsToQuiz() {
 		return cardsToQuiz;
-	}
-
-	/**
-	 * Setter method for cardsToQuiz
-	 * <p>
-	 * ONLY USED FOR TESTING
-	 * 
-	 * @param cardsToQuiz ArrayList<FlashCard> to be set as cardsToQuiz
-	 */
-	public void setCardsToQuiz(ArrayList<FlashCard> cardsToQuiz) {
-		this.cardsToQuiz = cardsToQuiz;
 	}
 
 	/**
@@ -348,6 +350,19 @@ public class FlashCardQuiz {
 	 */
 	public Queue<FlashCard> getCurrentQueue() {
 		return currentQueue;
+	}
+
+	// **************** Setter Methods ***************** //
+
+	/**
+	 * Setter method for cardsToQuiz
+	 * <p>
+	 * ONLY USED FOR TESTING
+	 * 
+	 * @param cardsToQuiz ArrayList<FlashCard> to be set as cardsToQuiz
+	 */
+	public void setCardsToQuiz(ArrayList<FlashCard> cardsToQuiz) {
+		this.cardsToQuiz = cardsToQuiz;
 	}
 
 	/**

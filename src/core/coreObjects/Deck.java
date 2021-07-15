@@ -13,23 +13,28 @@ import core.coreLogic.CheckValidInput;
  * Supports CRUD actions to do with FlashCards for a Deck
  * 
  * @author Hugo Phibbs
- * @author Tom Berry
  * @version 28/6/21
  * @since 25/6/21
  * 
  */
 public class Deck implements Serializable {
 
-	/** String for the name of this deck **/
+	/**
+	 * String for the name of this deck
+	 **/
 	private String name;
 	/**
 	 * String for the description of a deck. E.g. a short note on what this deck
 	 * contains
 	 **/
 	private String description;
-	/** ArrayList containing the FlashCards for this deck **/
+	/**
+	 * ArrayList containing the FlashCards for this deck
+	 **/
 	private ArrayList<FlashCard> flashCards = new ArrayList<FlashCard>();
-	/** LocalDate object for the date of creation of this deck **/
+	/**
+	 * LocalDate object for the date of creation of this deck
+	 **/
 	private LocalDate dateOfCreation;
 
 	/**
@@ -67,7 +72,7 @@ public class Deck implements Serializable {
 		return false;
 	}
 
-	// ******************* METHODS FOR CRUD OF FLASHCARDS ******************* //
+	// ******************* Methods for CRUD of FlashCards ******************* //
 
 	/**
 	 * Returns the FlashCard object that has text matching the parameters frontText
@@ -201,7 +206,7 @@ public class Deck implements Serializable {
 		return flashCardsTableArray;
 	}
 
-	// ********************** METHODS FOR QUIZZING ***************************** //
+	// ********************** Methods for quizzing ***************************** //
 
 	/**
 	 * Returns the FlashCards that a user is to be quizzed on.
@@ -274,7 +279,7 @@ public class Deck implements Serializable {
 		return dueFlashCards(currentDate).size();
 	}
 
-	// ********************* GETTERS AND SETTERS ***************************** //
+	// ********************* Helper methods ***************************** //
 
 	/**
 	 * Method that returns the size of a deck.
@@ -317,6 +322,8 @@ public class Deck implements Serializable {
 		return headers;
 	}
 
+	// *************** Getter methods ******************* //
+
 	/**
 	 * Getter method for the name of a deck
 	 * 
@@ -353,6 +360,8 @@ public class Deck implements Serializable {
 	public String getDescription() {
 		return description;
 	}
+
+	// *************** Setter methods ****************** //
 
 	/**
 	 * Setter method for the name of a Deck. Checks if a name is valid before

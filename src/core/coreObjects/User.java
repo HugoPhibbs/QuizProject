@@ -9,16 +9,21 @@ import core.stats.UserStats;
  * Represents a user of the quiz application.
  * 
  * @author Hugo Phibbs
- * @author Tom Berry
- * @version 27/6/21
+ * @version 15/7/21
  * @since 27/6/21
  *
  */
 public class User implements Serializable {
 
-	/** Name of a User */
+	/**
+	 * Name of a User
+	 * <p>
+	 * Abides by name requirements specified in CheckValidInput
+	 */
 	private String name;
-	/** UserStats for this User */
+	/**
+	 * UserStats for this User
+	 */
 	private UserStats userStats = new UserStats();
 
 	/**
@@ -30,15 +35,15 @@ public class User implements Serializable {
 		setName(name);
 	}
 
+	// *************** Getter methods *********************** //
+
 	/**
-	 * Constructor for a User object
+	 * Getter method for userStats
 	 * 
+	 * @return the userStats
 	 */
-	public User() {
-		/*
-		 * TODO may want to remove other constructor if we aren't using a Users name in
-		 * the application - add then remove name attribute as it won't be used
-		 */
+	public UserStats getUserStats() {
+		return userStats;
 	}
 
 	/**
@@ -48,6 +53,17 @@ public class User implements Serializable {
 	 */
 	public String getName() {
 		return name;
+	}
+
+	// *************** Setter methods *********************** //
+
+	/**
+	 * Setter method for userStats
+	 * 
+	 * @param userStats the userStats to set
+	 */
+	public void setUserStats(UserStats userStats) {
+		this.userStats = userStats;
 	}
 
 	/**
@@ -64,24 +80,6 @@ public class User implements Serializable {
 		} else {
 			this.name = name;
 		}
-	}
-
-	/**
-	 * Getter method for userStats
-	 * 
-	 * @return the userStats
-	 */
-	public UserStats getUserStats() {
-		return userStats;
-	}
-
-	/**
-	 * Setter method for userStats
-	 * 
-	 * @param userStats the userStats to set
-	 */
-	public void setUserStats(UserStats userStats) {
-		this.userStats = userStats;
 	}
 
 }

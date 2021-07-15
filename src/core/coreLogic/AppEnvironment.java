@@ -21,7 +21,7 @@ public class AppEnvironment implements Serializable {
 	/** Deck manager holding all the Decks for this application */
 	private DeckManager deckManager = new DeckManager();
 	/** User object for this AppEnvironment */
-	private User user = new User();
+	private User user;
 	/** Setup object that was used to create this application */
 	private Setup setup;
 

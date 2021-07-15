@@ -56,8 +56,9 @@ public class EditDeckScreenLogic extends ScreenLogic implements Updateable, Upda
     @Override
     public void createScreen() {
         screen = new EditDeckScreen(this);
+        screen.initialize();
         screen.show();
-        super.setScreen(null);
+        super.setScreen(screen);
     }
 
     @Override

@@ -16,14 +16,15 @@ import core.coreObjects.FlashCard;
  * gives it the same name as another deck- which is obviously not permissible.
  * 
  * @author Hugo Phibbs
- * @author Tom Berry
  * @version 28/6/21
  * @since 27/6/21
  *
  */
 public class DeckManager implements Serializable {
 
-	/** ArrayList<Deck> containing the decks of this DeckManager */
+	/**
+	 * ArrayList<Deck> containing the decks of this DeckManager
+	 */
 	private ArrayList<Deck> deckCollection = new ArrayList<Deck>();
 
 	/**
@@ -31,7 +32,10 @@ public class DeckManager implements Serializable {
 	 * 
 	 */
 	public DeckManager() {
+
 	}
+
+	// **************** Methods to deal with Decks ************** //
 
 	/**
 	 * Finds the deck with the given name deckName. Used internally for CRUD
@@ -67,7 +71,6 @@ public class DeckManager implements Serializable {
 		} else {
 			return deckCollection.add(deck);
 		}
-
 	}
 
 	/**
@@ -145,6 +148,34 @@ public class DeckManager implements Serializable {
 	}
 
 	/**
+	 * Method that returns if a DeckManager contains a a Deck in it's collection.
+	 * <p>
+	 * Overloaded with DeckManager.containsDeck(String)
+	 * 
+	 * @param deck Deck to be checked if it is contained in DeckManager
+	 * @return boolean value for if deck was found
+	 */
+	public boolean containsDeck(Deck deck) {
+		return (containsDeck(deck.getName()));
+	}
+
+	/**
+	 * Method that returns if a DeckManager contains a Deck with the name deckName
+	 * in it's collection
+	 * <p>
+	 * Overloaded with DeckManager.containsDeck(Deck)
+	 * 
+	 * @param deckName String for the name of a Deck to check if it contained in
+	 *                 DeckManager
+	 * @return boolean if a deck with a name deckName was found
+	 */
+	public boolean containsDeck(String deckName) {
+		return (findDeck(deckName) != null);
+	}
+
+	// ************** Methods dealing with FlashCards ************** //
+
+	/**
 	 * Changes which Deck a FlashCard belongs to
 	 * <p>
 	 * Does prechecks for exceptions before passing the actual changing Decks of
@@ -204,33 +235,8 @@ public class DeckManager implements Serializable {
 		}
 	}
 
-	/**
-	 * Method that returns if a DeckManager contains a a Deck in it's collection.
-	 * <p>
-	 * Overloaded with DeckManager.containsDeck(String)
-	 * 
-	 * @param deck Deck to be checked if it is contained in DeckManager
-	 * @return boolean value for if deck was found
-	 */
-	public boolean containsDeck(Deck deck) {
-		return (containsDeck(deck.getName()));
-	}
+	// ************** Methods to display decks *************** //
 
-	/**
-	 * Method that returns if a DeckManager contains a Deck with the name deckName
-	 * in it's collection
-	 * <p>
-	 * Overloaded with DeckManager.containsDeck(Deck)
-	 * 
-	 * @param deckName String for the name of a Deck to check if it contained in
-	 *                 DeckManager
-	 * @return boolean if a deck with a name deckName was found
-	 */
-	public boolean containsDeck(String deckName) {
-		return (findDeck(deckName) != null);
-	}
-
-	// TODO move this to GUI logic!
 	/**
 	 * Creates a Deck Array for Deck that can be chosen from for when adding a
 	 * FlashCard to a Deck
@@ -270,6 +276,8 @@ public class DeckManager implements Serializable {
 		}
 		return deckCollectionInfo;
 	}
+
+	// ************* Getters, Setters and Helpers *************** //
 
 	/**
 	 * Getter method for the a deck collection of a DeckManager object
