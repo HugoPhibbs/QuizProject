@@ -12,32 +12,48 @@ import javax.swing.JTable;
 import gui.guiLogic.ScreenLogic;
 
 /**
- * Represents a Screen object for GUI
+ * Represents a Screen object for GUI.
  * 
  * @author Hugo Phibbs and Jordan Vegar
- * @version 25/6/21
+ * @version 15/7/21
  * @since 18/5/21
  * 
  */
 public abstract class Screen {
 
-	/** Frame object for this screen **/
+	/**
+	 * Frame object for this screen
+	 **/
 	JFrame frame;
-
-	/** Screen object that is the parent Screen for this Screen */
+	/**
+	 * Screen object that is the parent Screen for this Screen
+	 */
 	Screen parent;
-
-	/** ScreenLogic Class for this class */
+	/**
+	 * ScreenLogic Class for this class
+	 */
 	ScreenLogic logic;
+	/**
+	 * Boolean value if a changes that a user has made on a Screen will be saved or
+	 * not, if they quit the Screen
+	 * <p>
+	 * This decides the JOptionPane text, telling a user that their changes will be
+	 * saved or not, if they were to quit the current Screen
+	 */
+	boolean willSave;
 
 	/**
 	 * Constructor for a Screen
 	 * 
-	 * @param title String for the title of a Screen
-	 * @param logic ScreenLogic object that controls this Screen
+	 * @param title    String for the title of a Screen
+	 * @param logic    ScreenLogic object that controls this Screen
+	 * @param willSave boolean value for if the changes that a user makes on this
+	 *                 Screen will be saved, if they were to suddenly quit the
+	 *                 Screen
 	 */
-	protected Screen(String title, ScreenLogic logic) {
+	protected Screen(String title, ScreenLogic logic, boolean willSave) {
 		this.logic = logic;
+		this.willSave = willSave;
 		createFrame(title);
 	}
 
@@ -86,11 +102,26 @@ public abstract class Screen {
 	 * @return Boolean true if would like to quit, else false
 	 */
 	protected void confirmQuit() {
-		int selection = JOptionPane.showConfirmDialog(frame, "Are you sure you want to quit?", "Quit?",
-				JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+		int selection = JOptionPane.showConfirmDialog(frame, quitMessage(), "Quit?", JOptionPane.YES_NO_OPTION,
+				JOptionPane.QUESTION_MESSAGE);
 
 		if (selection == JOptionPane.YES_OPTION) {
 			logic.closeScreen();
+		}
+	}
+
+	/**
+	 * Finds the quit message that should be displayed to a user, depending on
+	 * whether any changes that they have made will be saved or not
+	 * 
+	 * @return String quit message as described
+	 */
+	private String quitMessage() {
+		String msg = "Are you sure you want to quit? \n Your changes will %s saved";
+		if (willSave) {
+			return String.format(msg, "be");
+		} else {
+			return String.format(msg, "not");
 		}
 	}
 

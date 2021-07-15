@@ -63,7 +63,7 @@ public class MainScreen extends Screen {
 	 * Create the application.
 	 */
 	public MainScreen(MainScreenLogic mainScreenLogic) {
-		super("Main options", mainScreenLogic);
+		super("Main options", mainScreenLogic, true);
 		this.logic = mainScreenLogic;
 	}
 

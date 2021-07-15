@@ -77,7 +77,7 @@ public class SetupScreen extends Screen {
 	 * Create the application.
 	 */
 	public SetupScreen(SetupScreenLogic setupScreenLogic) {
-		super("Setup", setupScreenLogic);
+		super("Setup", setupScreenLogic, false);
 		this.logic = setupScreenLogic;
 	}
 
