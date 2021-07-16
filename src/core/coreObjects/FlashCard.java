@@ -208,7 +208,7 @@ public class FlashCard implements Serializable {
 		return timesReviewed;
 	}
 
-	// ******************* Setter methods ********8******* //
+	// ******************* Setter methods *************** //
 
 	/**
 	 * Setter method for the next review date of a flash card
