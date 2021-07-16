@@ -111,8 +111,8 @@ public class MainScreenLogic extends ScreenLogic implements Updateable {
 	public void newQuiz() {
 		// TODO implement!
 		FlashCardQuiz newQuiz = new FlashCardQuiz(chosenDeck, user.getUserStats());
-		// QuizzingScreen quizzingScreen = new QuizzingScreen(chosenDeck);
-
+		QuizzingScreenLogic quizzingScreenLogic = new QuizzingScreenLogic(newQuiz, this, this, chosenDeck);
+		quizzingScreenLogic.createScreen();
 	}
 
 	/**
