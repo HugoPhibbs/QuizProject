@@ -183,7 +183,7 @@ public class FlashCardQuiz {
 	 * <p>
 	 * Does this based on the state of the quiz.
 	 */
-	public void updateCurrentFlashCard() {
+	private void updateCurrentFlashCard() {
 		if (!initialQueue.isEmpty()) {
 			currentFlashCard = initialQueue.remove();
 			setCurrentQueue("INITIAL");
@@ -213,23 +213,49 @@ public class FlashCardQuiz {
 	// ************** Handling user requests ************** //
 
 	/**
-	 * Handles request of wanting to flip a flash card. If the current flash card
-	 * has it's front showing.
+	 * Handles request of wanting to flip a flash card.
 	 * <p>
-	 * By default the currentFlashCard side is set to "FRONT" every time a new card
-	 * is seen
+	 * Note: by default the currentFlashCard side is set to "FRONT" every time a new
+	 * card is seen
 	 * <p>
 	 * Called after button pressed in GUI to flip the current flash card
 	 * 
-	 * @return String for the side of currentFlashCard that a user wants to see
+	 * @return String for the text of the side of currentFlashCard that a user wants
+	 *         to see
 	 */
 	public String flipCurrentFlashCard() {
-		if (currentFlashCardSide.equals("FRONT")) {
-			currentFlashCardSide = "BACK";
-			return currentFlashCard.getBackText();
-		} else {
-			currentFlashCardSide = "FRONT";
-			return currentFlashCard.getFrontText();
+		changeCurrentFlashCardSide();
+		return currentFlashCardSideText();
+	}
+
+	/**
+	 * Finds the current text that should be displayed to a user
+	 * 
+	 * @return String for either the front or back text of currentFlashCard
+	 */
+	public String currentFlashCardSideText() {
+		switch (currentFlashCardSide) {
+			case "FRONT":
+				return currentFlashCard.getBackText();
+			case "BACK":
+				return currentFlashCard.getFrontText();
+			default:
+				throw new IllegalStateException("Current FlashCard side isn't valid!");
+		}
+	}
+
+	/**
+	 * Handles changing the currentFlashCard side, either from FRONT -> BACK or BACK
+	 * -> FRONT
+	 */
+	private void changeCurrentFlashCardSide() {
+		switch (currentFlashCardSide) {
+			case "FRONT":
+				currentFlashCardSide = "BACK";
+			case "BACK":
+				currentFlashCardSide = "FRONT";
+			default:
+				throw new IllegalStateException("Current FlashCard side isn't valid!");
 		}
 	}
 
