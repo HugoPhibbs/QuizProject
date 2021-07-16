@@ -18,6 +18,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.JTextPane;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import java.awt.Font;
 
 /**
  * Represents a Screen to edit a FlashCard object
@@ -114,15 +115,15 @@ public class EditFlashCardScreen {
 	 */
 	private void createFrame() {
 		frame = new JFrame();
-
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
+		configFrame();
 		show();
 	}
 
 	// @Override
 	protected void configFrame() {
-		frame.setBounds(100, 100, 450, 300);
+		frame.setBounds(100, 100, 391, 292);
 	}
 
 	// ***************** Creating Components ************************* //
@@ -132,20 +133,12 @@ public class EditFlashCardScreen {
 	 * particular Panel
 	 */
 	private void createMiscComponents() {
-
-		btnFinish = new JButton("Finish");
-		btnFinish.setBounds(336, 230, 95, 28);
-		frame.getContentPane().add(btnFinish);
-		btnFinish.setEnabled(!logic.getIsCreating());
 		addFinishBtnListener();
 
 		lblAction = new JLabel(String.format("%s a flash card!", logic.operation()));
-		lblAction.setBounds(161, 36, 148, 28);
+		lblAction.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		lblAction.setBounds(78, 31, 237, 28);
 		frame.getContentPane().add(lblAction);
-
-		textPaneErrorMsg = new JTextPane();
-		textPaneErrorMsg.setBounds(335, 156, 96, 45);
-		frame.getContentPane().add(textPaneErrorMsg);
 	}
 
 	/**
@@ -154,26 +147,30 @@ public class EditFlashCardScreen {
 	 */
 	private void createChangeTextPanel() {
 		JPanel panelChangeText = new JPanel();
-		panelChangeText.setBounds(105, 71, 223, 56);
+		panelChangeText.setBounds(20, 76, 223, 159);
 		frame.getContentPane().add(panelChangeText);
 		panelChangeText.setLayout(null);
 
 		textFieldFrontText = new JTextField(logic.currentFlashCardFrontText());
-		textFieldFrontText.setBounds(7, 7, 106, 27);
+		textFieldFrontText.setFont(new Font("Tahoma", Font.PLAIN, 11));
+		textFieldFrontText.setBounds(5, 26, 210, 50);
 		panelChangeText.add(textFieldFrontText);
 		textFieldFrontText.setColumns(10);
 
 		JLabel lblFrontText = new JLabel("Front Text");
-		lblFrontText.setBounds(17, 41, 77, 9);
+		lblFrontText.setFont(new Font("Tahoma", Font.PLAIN, 11));
+		lblFrontText.setBounds(15, 6, 64, 14);
 		panelChangeText.add(lblFrontText);
 
 		textFieldBackText = new JTextField(logic.currentFlashCardFrontText());
-		textFieldBackText.setBounds(120, 7, 95, 27);
+		textFieldBackText.setFont(new Font("Tahoma", Font.PLAIN, 11));
+		textFieldBackText.setBounds(5, 103, 210, 50);
 		panelChangeText.add(textFieldBackText);
 		textFieldBackText.setColumns(10);
 
 		JLabel lblBackText = new JLabel("Back Text");
-		lblBackText.setBounds(130, 41, 85, 9);
+		lblBackText.setFont(new Font("Tahoma", Font.PLAIN, 11));
+		lblBackText.setBounds(15, 81, 85, 16);
 		panelChangeText.add(lblBackText);
 
 		addTextFieldFrontTextListener();
@@ -186,19 +183,36 @@ public class EditFlashCardScreen {
 	 */
 	private void createChooseDeckPanel() {
 		JPanel panelChooseDeck = new JPanel();
-		panelChooseDeck.setBounds(140, 156, 138, 45);
+		panelChooseDeck.setBounds(248, 77, 116, 45);
 		frame.getContentPane().add(panelChooseDeck);
 		panelChooseDeck.setLayout(null);
 
 		// Keep track of if combo box selection has changed.
 		JComboBox<Object> comboBoxSelectDeck = new JComboBox<Object>(logic.deckArray());
-		comboBoxSelectDeck.setBounds(19, 24, 95, 14);
+		comboBoxSelectDeck.setFont(new Font("Tahoma", Font.PLAIN, 11));
+		comboBoxSelectDeck.setBounds(9, 25, 95, 14);
 		panelChooseDeck.add(comboBoxSelectDeck);
 		// TODO whenever a deck is selected, currentDeck is updated!
 
 		JLabel lblChooseDeck = new JLabel("Choose Deck");
-		lblChooseDeck.setBounds(19, 7, 85, 14);
+		lblChooseDeck.setFont(new Font("Tahoma", Font.PLAIN, 11));
+		lblChooseDeck.setBounds(19, 5, 85, 14);
 		panelChooseDeck.add(lblChooseDeck);
+
+		JPanel panel = new JPanel();
+		panel.setBounds(248, 128, 116, 107);
+		frame.getContentPane().add(panel);
+		panel.setLayout(null);
+
+		textPaneErrorMsg = new JTextPane();
+		textPaneErrorMsg.setBounds(9, 6, 95, 58);
+		panel.add(textPaneErrorMsg);
+
+		btnFinish = new JButton("Finish");
+		btnFinish.setBounds(9, 73, 95, 28);
+		panel.add(btnFinish);
+		btnFinish.setFont(new Font("Tahoma", Font.PLAIN, 11));
+		btnFinish.setEnabled(!logic.getIsCreating());
 	}
 
 	// ************ Adding Listeners to Components ********************* //
@@ -312,5 +326,4 @@ public class EditFlashCardScreen {
 	public void quit() {
 		frame.dispose();
 	}
-
 }
