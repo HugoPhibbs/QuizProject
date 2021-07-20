@@ -41,6 +41,8 @@ public abstract class Screen {
 	 * saved or not, if they were to quit the current Screen
 	 */
 	boolean willSave;
+	/** String for the title of this Screen */
+	String title;
 
 	/**
 	 * Constructor for a Screen
@@ -54,6 +56,7 @@ public abstract class Screen {
 	protected Screen(String title, ScreenLogic logic, boolean willSave) {
 		this.logic = logic;
 		this.willSave = willSave;
+		this.title = title;
 		createFrame(title);
 	}
 
@@ -92,22 +95,28 @@ public abstract class Screen {
 
 		frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
-		frame.setVisible(true);
 	}
 
 	/**
 	 * Displays a Dialog to allow the user to confirm whether they would like to
 	 * quit
 	 * 
-	 * @return Boolean true if would like to quit, else false
+	 * @return boolean value if the Screen was closed or not
 	 */
-	protected void confirmQuit() {
+	public boolean confirmQuit() {
 		int selection = JOptionPane.showConfirmDialog(frame, quitMessage(), "Quit?", JOptionPane.YES_NO_OPTION,
 				JOptionPane.QUESTION_MESSAGE);
 
 		if (selection == JOptionPane.YES_OPTION) {
-			logic.closeScreen();
+			onQuit();
+			return true;
+		} else {
+			return false;
 		}
+	}
+
+	private void onQuit() {
+		logic.closeScreen();
 	}
 
 	/**
@@ -117,11 +126,11 @@ public abstract class Screen {
 	 * @return String quit message as described
 	 */
 	private String quitMessage() {
-		String msg = "Are you sure you want to quit? \n Your changes will %s saved";
+		String msg = "Are you sure you want to quit %s? \n Your changes will %s saved";
 		if (willSave) {
-			return String.format(msg, "be");
+			return String.format(msg, title, "be");
 		} else {
-			return String.format(msg, "not");
+			return String.format(msg, title, "not");
 		}
 	}
 
@@ -235,6 +244,17 @@ public abstract class Screen {
 	 */
 	public JFrame getFrame() {
 		return frame;
+	}
+
+	// ************* Setter methdods ********************* //
+
+	/**
+	 * Setter method for willSave
+	 * 
+	 * @param willSave boolean value
+	 */
+	public void setWillSave(boolean willSave) {
+		this.willSave = willSave;
 	}
 
 }
