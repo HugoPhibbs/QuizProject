@@ -2,6 +2,9 @@ package core.coreLogic;
 
 import java.io.Serializable;
 import core.coreObjects.User;
+import gui.guiLogic.GuiManager;
+import gui.guiLogic.ScreenLogic;
+import gui.guiShell.Screen;
 import setup.Setup;
 
 /**
@@ -24,6 +27,8 @@ public class AppEnvironment implements Serializable {
 	private User user;
 	/** Setup object that was used to create this application */
 	private Setup setup;
+	/** GuiManager for this application */
+	private GuiManager guiManager;
 
 	/**
 	 * Constructor for AppEnvironment
@@ -74,12 +79,64 @@ public class AppEnvironment implements Serializable {
 	}
 
 	/**
-	 * Getter method for the Setup object for AppEnvironment
+	 * Getter method for the setup object for AppEnvironment
 	 * 
 	 * @return Setup object
 	 */
 	public Setup getSetup() {
 		return setup;
+	}
+
+	/**
+	 * Getter method for the guiManager object for AppEnvironment
+	 * 
+	 * @return GuiManager object
+	 */
+	public GuiManager getGuiManager() {
+		return guiManager;
+	}
+
+	/**
+	 * Setter method for guiManager
+	 * 
+	 * @param guiManager GuiManager object to be set
+	 */
+	public void setGuiManager(GuiManager guiManager) {
+		this.guiManager = guiManager;
+	}
+
+	/**
+	 * Handles closing down a Session Saves the session and then closes the GUI
+	 */
+	public void closeDown() {
+		if (guiCloseDown()) {
+			save();
+		}
+	}
+
+	/**
+	 * Handles closing down the GUI
+	 * <p>
+	 * If the GUI was sucessfully reset, guiManager is set to null, ready to be
+	 * initliazed again on the next start up of the application
+	 * 
+	 * @return boolean if GUI was successfully closed.
+	 */
+	private boolean guiCloseDown() {
+		if (guiManager.closeAllScreens()) {
+			setGuiManager(null);
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	/**
+	 * Handles starting up a the Application whether it is for the first time or the
+	 * second time
+	 */
+	public void onStartUp() {
+		setGuiManager(new GuiManager());
 	}
 
 	/**
@@ -89,5 +146,9 @@ public class AppEnvironment implements Serializable {
 	 */
 	public void save() {
 		setup.saveSession();
+	}
+
+	public boolean canOpenNewScreen(ScreenLogic screenLogic) {
+		return guiManager.canOpenNewScreen(screenLogic.getScreen());
 	}
 }
