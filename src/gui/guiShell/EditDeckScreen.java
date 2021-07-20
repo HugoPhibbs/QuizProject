@@ -87,13 +87,13 @@ public class EditDeckScreen extends Screen {
 	public EditDeckScreen(EditDeckScreenLogic editDeckScreenLogic) {
 		super(null, editDeckScreenLogic, false);
 		this.logic = editDeckScreenLogic;
+		initialize();
 	}
 
 	@Override
 	public void initialize() {
 		configFrame();
 		createComponents();
-		logic.configScreenBtns(false);
 	}
 
 	@Override
