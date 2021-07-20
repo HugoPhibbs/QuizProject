@@ -27,10 +27,6 @@ import gui.guiShell.MainScreen;
 public class MainScreenLogic extends ScreenLogic implements Updateable {
 
 	/**
-	 * AppEnvironment object for this application
-	 */
-	AppEnvironment appEnvironment;
-	/**
 	 * DeckManager object belonging to appEnvironment
 	 */
 	DeckManager deckManager;
@@ -54,8 +50,7 @@ public class MainScreenLogic extends ScreenLogic implements Updateable {
 	 * @param appEnvironment AppEnvironment object for this application
 	 */
 	public MainScreenLogic(AppEnvironment appEnvironment) {
-		super(null); // Won't need to go back to setupScreen
-		this.appEnvironment = appEnvironment;
+		super(null, appEnvironment); // Won't need to go back to setupScreen
 		this.deckManager = appEnvironment.getDeckManager();
 		this.user = appEnvironment.getUser();
 	}
@@ -78,9 +73,13 @@ public class MainScreenLogic extends ScreenLogic implements Updateable {
 	 * Quits this screen, and saves the progress of this app via AppEnvironment
 	 */
 	public void closeScreen() {
-		screen.quit();
-		appEnvironment.save();
+		getAppEnvironment().closeDown();
 	}
+
+	// @Override
+	// private void onQuit() {
+
+	// }
 
 	// ***************** Methods to create new Screens ******************* //
 
@@ -97,9 +96,9 @@ public class MainScreenLogic extends ScreenLogic implements Updateable {
 	 */
 	public void createFlashCard() {
 		EditFlashCardScreenLogic editFlashCardScreenLogic = new EditFlashCardScreenLogic(this, null, chosenDeck,
-				deckManager, this);
+				getAppEnvironment(), this);
 		editFlashCardScreenLogic.createScreen();
-		// editFlashCardScreenLogic.switchScreens();
+		editFlashCardScreenLogic.showScreen();
 	}
 
 	/**
@@ -109,10 +108,16 @@ public class MainScreenLogic extends ScreenLogic implements Updateable {
 	 *                                  the deckManager of this AppEnviornment
 	 */
 	public void newQuiz() {
-		// TODO implement!
-		FlashCardQuiz newQuiz = new FlashCardQuiz(chosenDeck, user.getUserStats());
-		QuizzingScreenLogic quizzingScreenLogic = new QuizzingScreenLogic(newQuiz, this, this, chosenDeck);
-		quizzingScreenLogic.createScreen();
+		try {
+			FlashCardQuiz newQuiz = new FlashCardQuiz(chosenDeck, user.getUserStats());
+			QuizzingScreenLogic quizzingScreenLogic = new QuizzingScreenLogic(newQuiz, this, this, chosenDeck,
+					getAppEnvironment());
+			quizzingScreenLogic.createScreen(); // May throw ise
+			quizzingScreenLogic.startQuiz();
+			quizzingScreenLogic.showScreen();
+		} catch (IllegalStateException ise) {
+			screen.displayError(ise.getMessage());
+		}
 	}
 
 	/**
@@ -123,16 +128,18 @@ public class MainScreenLogic extends ScreenLogic implements Updateable {
 	 * @param chosenDeck Deck object to be edited
 	 */
 	public void editDeck() {
-		EditDeckScreenLogic editDeckScreenLogic = new EditDeckScreenLogic(this, this, deckManager, chosenDeck);
+		EditDeckScreenLogic editDeckScreenLogic = new EditDeckScreenLogic(this, this, getAppEnvironment(), chosenDeck);
 		editDeckScreenLogic.createScreen();
+		editDeckScreenLogic.showScreen();
 	}
 
 	/**
 	 * Handles creating a new CreateDeckScreen
 	 */
 	public void createDeck() {
-		CreateDeckScreenLogic createDeckScreenLogic = new CreateDeckScreenLogic(this, deckManager, this);
+		CreateDeckScreenLogic createDeckScreenLogic = new CreateDeckScreenLogic(this, getAppEnvironment(), this);
 		createDeckScreenLogic.createScreen();
+		createDeckScreenLogic.showScreen();
 	}
 
 	// *********** Methods to handle Listener events ********** //
@@ -162,7 +169,7 @@ public class MainScreenLogic extends ScreenLogic implements Updateable {
 		JTable tableDecks = screen.getTableDecks();
 		int chosenRow = tableDecks.getSelectedRow();
 		String deckName = tableDecks.getModel().getValueAt(chosenRow, 0).toString();
-		chosenDeck = appEnvironment.getDeckManager().findDeck(deckName);
+		chosenDeck = getAppEnvironment().getDeckManager().findDeck(deckName);
 	}
 
 	// ****************** Helpers for filling decksTable *********************** //
@@ -183,7 +190,7 @@ public class MainScreenLogic extends ScreenLogic implements Updateable {
 	 *          application's DeckManager
 	 */
 	public String[][] decksTableDetails() {
-		return appEnvironment.getDeckManager().deckCollectionInfo();
+		return getAppEnvironment().getDeckManager().deckCollectionInfo();
 	}
 
 	// *********** Methods for refreshing the Screen and this class ********** //
