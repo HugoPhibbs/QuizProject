@@ -41,7 +41,7 @@ public class CreateDeckScreen extends Screen {
 	/**
 	 * JButton to press to create a new Deck
 	 */
-	JButton btnCreateDeck;
+	private JButton btnCreateDeck;
 
 	/**
 	 * Create the application.
