@@ -141,6 +141,7 @@
 
 - Any logic to do with manipulating QuizzingScreen
 - Impements updater to update mainScreen at the end of quiz
+- User can close the screen by either pressing the finish button or clicking x on the top. If they do this before the quiz is finished, then the progress is not saved. This is reflected in the pop up that appears.
 
 ### CreateDeckScreenLogic
 
