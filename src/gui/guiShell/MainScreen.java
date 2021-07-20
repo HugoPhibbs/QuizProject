@@ -2,6 +2,7 @@ package gui.guiShell;
 
 import javax.swing.JFrame;
 import javax.swing.JTable;
+import javax.swing.JTextPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -12,6 +13,7 @@ import javax.swing.JButton;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.Color;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
@@ -58,6 +60,10 @@ public class MainScreen extends Screen {
 	 * MainScreenLogic object to handle any logic concerned with Screen
 	 */
 	MainScreenLogic logic;
+	/**
+	 * JLabel to display any errors that may occur with interacting this Screen
+	 */
+	JLabel lblErrorMsg;
 
 	/**
 	 * Create the application.
@@ -127,9 +133,14 @@ public class MainScreen extends Screen {
 	 */
 	private void createOptionsPanel() {
 		JPanel panelOptions = new JPanel();
-		panelOptions.setBounds(114, 353, 408, 71);
+		panelOptions.setBounds(114, 353, 408, 100);
 		frame.getContentPane().add(panelOptions);
 		panelOptions.setLayout(null);
+
+		lblErrorMsg = new JLabel();
+		lblErrorMsg.setBounds(70, 60, 300, 25);
+		lblErrorMsg.setForeground(Color.RED);
+		panelOptions.add(lblErrorMsg);
 
 		btnEditDeck = new JButton("Edit Deck");
 		btnEditDeck.setBounds(12, 7, 90, 25);
@@ -194,8 +205,7 @@ public class MainScreen extends Screen {
 
 	@Override
 	public void displayError(String msg) {
-		// TODO Auto-generated method stub
-
+		lblErrorMsg.setText(msg);
 	}
 
 	// ********************* Getter methods ************************** //
