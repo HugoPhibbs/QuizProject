@@ -10,7 +10,6 @@ import java.awt.event.ActionEvent;
 import javax.swing.JLabel;
 import javax.swing.JTextPane;
 
-import core.coreLogic.FlashCardQuiz;
 import gui.guiLogic.QuizzingScreenLogic;
 import java.awt.Font;
 import java.awt.Color;
@@ -21,9 +20,7 @@ import java.awt.Color;
  * @author Hugo Phibbs
  *
  */
-public class QuizzingScreen {
-
-	JFrame frame;
+public class QuizzingScreen extends Screen {
 
 	/** JBUtton that finishes a quiz when pressed */
 	private JButton btnFinishQuiz;
@@ -40,58 +37,38 @@ public class QuizzingScreen {
 	private QuizzingScreenLogic logic;
 
 	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					QuizzingScreen window = new QuizzingScreen(null);
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
 	 * Constructor for QuizzingScreen.
 	 * 
 	 * @param quizzingScreenLogic QuizzingScreenLogic object that controls this
 	 *                            Screen
 	 */
 	public QuizzingScreen(QuizzingScreenLogic quizzingScreenLogic) {
-		// super("Quizzing", quizzingScreenLogic, false);
-		super(); // Delete later for Screen, use above
+		super("Quizzing", quizzingScreenLogic, false);
 		this.logic = quizzingScreenLogic;
 		// initialize(); // remove comment to design screen
 	}
 
-	/**
-	 * Initialize the contents of the frame.
-	 */
+	@Override
 	public void initialize() {
-		frame = new JFrame();
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.getContentPane().setLayout(null);
-		frame.setVisible(true);
-
 		configFrame();
 		createComponents();
 	}
 
-	// @Override
-
-	// @Override
+	@Override
 	protected void configFrame() {
 		frame.setBounds(100, 100, 493, 367);
 	}
 
+	@Override
+	public void displayError(String msg) {
+		// TODO Auto-generated method stub
+
+	}
+
 	// *********************** Creating Components ************************ //
 
-	// @Override
-	private void createComponents() {
+	@Override
+	protected void createComponents() {
 		createContentPanel();
 		createMiscComponents();
 		createOptionsPanel();
@@ -99,7 +76,6 @@ public class QuizzingScreen {
 
 	/**
 	 * Creates components contained in the options panel
-	 * 
 	 */
 	private void createOptionsPanel() {
 		JPanel panelOptions = new JPanel();
@@ -209,15 +185,16 @@ public class QuizzingScreen {
 		return textPaneCurrentSide;
 	}
 
-	// ***************************
-	// Remove bellow once Screen is extended
+	public JButton getBtnFlashCardAgain() {
+		return btnFlashCardAgain;
+	}
 
-	/**
-	 * Makes the screen visible to the user.
-	 * 
-	 */
-	public void show() {
-		frame.setVisible(true);
+	public JButton getBtnFlashCardOk() {
+		return btnFlashCardOk;
+	}
+
+	public JButton getBtnFlashCardFlipFlashCard() {
+		return btnFlipFlashCard;
 	}
 
 }
