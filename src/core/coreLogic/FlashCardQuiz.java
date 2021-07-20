@@ -116,30 +116,51 @@ public class FlashCardQuiz {
 		this.userStats = userStats;
 	}
 
-	// ************ Starting and ending a Quiz ***************** //
+	// **********o***** Starting a Quiz ***************** //
 
 	/**
 	 * Starts a new Quiz
 	 * 
 	 * @param maxNewCards int for the max number of new cards that a User wants to
 	 *                    see
+	 * @throws IllegalStateException if a quiz cannot be started, as per
+	 *                               canStartQuiz()
 	 */
-	public void startQuiz(int maxNewCards) {
+	public void startQuiz(int maxNewCards) throws IllegalStateException {
 		if (maxNewCards < 0) {
 			throw new IllegalArgumentException("maxNewCards must be a positive integer!");
 		}
-		// TODO implement stats functionality
 
-		// Starts a quiz
+		// TODO implement stats functionality
+		// LocalTime startTime = LocalTime.now();
+
 		LocalDate currentDate = LocalDate.now();
-		LocalTime startTime = LocalTime.now();
 		this.cardsToQuiz = deck.flashCardsToQuiz(maxNewCards, currentDate);
-		initialQueue.addAll(cardsToQuiz);
-		updateCurrentFlashCard();
+
+		if (canStartQuiz()) {
+			initialQueue.addAll(cardsToQuiz);
+			updateCurrentFlashCard();
+		} else {
+			throw new IllegalStateException("There are no cards in this Deck to be quizzed on!");
+		}
 	}
 
 	/**
-	 * Ends a quiz
+	 * Finds if a quiz can be started. Does this by checking if the cards to be
+	 * quizzed on for the current deck isn't empty
+	 * 
+	 * @return boolean value if a quiz can be started or not
+	 */
+	public boolean canStartQuiz() {
+		return (cardsToQuiz.size() != 0);
+	}
+
+	// ****************** Ending a quiz ******************* //
+
+	/**
+	 * Ends a quiz.
+	 * 
+	 * Saves the progess made in this quiz only if the quiz was done completion
 	 * 
 	 */
 	public void endQuiz() {
@@ -147,34 +168,27 @@ public class FlashCardQuiz {
 
 		// Ends a quiz
 
-		LocalTime endTime = LocalTime.now();
-		reviewAllQuizFlashCards();
-		userStats.addQuizStatsEntry(quizStats);
-
+		if (quizIsFinished) {
+			LocalTime endTime = LocalTime.now();
+			reviewAllQuizFlashCards();
+			userStats.addQuizStatsEntry(quizStats);
+		}
 		// TODO, show the summary after this.
 	}
 
-	public void summary() {
-		// TODO implement!
-	}
-
-	// ***************** Helper methods ****************** //
-
 	/**
-	 * Updates all the review dates of the cards that have been seen once the quiz
-	 * is over
-	 * <p>
-	 * Iterates over uniqueCards as these are all the cards that have been quizzed
-	 * on in this quiz.
-	 * <p>
-	 * FlashCards will only have their nextReviewDates updated if the quiz finishes!
+	 * Creates a summary for this quiz
 	 * 
+	 * @return String for the summary of this quiz
 	 */
-	public void reviewAllQuizFlashCards() {
-		for (FlashCard flashCard : cardsToQuiz) {
-			flashCard.updateNextReviewDate();
-		}
+	public String summary() {
+		// TODO implement!
+		String msg = String.format("You are done quizzing %s for today, you saw %d cards!", deck.getName(),
+				cardsToQuiz.size());
+		return msg;
 	}
+
+	// ********* Methods to deal with the current flash card ********** //
 
 	/**
 	 * Updates the value of currentFlashCard attribute
@@ -183,7 +197,7 @@ public class FlashCardQuiz {
 	 * <p>
 	 * Does this based on the state of the quiz.
 	 */
-	private void updateCurrentFlashCard() {
+	public void updateCurrentFlashCard() {
 		if (!initialQueue.isEmpty()) {
 			currentFlashCard = initialQueue.remove();
 			setCurrentQueue("INITIAL");
@@ -201,6 +215,8 @@ public class FlashCardQuiz {
 		}
 	}
 
+	// ******* Dealing with the current side of the current FlashCard ******** //
+
 	/**
 	 * Resets the currentFlashCardSide to "FRONT"
 	 * <p>
@@ -209,8 +225,6 @@ public class FlashCardQuiz {
 	private void resetCurrentFlashCardSide() {
 		currentFlashCardSide = "FRONT";
 	}
-
-	// ************** Handling user requests ************** //
 
 	/**
 	 * Handles request of wanting to flip a flash card.
@@ -236,9 +250,9 @@ public class FlashCardQuiz {
 	public String currentFlashCardSideText() {
 		switch (currentFlashCardSide) {
 			case "FRONT":
-				return currentFlashCard.getBackText();
-			case "BACK":
 				return currentFlashCard.getFrontText();
+			case "BACK":
+				return currentFlashCard.getBackText();
 			default:
 				throw new IllegalStateException("Current FlashCard side isn't valid!");
 		}
@@ -246,18 +260,22 @@ public class FlashCardQuiz {
 
 	/**
 	 * Handles changing the currentFlashCard side, either from FRONT -> BACK or BACK
-	 * -> FRONT
+	 * -> FRONT.
 	 */
-	private void changeCurrentFlashCardSide() {
+	public void changeCurrentFlashCardSide() {
 		switch (currentFlashCardSide) {
 			case "FRONT":
 				currentFlashCardSide = "BACK";
+				break;
 			case "BACK":
 				currentFlashCardSide = "FRONT";
+				break;
 			default:
 				throw new IllegalStateException("Current FlashCard side isn't valid!");
 		}
 	}
+
+	// ************ Handling requests from a user ************* //
 
 	/**
 	 * Handles result of pressing AGAIN button in GUI
@@ -285,7 +303,7 @@ public class FlashCardQuiz {
 	 * Otherwise does nothing
 	 */
 	public void flashCardOk() {
-		// TODO update val of quizStats)
+		// TODO update val of quizStats
 		numFinal++;
 
 		if (currentQueue != finalQueue) {
@@ -299,17 +317,38 @@ public class FlashCardQuiz {
 	}
 
 	/**
-	 * Handles request of pressing NEXT in the GUI.
+	 * Handles request of seeing the next FlashCard for this Quiz.
 	 * <p>
 	 * If the quiz is finished, then the currentFlashCard is null. This will be
 	 * dealt with in the GUI.
 	 * 
 	 * @return FlashCard object that is next, i.e. the currentFlashCard
 	 */
-	public FlashCard nextFlashCard() {
+	public FlashCard nextFlashCard() throws QuizFinishedException {
 		updateCurrentFlashCard();
+		if (quizIsFinished) {
+			throw new QuizFinishedException();
+		}
 		resetCurrentFlashCardSide();
 		return currentFlashCard;
+	}
+
+	// ***************** Methods to finish a quiz ****************** //
+
+	/**
+	 * Updates all the review dates of the cards that have been seen once the quiz
+	 * is over
+	 * <p>
+	 * Iterates over uniqueCards as these are all the cards that have been quizzed
+	 * on in this quiz.
+	 * <p>
+	 * FlashCards will only have their nextReviewDates updated if the quiz finishes!
+	 * 
+	 */
+	public void reviewAllQuizFlashCards() {
+		for (FlashCard flashCard : cardsToQuiz) {
+			flashCard.updateNextReviewDate();
+		}
 	}
 
 	// ***************** Getter methods ********************** //
@@ -320,7 +359,7 @@ public class FlashCardQuiz {
 	 * 
 	 * @return boolean value if a quiz is finished or not
 	 */
-	public boolean getQuizIsFinished() {
+	public boolean quizIsFinished() {
 		return quizIsFinished;
 	}
 
@@ -378,6 +417,15 @@ public class FlashCardQuiz {
 		return currentQueue;
 	}
 
+	/**
+	 * Getter method for currentFlashCardSide
+	 * 
+	 * @return String as described
+	 */
+	public String getCurrentFlashCardSide() {
+		return currentFlashCardSide;
+	}
+
 	// **************** Setter Methods ***************** //
 
 	/**
@@ -424,6 +472,15 @@ public class FlashCardQuiz {
 	 */
 	public void setCurrentFlashCard(FlashCard currentFlashCard) {
 		this.currentFlashCard = currentFlashCard;
+	}
+
+	/**
+	 * Setter method for the currentFlashCardSide of this quiz
+	 * 
+	 * @param currentFlashCardSide String to be set as the currentFlashcardSide
+	 */
+	public void setCurrentFlashCardSide(String currentFlashCardSide) {
+		this.currentFlashCardSide = currentFlashCardSide;
 	}
 
 	/**
