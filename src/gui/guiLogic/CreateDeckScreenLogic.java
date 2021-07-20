@@ -1,5 +1,6 @@
 package gui.guiLogic;
 
+import core.coreLogic.AppEnvironment;
 import core.coreLogic.DeckManager;
 import gui.guiShell.CreateDeckScreen;
 
@@ -29,11 +30,11 @@ public class CreateDeckScreenLogic extends ScreenLogic implements Updater {
      * 
      * @param parentScreenLogic ScreenLogic object for the parent screen of this
      *                          ScreenLogic object
-     * @param deckManager       DeckManager object for this application
+     * @param appEnvironment    AppEnvironment object for this application
      */
-    public CreateDeckScreenLogic(ScreenLogic parentScreenLogic, DeckManager deckManager, Updateable updateable) {
-        super(parentScreenLogic);
-        this.deckManager = deckManager;
+    public CreateDeckScreenLogic(ScreenLogic parentScreenLogic, AppEnvironment appEnvironment, Updateable updateable) {
+        super(parentScreenLogic, appEnvironment);
+        this.deckManager = appEnvironment.getDeckManager();
         this.updateable = updateable;
     }
 
@@ -42,9 +43,7 @@ public class CreateDeckScreenLogic extends ScreenLogic implements Updater {
     @Override
     public void createScreen() {
         screen = new CreateDeckScreen(this);
-        // screen.show();
-        super.setScreen(null);
-
+        super.setScreen(screen);
     }
 
     @Override

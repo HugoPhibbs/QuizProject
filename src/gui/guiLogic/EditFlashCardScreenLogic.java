@@ -1,5 +1,6 @@
 package gui.guiLogic;
 
+import core.coreLogic.AppEnvironment;
 import core.coreLogic.DeckManager;
 import core.coreObjects.Deck;
 import core.coreObjects.FlashCard;
@@ -49,25 +50,22 @@ public class EditFlashCardScreenLogic extends ScreenLogic implements Updater {
 	 * <p>
 	 * Sets attributes and creates a new EditFlashCardScreen
 	 * 
-	 * @param updateable          Updateable object that is dependent on this Screen
-	 *                            for changes
-	 * @param currentFlashCard    FlashCard object that is currently being editted,
-	 *                            null if a FlashCard is being created
-	 * @param currentDeck         Deck object that a user wants to add a FlashCard
-	 *                            to
-	 * @param deckManager         DeckManager object for this application
-	 * @param parentLogic         ScreenLogic object that is the parent ScreenLogic
-	 *                            to this object
-	 * @param editFlashCardScreen EditFlashCardScreen object that is being
-	 *                            controlled by this class.
+	 * @param updateable       Updateable object that is dependent on this Screen
+	 *                         for changes
+	 * @param currentFlashCard FlashCard object that is currently being editted,
+	 *                         null if a FlashCard is being created
+	 * @param currentDeck      Deck object that a user wants to add a FlashCard to
+	 * @param appEnvironment   AppEnivronment object for this application
+	 * @param parentLogic      ScreenLogic object that is the parent ScreenLogic to
+	 *                         this object
 	 */
 	public EditFlashCardScreenLogic(Updateable updateable, FlashCard currentFlashCard, Deck currentDeck,
-			DeckManager deckManager, ScreenLogic parentLogic) {
-		super(parentLogic);
+			AppEnvironment appEnvironment, ScreenLogic parentLogic) {
+		super(parentLogic, appEnvironment);
 		this.updateable = updateable;
 		this.currentFlashCard = currentFlashCard;
 		this.currentDeck = currentDeck;
-		this.deckManager = deckManager;
+		this.deckManager = appEnvironment.getDeckManager();
 		handleEditingOrCreating();
 	}
 
@@ -79,9 +77,8 @@ public class EditFlashCardScreenLogic extends ScreenLogic implements Updater {
 	 * Creates a new EditFlashCardScreen and sets it as the Screen for this class.
 	 */
 	public void createScreen() {
-		this.screen = new EditFlashCardScreen(this);
-		super.setScreen(null);
-		screen.show();
+		screen = new EditFlashCardScreen(this);
+		super.setScreen(screen);
 	}
 
 	/**

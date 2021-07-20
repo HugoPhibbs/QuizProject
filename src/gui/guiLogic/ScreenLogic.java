@@ -1,5 +1,6 @@
 package gui.guiLogic;
 
+import core.coreLogic.AppEnvironment;
 import gui.guiShell.Screen;
 
 /**
@@ -26,14 +27,17 @@ public abstract class ScreenLogic {
      * ScreenLogic object is controlling
      */
     private ScreenLogic parentLogic;
+    /** AppEnvironment object for this application */
+    private AppEnvironment appEnvironment;
 
     /**
      * Constructor for ScreenLogic
      * 
      * @param parentScreenLogic ScreenLogic object to be set as this object's parent
      */
-    public ScreenLogic(ScreenLogic parentScreenLogic) {
+    public ScreenLogic(ScreenLogic parentScreenLogic, AppEnvironment appEnvironment) {
         this.parentLogic = parentScreenLogic;
+        this.appEnvironment = appEnvironment;
     }
 
     // *********** Creating, deleting and closing the Screen *********** //
@@ -69,10 +73,15 @@ public abstract class ScreenLogic {
     }
 
     /**
-     * Shows the Screen object for this class
+     * Shows the Screen object for this class.
+     * <p>
+     * First checks if the Screen can be opened as per
+     * appEnvironment.canOpenNewScreen()
      */
     public void showScreen() {
-        screen.show();
+        if (appEnvironment.canOpenNewScreen(this)) {
+            screen.show();
+        }
     }
 
     // ************* Switching Between Screens *********************** //
@@ -131,5 +140,9 @@ public abstract class ScreenLogic {
      */
     public void setScreen(Screen screen) {
         this.screen = screen;
+    }
+
+    public AppEnvironment getAppEnvironment() {
+        return appEnvironment;
     }
 }

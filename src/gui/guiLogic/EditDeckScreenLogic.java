@@ -3,6 +3,7 @@ package gui.guiLogic;
 import javax.swing.JTable;
 import javax.swing.event.ListSelectionEvent;
 
+import core.coreLogic.AppEnvironment;
 import core.coreLogic.DeckManager;
 import core.coreObjects.Deck;
 import core.coreObjects.FlashCard;
@@ -35,6 +36,10 @@ public class EditDeckScreenLogic extends ScreenLogic implements Updateable, Upda
      * Updateable object that is updated when a Deck is edited
      */
     Updateable updateable;
+    /**
+     * AppEnvironment object for this application
+     */
+    AppEnvironment appEnvironment;
 
     /**
      * Constuctor for EditDeckScreenLogic
@@ -42,23 +47,23 @@ public class EditDeckScreenLogic extends ScreenLogic implements Updateable, Upda
      * @param parentScreenLogic ScreenLogic object that created this object
      * @param updateable        Updateable object that this class updates upon
      *                          closing
-     * @param deckManager       DeckManager object for this Application
+     * @param appEnvironment    AppEnvironment object for this application
      * @param deck              Deck object that is currently being
      */
-    public EditDeckScreenLogic(ScreenLogic parentScreenLogic, Updateable updateable, DeckManager deckManager,
+    public EditDeckScreenLogic(ScreenLogic parentScreenLogic, Updateable updateable, AppEnvironment appEnvironment,
             Deck deck) {
-        super(parentScreenLogic);
+        super(parentScreenLogic, appEnvironment);
         this.updateable = updateable;
         this.deck = deck;
-        this.deckManager = deckManager;
+        this.appEnvironment = appEnvironment;
+        this.deckManager = appEnvironment.getDeckManager();
     }
 
     @Override
     public void createScreen() {
         screen = new EditDeckScreen(this);
-        screen.initialize();
-        screen.show();
         super.setScreen(screen);
+        configScreenBtns(false);
     }
 
     @Override
@@ -179,8 +184,9 @@ public class EditDeckScreenLogic extends ScreenLogic implements Updateable, Upda
      */
     private void newEditFlashCardScreen(FlashCard flashCard) {
         EditFlashCardScreenLogic editFlashCardScreenLogic = new EditFlashCardScreenLogic(this, flashCard, deck,
-                deckManager, this);
+                appEnvironment, this);
         editFlashCardScreenLogic.createScreen();
+        editFlashCardScreenLogic.showScreen();
         hideParent();
     }
 
@@ -285,9 +291,6 @@ public class EditDeckScreenLogic extends ScreenLogic implements Updateable, Upda
 
     // ************* Methods to notify Updateable object ********************** //
 
-    /**
-     * Updates dependent Updateable objects
-     */
     @Override
     public void update() {
         updateable.receiveUpdate();
