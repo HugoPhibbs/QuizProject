@@ -28,9 +28,7 @@ import java.awt.Font;
  * 
  * @author Hugo Phibbs
  */
-public class EditFlashCardScreen {
-
-	JFrame frame;
+public class EditFlashCardScreen extends Screen {
 
 	/**
 	 * Text field for the front text of the FlashCard that is being edited
@@ -58,35 +56,6 @@ public class EditFlashCardScreen {
 	EditFlashCardScreenLogic logic;
 
 	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					EditFlashCardScreen window = new EditFlashCardScreen();
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
-	 * Create the application.
-	 * 
-	 */
-	private EditFlashCardScreen() {
-		/*
-		 * TODO dummy constructor for testing GUI, always create an EditFlashCardScreen
-		 * using one of the two constructors bellow
-		 */
-		super();
-		initialize();
-	}
-
-	/**
 	 * Constructor for an EditFlashCardScreen
 	 * <p>
 	 * For creating a new FlashCard, currentFlashCard should be set to null
@@ -95,33 +64,28 @@ public class EditFlashCardScreen {
 	 *                                 this Screen
 	 */
 	public EditFlashCardScreen(EditFlashCardScreenLogic editFlashCardScreenLogic) {
-		super();
+		super("Editting FlashCard", editFlashCardScreenLogic, false);
 		this.logic = editFlashCardScreenLogic;
 		initialize();
 	}
 
-	/**
-	 * Initialize the contents of the frame.
-	 */
-	protected void initialize() {
-		createFrame();
+	// *********** Configurating the Screen **************** //
+
+	@Override
+	public void initialize() {
+		configFrame();
+		createComponents();
+	}
+
+	@Override
+	protected void createComponents() {
 		createMiscComponents();
 		createChangeTextPanel();
 		createChooseDeckPanel();
+		createFinishPanel();
 	}
 
-	/**
-	 * Handles creating the JFrame for this Screen
-	 */
-	private void createFrame() {
-		frame = new JFrame();
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.getContentPane().setLayout(null);
-		configFrame();
-		show();
-	}
-
-	// @Override
+	@Override
 	protected void configFrame() {
 		frame.setBounds(100, 100, 391, 292);
 	}
@@ -133,8 +97,6 @@ public class EditFlashCardScreen {
 	 * particular Panel
 	 */
 	private void createMiscComponents() {
-		addFinishBtnListener();
-
 		lblAction = new JLabel(String.format("%s a flash card!", logic.operation()));
 		lblAction.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		lblAction.setBounds(78, 31, 237, 28);
@@ -198,21 +160,29 @@ public class EditFlashCardScreen {
 		lblChooseDeck.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		lblChooseDeck.setBounds(19, 5, 85, 14);
 		panelChooseDeck.add(lblChooseDeck);
+	}
 
-		JPanel panel = new JPanel();
-		panel.setBounds(248, 128, 116, 107);
-		frame.getContentPane().add(panel);
-		panel.setLayout(null);
+	/**
+	 * Creates components contained in panelFinish. That is componenets relating to
+	 * finish editting a FlashCard
+	 */
+	public void createFinishPanel() {
+		JPanel panelFinish = new JPanel();
+		panelFinish.setBounds(248, 128, 116, 107);
+		frame.getContentPane().add(panelFinish);
+		panelFinish.setLayout(null);
 
 		textPaneErrorMsg = new JTextPane();
 		textPaneErrorMsg.setBounds(9, 6, 95, 58);
-		panel.add(textPaneErrorMsg);
+		panelFinish.add(textPaneErrorMsg);
 
 		btnFinish = new JButton("Finish");
 		btnFinish.setBounds(9, 73, 95, 28);
-		panel.add(btnFinish);
+		panelFinish.add(btnFinish);
 		btnFinish.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		btnFinish.setEnabled(!logic.getIsCreating());
+
+		addFinishBtnListener();
 	}
 
 	// ************ Adding Listeners to Components ********************* //
@@ -226,6 +196,7 @@ public class EditFlashCardScreen {
 		});
 	}
 
+	/** Adds listener to textFieldFront */
 	public void addTextFieldFrontTextListener() {
 		textFieldFrontText.getDocument().addDocumentListener(new DocumentListener() {
 			public void changedUpdate(DocumentEvent e) {
@@ -242,6 +213,7 @@ public class EditFlashCardScreen {
 		});
 	}
 
+	/** Add listener to textFieldBackText */
 	public void addTextFieldBackTextListener() {
 		textFieldBackText.getDocument().addDocumentListener(new DocumentListener() {
 			public void changedUpdate(DocumentEvent e) {
@@ -296,34 +268,5 @@ public class EditFlashCardScreen {
 	 */
 	public JButton getBtnFinish() {
 		return btnFinish;
-	}
-
-	// *****************************************************
-	// Remove bellow methods later.
-
-	/**
-	 * Makes the screen visible to the user.
-	 * 
-	 */
-	public void show() {
-		frame.setVisible(true);
-	}
-
-	/**
-	 * Disables or enables a JComponent according to parameter setting
-	 * 
-	 * @param component JComponent to be enabled or not
-	 * @param setting   Boolean value for if a JButton is to be enabled or not
-	 */
-	public void toggleComponent(JComponent component, boolean setting) {
-		component.setEnabled(setting);
-	}
-
-	/**
-	 * Disposes of the Screen's frame.
-	 * 
-	 */
-	public void quit() {
-		frame.dispose();
 	}
 }
