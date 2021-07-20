@@ -165,4 +165,47 @@ class FlashCardQuizTest {
 		});
 	}
 
+	@Test
+	void changeCurrentFlashCardSideTest() {
+		testFlashCardQuiz.updateCurrentFlashCard(); // So it isn't null
+		// Test with the current side being FRONT
+		testFlashCardQuiz.changeCurrentFlashCardSide();
+		assertEquals("BACK", testFlashCardQuiz.getCurrentFlashCardSide());
+		// Test with the current side being BACK
+		testFlashCardQuiz.changeCurrentFlashCardSide();
+		assertEquals("FRONT", testFlashCardQuiz.getCurrentFlashCardSide());
+		// Test with an invalid side
+		testFlashCardQuiz.setCurrentFlashCardSide("back");
+		assertThrows(IllegalStateException.class, () -> {
+			testFlashCardQuiz.changeCurrentFlashCardSide();
+		});
+	}
+
+	@Test
+	void currentFlashCardSideText() {
+		testFlashCardQuiz.updateCurrentFlashCard();
+		// Test with the current side being FRONT
+		assertEquals("A", testFlashCardQuiz.currentFlashCardSideText());
+		// Test with the current side being BACK
+		testFlashCardQuiz.changeCurrentFlashCardSide();
+		assertEquals("B", testFlashCardQuiz.currentFlashCardSideText());
+		// Check when currentFlashCard is updated
+		testFlashCardQuiz.nextFlashCard();
+		assertEquals("C", testFlashCardQuiz.currentFlashCardSideText());
+		// Test with an illegal currentFlashCardSide
+		testFlashCardQuiz.setCurrentFlashCardSide("front");
+		assertThrows(IllegalStateException.class, () -> {
+			testFlashCardQuiz.currentFlashCardSideText();
+		});
+	}
+
+	@Test
+	void canStartQuizTest() {
+		// Test with a non empty cardsToQuiz
+		assertTrue(testFlashCardQuiz.canStartQuiz());
+		// Test with empty cardsToQuiz
+		testFlashCardQuiz.setCardsToQuiz(new ArrayList<FlashCard>());
+		assertFalse(testFlashCardQuiz.canStartQuiz());
+	}
+
 }
