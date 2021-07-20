@@ -31,7 +31,7 @@ public class SetupScreenLogic extends ScreenLogic {
 	 * parentLogic
 	 */
 	public SetupScreenLogic() {
-		super(null);
+		super(null, null);
 	}
 
 	// ************** Creating and closing the Screen ********************** //
@@ -47,6 +47,11 @@ public class SetupScreenLogic extends ScreenLogic {
 	@Override
 	public void closeScreen() {
 		deleteScreen();
+	}
+
+	@Override
+	public void showScreen() {
+		screen.show();
 	}
 
 	// *********************** Handling Listener Events ************************* //
@@ -89,8 +94,10 @@ public class SetupScreenLogic extends ScreenLogic {
 
 	/** Handles pressing of btnContinue */
 	public void onContinue() {
+		setup.getAppEnvironment().onStartUp();
 		MainScreenLogic mainScreenLogic = new MainScreenLogic(setup.getAppEnvironment());
 		mainScreenLogic.createScreen();
+		mainScreenLogic.showScreen();
 		closeScreen();
 	}
 
