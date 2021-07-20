@@ -1,8 +1,9 @@
 package gui.guiLogic;
 
+import core.coreLogic.AppEnvironment;
 import core.coreLogic.FlashCardQuiz;
+import core.coreLogic.QuizFinishedException;
 import core.coreObjects.Deck;
-import core.coreObjects.FlashCard;
 import gui.guiShell.QuizzingScreen;
 
 /**
@@ -43,19 +44,47 @@ public class QuizzingScreenLogic extends ScreenLogic implements Updater {
 	 * @param updateable        Updateable object that this class updates upon
 	 *                          closing of Quizzing Screen
 	 * @param chosenDeck        Deck object that is currently being quizzed on
+	 * @param AppEnvironment    AppEnvironment object for this application
 	 */
 	public QuizzingScreenLogic(FlashCardQuiz flashCardQuiz, ScreenLogic parentScreenLogic, Updateable updateable,
-			Deck chosenDeck) {
-		super(parentScreenLogic);
+			Deck chosenDeck, AppEnvironment appEnvironment) {
+		super(parentScreenLogic, appEnvironment);
 		this.flashCardQuiz = flashCardQuiz;
 		this.deck = chosenDeck;
-		createScreen();
-		startQuiz();
 	}
 
+	// ********** Starting and ending a quiz ********** //
+
+	/**
+	 * Handles starting a Quiz
+	 */
 	public void startQuiz() {
 		flashCardQuiz.startQuiz(10); // TODO make maxNewCards adaptable!
-		showNextFlashCard();
+		updateFlashCardText();
+	}
+
+	/**
+	 * Handles when a completed is done to completion by a user, and wasn't stopped
+	 * early.
+	 * <p>
+	 * A key point here is that setting if progress is saved is set to true, when
+	 * the pop up to close the screen is summoned
+	 */
+	public void quizCompleted() {
+		configFlashCardButtons(false);
+		showText(flashCardQuiz.summary());
+		screen.setWillSave(true);
+		flashCardQuiz.endQuiz();
+		// TODO make text pane non editable
+	}
+
+	/**
+	 * Handles when a user wants to end a quiz. Since this just calls the dialogue
+	 * box to close the screen, the user is notified if closing this screen will
+	 * save any progress.
+	 */
+	public void finishQuiz() {
+		screen.confirmQuit();
 	}
 
 	// ********** Creating and closing the Screen *************** //
@@ -64,21 +93,22 @@ public class QuizzingScreenLogic extends ScreenLogic implements Updater {
 	public void createScreen() {
 		screen = new QuizzingScreen(this);
 		screen.initialize();
-		// TODO Auto-generated method stub
-
+		super.setScreen(screen);
+		configFlashCardButtons(true);
 	}
 
 	@Override
 	public void closeScreen() {
-		// TODO Auto-generated method stub
-
+		screen.quit();
 	}
 
 	// ****************** Handling Listener events **************** //
 
+	/**
+	 * Handles pressing of btnFlipFlashCard
+	 */
 	public void flashCardFlip() {
-		// TODO implement
-		updateFlashCardText(flashCardQuiz.flipCurrentFlashCard());
+		showText(flashCardQuiz.flipCurrentFlashCard());
 	}
 
 	/**
@@ -101,10 +131,6 @@ public class QuizzingScreenLogic extends ScreenLogic implements Updater {
 		handleNextFlashCard();
 	}
 
-	public void finishQuiz() {
-		// TODO implement
-	}
-
 	// *********** Methods to show the next FlashCard to a user ************* //
 
 	/**
@@ -114,9 +140,13 @@ public class QuizzingScreenLogic extends ScreenLogic implements Updater {
 	 * so it is packaged into a single shared method
 	 */
 	public void handleNextFlashCard() {
-		flashCardQuiz.nextFlashCard();
-		showNextFlashCard();
-		// TODO. implement more methods here if needed, may need to do more things here
+		try {
+			flashCardQuiz.nextFlashCard();
+			updateFlashCardText();
+			// TODO. implement more methods here if needed, may need to do more things here
+		} catch (QuizFinishedException qfe) {
+			quizCompleted();
+		}
 	}
 
 	/**
@@ -125,8 +155,8 @@ public class QuizzingScreenLogic extends ScreenLogic implements Updater {
 	 * The text that is shown to the user first, either frontText or backText is
 	 * decided by FlashCardQuiz, however, by default it is FRONT
 	 */
-	public void showNextFlashCard() {
-		updateFlashCardText(flashCardQuiz.currentSideText());
+	public void updateFlashCardText() {
+		showText(flashCardQuiz.currentFlashCardSideText());
 	}
 
 	/**
@@ -135,14 +165,31 @@ public class QuizzingScreenLogic extends ScreenLogic implements Updater {
 	 * 
 	 * @param text String for the text to be displayed in textPaneCurrentSide
 	 */
-	public void updateFlashCardText(String text) {
+	public void showText(String text) {
 		screen.getTextPaneCurrentSide().setText(text);
 	}
 
 	// *********** General helper methods ***************** //
 
+	/**
+	 * Finds the name of the deck that is currently being quizzed on
+	 * 
+	 * @return String for the name of the Deck that is currently being quizzed on
+	 */
 	public String deckName() {
 		return deck.getName();
+	}
+
+	/**
+	 * Handles enabling or disabling buttons to do with interacting flashcards for
+	 * this quiz
+	 * 
+	 * @param setting boolean value for if the buttons should be enabled or not
+	 */
+	public void configFlashCardButtons(boolean setting) {
+		screen.getBtnFlashCardAgain().setEnabled(setting);
+		screen.getBtnFlashCardFlipFlashCard().setEnabled(setting);
+		screen.getBtnFlashCardOk().setEnabled(setting);
 	}
 
 	// ********** Updating Updateable objects *********** //
