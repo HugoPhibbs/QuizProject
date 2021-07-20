@@ -1,5 +1,6 @@
 package setup;
 
+import gui.guiLogic.GuiManager;
 import gui.guiLogic.SetupScreenLogic;
 
 /**
@@ -22,8 +23,9 @@ public class Main {
 	 * @param args String[] arguments, none needed to start the application
 	 */
 	public static void main(String[] args) {
+		GuiManager guiManager = new GuiManager();
 		SetupScreenLogic setupScreenLogic = new SetupScreenLogic();
 		setupScreenLogic.createScreen();
+		setupScreenLogic.showScreen();
 	}
-
 }
