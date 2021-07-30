@@ -49,7 +49,7 @@ public class CreateDeckScreenLogic extends ScreenLogic implements Updater {
     @Override
     public void closeScreen() {
         update();
-        screen.quit();
+        deleteScreen();
     }
 
     // ******************* Handling Listener Events ********************** //

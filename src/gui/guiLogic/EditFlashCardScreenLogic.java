@@ -86,7 +86,7 @@ public class EditFlashCardScreenLogic extends ScreenLogic implements Updater {
 	 */
 	public void closeScreen() {
 		update();
-		screen.quit();
+		deleteScreen();
 	}
 
 	// *************** Handling editing or creating a FlashCard ************ //

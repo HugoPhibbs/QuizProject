@@ -69,7 +69,7 @@ public class EditDeckScreenLogic extends ScreenLogic implements Updateable, Upda
     @Override
     public void closeScreen() {
         update();
-        screen.quit();
+        deleteScreen();
     }
 
     // ******************* Handling Listener Events ******************** //
