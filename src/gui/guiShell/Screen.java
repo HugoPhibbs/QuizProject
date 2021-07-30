@@ -60,6 +60,11 @@ public abstract class Screen {
 		createFrame(title);
 	}
 
+//	@Override
+//	public String toString() {
+//		return String.format("Screen: (title: %s, logic: %s)", title, logic);
+//	}
+
 	/**
 	 * This is where the bounds of your frame will be set and methods which create
 	 * the components will be called. Is called at the end of the constructor
@@ -97,6 +102,8 @@ public abstract class Screen {
 		frame.getContentPane().setLayout(null);
 	}
 
+	// *********** Quitting a Screen *************** //
+
 	/**
 	 * Displays a Dialog to allow the user to confirm whether they would like to
 	 * quit
@@ -108,15 +115,11 @@ public abstract class Screen {
 				JOptionPane.QUESTION_MESSAGE);
 
 		if (selection == JOptionPane.YES_OPTION) {
-			onQuit();
+			logic.closeScreen();
 			return true;
 		} else {
 			return false;
 		}
-	}
-
-	private void onQuit() {
-		logic.closeScreen();
 	}
 
 	/**
@@ -134,24 +137,27 @@ public abstract class Screen {
 		}
 	}
 
-	// ************* General helper methods ******************** //
-
-	/**
-	 * Calls methods to create components for this Screen
-	 */
-	protected abstract void createComponents();
-
-	public abstract void displayError(String msg);
-	// TODO make displayError concrete, ie have an attribute in all Screen
-	// implemenations called textPaneError?
-
 	/**
 	 * Disposes of the Screen's frame.
-	 * 
 	 */
 	public void quit() {
 		frame.dispose();
 	}
+
+	// ************* General helper methods ******************** //
+
+	/**
+	 * Determines if two Screens are from the same class or not
+	 * 
+	 * @param screen Screen object to be checked if it is the same class as this
+	 *               Screen object
+	 * @return boolean value as described
+	 */
+	public boolean isSameClass(Screen screen) {
+		return this.getClass().equals(screen.getClass());
+	}
+
+	// ********** Controlling visibility of this Screen ********** //
 
 	/**
 	 * Makes the screen visible to the user.
@@ -169,15 +175,7 @@ public abstract class Screen {
 		frame.setVisible(false);
 	}
 
-	/**
-	 * Handles showing of a new screen, and hides this screen
-	 * 
-	 * @param newScreen Screen object to be switched to
-	 */
-	public void swtichToNewScreen(Screen newScreen) {
-		newScreen.show();
-		// this.hide();
-	}
+	// ******** Switching between Screens ************ //
 
 	/**
 	 * Handles switching back to a parent screen
@@ -191,6 +189,23 @@ public abstract class Screen {
 			this.hide();
 		}
 	}
+
+	// ************** Methods for gui components ********** //
+
+	/**
+	 * Calls methods to create components for this Screen
+	 */
+	protected abstract void createComponents();
+
+	/**
+	 * Method to display errors to a user
+	 * <p>
+	 * Made abstract because some Screen classes may want to display errors
+	 * differently, eg with a pop or just a changing text field
+	 * 
+	 * @param msg String for the error message to be displayed
+	 */
+	public abstract void displayError(String msg);
 
 	/**
 	 * Disables or enables a JComponent according to parameter setting
