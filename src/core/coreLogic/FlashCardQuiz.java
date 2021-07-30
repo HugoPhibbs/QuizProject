@@ -323,6 +323,9 @@ public class FlashCardQuiz {
 	 * dealt with in the GUI.
 	 * 
 	 * @return FlashCard object that is next, i.e. the currentFlashCard
+	 * 
+	 * @throws QuizFinishedException if the quiz is finished, i.e. there are no more
+	 *                               cards to see for this quiz
 	 */
 	public FlashCard nextFlashCard() throws QuizFinishedException {
 		updateCurrentFlashCard();
