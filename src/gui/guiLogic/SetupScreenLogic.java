@@ -25,7 +25,7 @@ public class SetupScreenLogic extends ScreenLogic {
 	private SetupScreen screen;
 
 	/**
-	 * Constuctor for SetupScreenLogic
+	 * Constructor for SetupScreenLogic
 	 * <p>
 	 * Since this screen doesn't have any parent, call to constructor has null for
 	 * parentLogic
@@ -41,7 +41,6 @@ public class SetupScreenLogic extends ScreenLogic {
 		screen = new SetupScreen(this);
 		screen.initialize();
 		super.setScreen(screen);
-		// screen.show();
 	}
 
 	@Override
@@ -49,6 +48,23 @@ public class SetupScreenLogic extends ScreenLogic {
 		deleteScreen();
 	}
 
+	/**
+	 * Deletes the Screen for this class,
+	 * <p>
+	 * Note that since SetupScreen is never added to guiManager, this method is
+	 * overridden here
+	 */
+	@Override
+	public void deleteScreen() {
+		screen.quit();
+	}
+
+	/**
+	 * Shows the Screen
+	 * <p>
+	 * Overridden here because AppEnvironment object is not yet created, This is
+	 * created at the same time when this Screen closes.
+	 */
 	@Override
 	public void showScreen() {
 		screen.show();
@@ -92,7 +108,11 @@ public class SetupScreenLogic extends ScreenLogic {
 		}
 	}
 
-	/** Handles pressing of btnContinue */
+	/**
+	 * Handles pressing of btnContinue
+	 * <p>
+	 * Starts up the gui and application
+	 */
 	public void onContinue() {
 		setup.getAppEnvironment().onStartUp();
 		MainScreenLogic mainScreenLogic = new MainScreenLogic(setup.getAppEnvironment());
