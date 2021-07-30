@@ -1,8 +1,6 @@
 package gui.guiShell;
 
-import javax.swing.JFrame;
 import javax.swing.JTable;
-import javax.swing.JTextPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;

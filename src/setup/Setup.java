@@ -135,7 +135,8 @@ public class Setup implements Serializable {
 	 * <p>
 	 * This means creating a new AppEnvironment object for this class
 	 * 
-	 * @param appEnvironment
+	 * @param userName String for the name of the user for the new session to be
+	 *                 saved under
 	 */
 	public void createNewSession(String userName) {
 		createAppEnvironment(userName);
@@ -158,10 +159,12 @@ public class Setup implements Serializable {
 	 * This allows a user to create a session for a AppEnvironment object that they
 	 * have already created
 	 * 
-	 * @param userName String for the name of a User object that a user wants to
-	 *                 create a session for
+	 * @param userName       String for the name of a User object that a user wants
+	 *                       to create a session for
+	 * @param appEnvironment AppEnvironment object for this application session
 	 */
 	public void createSession(String userName, AppEnvironment appEnvironment) {
+		// TODO get userName from appEnvironment!
 		String sessionFilePath = sessionFilePath(userName);
 		if (!sessionExists(sessionFilePath)) {
 			try {

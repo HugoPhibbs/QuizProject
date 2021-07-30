@@ -12,6 +12,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import core.coreLogic.FlashCardQuiz;
+import core.coreLogic.QuizFinishedException;
 import core.coreObjects.Deck;
 import core.coreObjects.FlashCard;
 
@@ -182,7 +183,7 @@ class FlashCardQuizTest {
 	}
 
 	@Test
-	void currentFlashCardSideText() {
+	void currentFlashCardSideText() throws QuizFinishedException {
 		testFlashCardQuiz.updateCurrentFlashCard();
 		// Test with the current side being FRONT
 		assertEquals("A", testFlashCardQuiz.currentFlashCardSideText());

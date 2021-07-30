@@ -99,7 +99,7 @@ public class QuizzingScreenLogic extends ScreenLogic implements Updater {
 
 	@Override
 	public void closeScreen() {
-		screen.quit();
+		deleteScreen();
 	}
 
 	// ****************** Handling Listener events **************** //

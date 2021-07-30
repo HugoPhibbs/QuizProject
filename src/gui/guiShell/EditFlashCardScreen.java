@@ -1,8 +1,5 @@
 package gui.guiShell;
 
-import java.awt.EventQueue;
-
-import javax.swing.JFrame;
 import javax.swing.JTextField;
 
 import gui.guiLogic.EditFlashCardScreenLogic;
@@ -11,7 +8,6 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JComboBox;
-import javax.swing.JComponent;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;

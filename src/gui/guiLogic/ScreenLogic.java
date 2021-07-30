@@ -40,7 +40,13 @@ public abstract class ScreenLogic {
         this.appEnvironment = appEnvironment;
     }
 
-    // *********** Creating, deleting and closing the Screen *********** //
+    // @Override
+    // public String toString() {
+    // return String.format("ScreenLogic: (parentLogic: %s, screen: %s)",
+    // parentLogic, screen);
+    // }
+
+    // *********** Dealing with the Screen *********** //
 
     /**
      * Abstract method for creating Screen for this ScreenLogic class
@@ -55,14 +61,18 @@ public abstract class ScreenLogic {
      * Abstract method to handle closing of this screen In most cases, this means
      * that the current ScreenLogic needs to update the state of it's dependent
      * ScreenLogic objects
+     * <p>
+     * All closeScreen() implementations should by default call deleteScreen(),
+     * along with any special operations that need to be done (may be none) eg
+     * update dependent ScreenLogic classes, close down gui etc
      */
     public abstract void closeScreen();
 
     /**
-     * Handles deleting the screen of this ScreenLogic class
+     * Handles deleting the screen of this ScreenLogic's Screen
      */
     public void deleteScreen() {
-        screen.quit();
+        appEnvironment.getGuiManager().closeScreen(screen);
     }
 
     /**
@@ -79,7 +89,7 @@ public abstract class ScreenLogic {
      * appEnvironment.canOpenNewScreen()
      */
     public void showScreen() {
-        if (appEnvironment.canOpenNewScreen(this)) {
+        if (appEnvironment.getGuiManager().newScreen(this)) {
             screen.show();
         }
     }
@@ -95,16 +105,6 @@ public abstract class ScreenLogic {
         } else {
             screen.hide();
             // parentLogic.getScreen().show();
-        }
-    }
-
-    /**
-     * Handles switching to the screen that this class is controlling
-     */
-    public void switchScreens() {
-        screen.show();
-        if (parentLogic != null) {
-            // parentLogic.getScreen().hide();
         }
     }
 
@@ -125,6 +125,15 @@ public abstract class ScreenLogic {
     // ************** Setter and Getter methods ****************** //
 
     /**
+     * Returns the name of the class object that extends this Class
+     * 
+     * @return String for the name of a class as described
+     */
+    public String className() {
+        return getClass().getName();
+    }
+
+    /**
      * Getter method for the Screen of this class
      * 
      * @return Screen object belonging to this ScreenLogic class
@@ -134,15 +143,20 @@ public abstract class ScreenLogic {
     }
 
     /**
+     * Getter method for the appEnivironment
+     * 
+     * @return AppEnvironment object as described
+     */
+    public AppEnvironment getAppEnvironment() {
+        return appEnvironment;
+    }
+
+    /**
      * Setter method for the Screen of this object
      * 
      * @param screen
      */
     public void setScreen(Screen screen) {
         this.screen = screen;
-    }
-
-    public AppEnvironment getAppEnvironment() {
-        return appEnvironment;
     }
 }
