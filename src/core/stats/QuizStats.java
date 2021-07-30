@@ -30,6 +30,10 @@ public class QuizStats implements Serializable {
 	/** Time taken for the user to finish a quiz (in seconds). */
 	private int timeTaken;
 
+	// Added to not get compile errors
+	private LocalTime startTime;
+	private LocalTime endTime;
+
 	/**
 	 * Empty constructor until this class is fully implemented need it for
 	 * FlashCardQuiz TODO remove later
