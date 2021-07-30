@@ -89,10 +89,9 @@ public class MainScreenLogic extends ScreenLogic implements Updateable {
 	 * Takes logical code away from MainScreen
 	 * <p>
 	 * Despite it creating an EditFlashCardScreen, that handles both editing and
-	 * creating a FlashCard, this method can only create an EditFlashCardScren for
+	 * creating a FlashCard, this method can only create an EditFlashCardScreen for
 	 * the later case, as this is only intended to be used by MainScreen
-	 * 
-	 * @param chosenDeck Deck object that a user has chosen to add a FlashCard to
+	 *
 	 */
 	public void createFlashCard() {
 		EditFlashCardScreenLogic editFlashCardScreenLogic = new EditFlashCardScreenLogic(this, null, chosenDeck,
@@ -162,8 +161,7 @@ public class MainScreenLogic extends ScreenLogic implements Updateable {
 
 	/**
 	 * Finds the name of the currently chosen Deck from the deck
-	 * 
-	 * @return Deck object that has been chosen
+	 *
 	 */
 	private void updateChosenDeck() {
 		JTable tableDecks = screen.getTableDecks();
@@ -177,7 +175,7 @@ public class MainScreenLogic extends ScreenLogic implements Updateable {
 	/**
 	 * Finds and returns the column titles for tableDecks
 	 * 
-	 * @returns String[] array containing column titles for Deck details
+	 * @return String[] array containing column titles for Deck details
 	 */
 	public String[] decksTableHeaders() {
 		return Deck.infoArrayHeaders();
@@ -186,7 +184,7 @@ public class MainScreenLogic extends ScreenLogic implements Updateable {
 	/**
 	 * Finds and returns the row content for tableDecks
 	 * 
-	 * @returns String[][] nested array containing info on decks contained in this
+	 * @return String[][] nested array containing info on decks contained in this
 	 *          application's DeckManager
 	 */
 	public String[][] decksTableDetails() {
