@@ -3,8 +3,6 @@ package core.coreLogic;
 import java.io.Serializable;
 import core.coreObjects.User;
 import gui.guiLogic.GuiManager;
-import gui.guiLogic.ScreenLogic;
-import gui.guiShell.Screen;
 import setup.Setup;
 
 /**
@@ -41,6 +39,49 @@ public class AppEnvironment implements Serializable {
 		this.user = user;
 		this.setup = setup;
 	}
+
+	// ************ Starting an application ************* //
+
+	/**
+	 * Handles starting up a the Application whether it is for the first time or the
+	 * second time
+	 */
+	public void onStartUp() {
+		setGuiManager(new GuiManager());
+	}
+
+	// ************ Closing an application **************** //
+
+	/**
+	 * Handles closing down a Session Saves the session and then closes the GUI
+	 */
+	public void closeDown() {
+		guiCloseDown();
+		save();
+	}
+
+	/**
+	 * Handles closing down the GUI
+	 * <p>
+	 * If the GUI was sucessfully reset, guiManager is set to null, ready to be
+	 * initliazed again on the next start up of the application
+	 * 
+	 */
+	private void guiCloseDown() {
+		guiManager.closeAllScreens();
+		setGuiManager(null);
+	}
+
+	/**
+	 * Saves the current state of the app to the Setup object for this class.
+	 * <p>
+	 * Called when MainScreen is closed
+	 */
+	public void save() {
+		setup.saveSession();
+	}
+
+	// ********** Setter and Getter methods **************** //
 
 	/**
 	 * Returns the DeckManager for this AppEnvironment.
@@ -103,52 +144,5 @@ public class AppEnvironment implements Serializable {
 	 */
 	public void setGuiManager(GuiManager guiManager) {
 		this.guiManager = guiManager;
-	}
-
-	/**
-	 * Handles closing down a Session Saves the session and then closes the GUI
-	 */
-	public void closeDown() {
-		if (guiCloseDown()) {
-			save();
-		}
-	}
-
-	/**
-	 * Handles closing down the GUI
-	 * <p>
-	 * If the GUI was sucessfully reset, guiManager is set to null, ready to be
-	 * initliazed again on the next start up of the application
-	 * 
-	 * @return boolean if GUI was successfully closed.
-	 */
-	private boolean guiCloseDown() {
-		if (guiManager.closeAllScreens()) {
-			setGuiManager(null);
-			return true;
-		} else {
-			return false;
-		}
-	}
-
-	/**
-	 * Handles starting up a the Application whether it is for the first time or the
-	 * second time
-	 */
-	public void onStartUp() {
-		setGuiManager(new GuiManager());
-	}
-
-	/**
-	 * Saves the current state of the app to the Setup object for this class.
-	 * <p>
-	 * Called when MainScreen is closed
-	 */
-	public void save() {
-		setup.saveSession();
-	}
-
-	public boolean canOpenNewScreen(ScreenLogic screenLogic) {
-		return guiManager.canOpenNewScreen(screenLogic.getScreen());
 	}
 }
