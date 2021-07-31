@@ -1,6 +1,6 @@
 package gui.guiShell;
 
-import java.awt.EventQueue;
+
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -8,9 +8,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JLabel;
 import javax.swing.JButton;
-import javax.swing.JComponent;
 
-import java.awt.Container;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JTextField;
@@ -151,7 +149,7 @@ public class EditDeckScreen extends Screen {
 		sp.setBounds(10, 53, 403, 346);
 		panelFlashCards.add(sp);
 
-		disableTableEditting(tableFlashCards);
+		disableTableEditing(tableFlashCards);
 
 		addFlashCardsTableListener();
 	}
@@ -237,7 +235,7 @@ public class EditDeckScreen extends Screen {
 		addFinishPanelBtnListeners();
 	}
 
-	/** Create Miscelaneous components that don't belong in any panelr */
+	/** Create Miscellaneous components that don't belong in any panel */
 	private void createMiscComponents() {
 		JLabel lblTitle = new JLabel(logic.title());
 		lblTitle.setFont(new Font("Tahoma", Font.PLAIN, 20));

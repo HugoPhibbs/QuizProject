@@ -90,7 +90,7 @@ public abstract class Screen {
 
 	/** Sets the characteristics of the frame that are common to all screens. */
 	private void setFrameCharacteristics() {
-		// Prevent the user from quiting immediately when quit is clicked.
+		// Prevent the user from quitting immediately when quit is clicked.
 		frame.addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
@@ -218,7 +218,7 @@ public abstract class Screen {
 	}
 
 	/**
-	 * Clears an Implementation of Container, this is so the Container implemenation
+	 * Clears an Implementation of Container, this is so the Container implementation
 	 * can be used again with different components. Useful for objects such as
 	 * JFrames and JPanels
 	 * 
@@ -242,11 +242,11 @@ public abstract class Screen {
 	}
 
 	/**
-	 * Disables editting of entries for a JTable
+	 * Disables editing of entries for a JTable
 	 * 
-	 * @param table JTable to have editting disabled
+	 * @param table JTable to have editing disabled
 	 */
-	public void disableTableEditting(JTable table) {
+	public void disableTableEditing(JTable table) {
 		table.setDefaultEditor(Object.class, null);
 	}
 
@@ -261,7 +261,7 @@ public abstract class Screen {
 		return frame;
 	}
 
-	// ************* Setter methdods ********************* //
+	// ************* Setter methods ********************* //
 
 	/**
 	 * Setter method for willSave

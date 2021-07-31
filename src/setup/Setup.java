@@ -80,7 +80,7 @@ public class Setup implements Serializable {
 	 * Does the actual loading of a file part
 	 * 
 	 * @param sessionFilePath String for the file path of a session
-	 * @return boolean value if a session was succesfully loaded
+	 * @return boolean value if a session was successfully loaded
 	 * @throws FileNotFoundException  If a session wasn't found
 	 * @throws IOException            If an I/O exception occurs
 	 * @throws ClassNotFoundException If a class isn't found
@@ -117,7 +117,7 @@ public class Setup implements Serializable {
 	/**
 	 * Handles saving a session with progress
 	 * <p>
-	 * Deletes the previous save and resaves it under the same file name
+	 * Deletes the previous save and re-saves it under the same file name
 	 * <p>
 	 * This assumes that appEnvironment has already been initialized for this class
 	 */
@@ -164,7 +164,6 @@ public class Setup implements Serializable {
 	 * @param appEnvironment AppEnvironment object for this application session
 	 */
 	public void createSession(String userName, AppEnvironment appEnvironment) {
-		// TODO get userName from appEnvironment!
 		String sessionFilePath = sessionFilePath(userName);
 		if (!sessionExists(sessionFilePath)) {
 			try {

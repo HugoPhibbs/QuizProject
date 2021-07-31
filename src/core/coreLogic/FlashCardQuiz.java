@@ -33,7 +33,7 @@ import core.stats.UserStats;
  * currentFlashCard that is new, this FlashCard is added to the final queue,
  * <br>
  * - If the card isn't new or the current queue is the final queue (has been
- * seen atleast once before) then nothing happens <br>
+ * seen at-least once before) then nothing happens <br>
  * <p>
  * Pressing AGAIN <br>
  * - No matter if a card is new or not, if AGAIN is pressed, then
@@ -160,29 +160,22 @@ public class FlashCardQuiz {
 	/**
 	 * Ends a quiz.
 	 * 
-	 * Saves the progess made in this quiz only if the quiz was done completion
-	 * 
+	 * Saves the progress made in this quiz only if the quiz was done completion
 	 */
 	public void endQuiz() {
-		// TODO implement
-
-		// Ends a quiz
-
 		if (quizIsFinished) {
 			LocalTime endTime = LocalTime.now();
 			reviewAllQuizFlashCards();
 			userStats.addQuizStatsEntry(quizStats);
 		}
-		// TODO, show the summary after this.
 	}
 
 	/**
-	 * Creates a summary for this quiz
+	 * Creates a summary msg for this quiz
 	 * 
 	 * @return String for the summary of this quiz
 	 */
 	public String summary() {
-		// TODO implement!
 		String msg = String.format("You are done quizzing %s for today, you saw %d cards!", deck.getName(),
 				cardsToQuiz.size());
 		return msg;

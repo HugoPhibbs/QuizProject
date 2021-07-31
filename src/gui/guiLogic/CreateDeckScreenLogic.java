@@ -23,7 +23,7 @@ public class CreateDeckScreenLogic extends ScreenLogic implements Updater {
     /**
      * Updateable object dependent on this class
      */
-    Updateable updateable;
+    Updatable updateable;
 
     /**
      * Constructor for CreateDeckScreenLogic
@@ -32,7 +32,7 @@ public class CreateDeckScreenLogic extends ScreenLogic implements Updater {
      *                          ScreenLogic object
      * @param appEnvironment    AppEnvironment object for this application
      */
-    public CreateDeckScreenLogic(ScreenLogic parentScreenLogic, AppEnvironment appEnvironment, Updateable updateable) {
+    public CreateDeckScreenLogic(ScreenLogic parentScreenLogic, AppEnvironment appEnvironment, Updatable updateable) {
         super(parentScreenLogic, appEnvironment);
         this.deckManager = appEnvironment.getDeckManager();
         this.updateable = updateable;

@@ -28,8 +28,6 @@ public class UserStats implements Serializable {
 	/** Adds a QuizStats entry to quizStatsEntries */
 	public void addQuizStatsEntry(QuizStats quizStats) {
 		quizStatsEntries.add(quizStats);
-
-		// TODO implement further - may be further things needed idk
 	}
 
 	public void createGraphs() {

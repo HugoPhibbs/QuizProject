@@ -24,9 +24,9 @@ public class QuizzingScreenLogic extends ScreenLogic implements Updater {
 	 */
 	private QuizzingScreen screen;
 	/**
-	 * Updateable object that this class updates upon closing of QuizzingScreen
+	 * Updatable object that this class updates upon closing of QuizzingScreen
 	 */
-	private Updateable updateable;
+	private Updatable updatable;
 	/**
 	 * Deck object that is currently being quizzed on
 	 */
@@ -35,21 +35,21 @@ public class QuizzingScreenLogic extends ScreenLogic implements Updater {
 	/**
 	 * Constructor for QuizzingScreenLogic.
 	 * <p>
-	 * Along with assigning class attributes, it aslo starts the quiz and create the
+	 * Along with assigning class attributes, it also starts the quiz and create the
 	 * Screen
 	 * 
 	 * @param flashCardQuiz     FlashCardQuiz object for the current quiz
 	 * @param parentScreenLogic ScreenLogic class that controlled the Screen that
 	 *                          created this Screen
-	 * @param updateable        Updateable object that this class updates upon
+	 * @param updatable         Updatable object that this class updates upon
 	 *                          closing of Quizzing Screen
 	 * @param chosenDeck        Deck object that is currently being quizzed on
 	 * @param AppEnvironment    AppEnvironment object for this application
 	 */
-	public QuizzingScreenLogic(FlashCardQuiz flashCardQuiz, ScreenLogic parentScreenLogic, Updateable updateable,
+	public QuizzingScreenLogic(FlashCardQuiz flashCardQuiz, ScreenLogic parentScreenLogic, Updatable updatable,
 			Deck chosenDeck, AppEnvironment appEnvironment) {
 		super(parentScreenLogic, appEnvironment);
-		this.updateable = updateable;
+		this.updatable = updatable;
 		this.flashCardQuiz = flashCardQuiz;
 		this.deck = chosenDeck;
 	}
@@ -78,7 +78,6 @@ public class QuizzingScreenLogic extends ScreenLogic implements Updater {
 		configFlashCardButtons(false);
 		showText(flashCardQuiz.summary());
 		flashCardQuiz.endQuiz();
-		// TODO make text pane non editable
 	}
 
 	/**
@@ -203,11 +202,11 @@ public class QuizzingScreenLogic extends ScreenLogic implements Updater {
 		screen.getBtnFlashCardOk().setEnabled(setting);
 	}
 
-	// ********** Updating Updateable objects *********** //
+	// ********** Updating Updatable objects *********** //
 
 	@Override
 	public void update() {
-		updateable.receiveUpdate();
+		updatable.receiveUpdate();
 	}
 
 }

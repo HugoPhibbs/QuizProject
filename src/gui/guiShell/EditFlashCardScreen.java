@@ -60,7 +60,7 @@ public class EditFlashCardScreen extends Screen {
 	 *                                 this Screen
 	 */
 	public EditFlashCardScreen(EditFlashCardScreenLogic editFlashCardScreenLogic) {
-		super("Editting FlashCard", editFlashCardScreenLogic, false);
+		super("Editing FlashCard", editFlashCardScreenLogic, false);
 		this.logic = editFlashCardScreenLogic;
 		initialize();
 	}
@@ -150,7 +150,6 @@ public class EditFlashCardScreen extends Screen {
 		comboBoxSelectDeck.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		comboBoxSelectDeck.setBounds(9, 25, 95, 14);
 		panelChooseDeck.add(comboBoxSelectDeck);
-		// TODO whenever a deck is selected, currentDeck is updated!
 
 		JLabel lblChooseDeck = new JLabel("Choose Deck");
 		lblChooseDeck.setFont(new Font("Tahoma", Font.PLAIN, 11));
@@ -159,8 +158,8 @@ public class EditFlashCardScreen extends Screen {
 	}
 
 	/**
-	 * Creates components contained in panelFinish. That is componenets relating to
-	 * finish editting a FlashCard
+	 * Creates components contained in panelFinish. That is components relating to
+	 * finish editing a FlashCard
 	 */
 	public void createFinishPanel() {
 		JPanel panelFinish = new JPanel();

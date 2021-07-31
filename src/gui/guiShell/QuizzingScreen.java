@@ -58,8 +58,6 @@ public class QuizzingScreen extends Screen {
 
 	@Override
 	public void displayError(String msg) {
-		// TODO Auto-generated method stub
-
 	}
 
 	// *********************** Creating Components ************************ //

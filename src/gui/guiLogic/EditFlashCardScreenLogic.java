@@ -43,7 +43,7 @@ public class EditFlashCardScreenLogic extends ScreenLogic implements Updater {
 	 * Dependent Updateable object to be updated when a FlashCard is finished being
 	 * editted
 	 */
-	Updateable updateable;
+	Updatable updateable;
 
 	/**
 	 * Constructor for EditFlashCardScreenLogic
@@ -59,7 +59,7 @@ public class EditFlashCardScreenLogic extends ScreenLogic implements Updater {
 	 * @param parentLogic      ScreenLogic object that is the parent ScreenLogic to
 	 *                         this object
 	 */
-	public EditFlashCardScreenLogic(Updateable updateable, FlashCard currentFlashCard, Deck currentDeck,
+	public EditFlashCardScreenLogic(Updatable updateable, FlashCard currentFlashCard, Deck currentDeck,
 			AppEnvironment appEnvironment, ScreenLogic parentLogic) {
 		super(parentLogic, appEnvironment);
 		this.updateable = updateable;

@@ -14,7 +14,7 @@ import gui.guiShell.EditDeckScreen;
  * 
  * @author Hugo Phibbs
  */
-public class EditDeckScreenLogic extends ScreenLogic implements Updateable, Updater {
+public class EditDeckScreenLogic extends ScreenLogic implements Updatable, Updater {
 
     /**
      * DeckManager object for this application
@@ -35,7 +35,7 @@ public class EditDeckScreenLogic extends ScreenLogic implements Updateable, Upda
     /**
      * Updateable object that is updated when a Deck is edited
      */
-    Updateable updateable;
+    Updatable updateable;
     /**
      * AppEnvironment object for this application
      */
@@ -50,7 +50,7 @@ public class EditDeckScreenLogic extends ScreenLogic implements Updateable, Upda
      * @param appEnvironment    AppEnvironment object for this application
      * @param deck              Deck object that is currently being
      */
-    public EditDeckScreenLogic(ScreenLogic parentScreenLogic, Updateable updateable, AppEnvironment appEnvironment,
+    public EditDeckScreenLogic(ScreenLogic parentScreenLogic, Updatable updateable, AppEnvironment appEnvironment,
             Deck deck) {
         super(parentScreenLogic, appEnvironment);
         this.updateable = updateable;
