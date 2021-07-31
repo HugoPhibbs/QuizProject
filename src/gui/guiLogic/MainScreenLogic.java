@@ -107,13 +107,25 @@ public class MainScreenLogic extends ScreenLogic implements Updateable {
 	 *                                  the deckManager of this AppEnviornment
 	 */
 	public void newQuiz() {
+		FlashCardQuiz newQuiz = new FlashCardQuiz(chosenDeck, user.getUserStats());
+		QuizzingScreenLogic quizzingScreenLogic = new QuizzingScreenLogic(newQuiz, this, this, chosenDeck,
+				getAppEnvironment());
+		newQuizzingScreen(quizzingScreenLogic);
+	}
+
+	/**
+	 * Handles creating a new QuizzingScreen
+	 * <p>
+	 * Since a quizzing screen should not be shown unless the quiz can actually
+	 * start, this function is used to handle this, unlike other screens which are
+	 * simply created and then shown
+	 * 
+	 * @param quizzingScreenLogic QuizzingScreenLogic object to create a new
+	 *                            QuizzingScreen for
+	 */
+	private void newQuizzingScreen(QuizzingScreenLogic quizzingScreenLogic) {
+		quizzingScreenLogic.createScreen();
 		try {
-			FlashCardQuiz newQuiz = new FlashCardQuiz(chosenDeck, user.getUserStats());
-			QuizzingScreenLogic quizzingScreenLogic = new QuizzingScreenLogic(newQuiz, this, this, chosenDeck,
-					getAppEnvironment());
-			handleNewScreen(quizzingScreenLogic);
-			quizzingScreenLogic.hideScreen(); // hide screen until quiz can actually be started!, may be insufficient
-												// cards to be quizzed on
 			quizzingScreenLogic.startQuiz();
 			quizzingScreenLogic.showScreen();
 		} catch (IllegalStateException ise) {
@@ -203,6 +215,7 @@ public class MainScreenLogic extends ScreenLogic implements Updateable {
 	public void receiveUpdate() {
 		resetPanelViewDecks();
 		configScreenBtns(false);
+		screen.displayError("");
 		chosenDeck = null; // null until another deck is selected
 	}
 
