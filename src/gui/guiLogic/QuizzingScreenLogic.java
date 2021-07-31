@@ -49,6 +49,7 @@ public class QuizzingScreenLogic extends ScreenLogic implements Updater {
 	public QuizzingScreenLogic(FlashCardQuiz flashCardQuiz, ScreenLogic parentScreenLogic, Updateable updateable,
 			Deck chosenDeck, AppEnvironment appEnvironment) {
 		super(parentScreenLogic, appEnvironment);
+		this.updateable = updateable;
 		this.flashCardQuiz = flashCardQuiz;
 		this.deck = chosenDeck;
 	}
@@ -99,6 +100,7 @@ public class QuizzingScreenLogic extends ScreenLogic implements Updater {
 
 	@Override
 	public void closeScreen() {
+		update();
 		deleteScreen();
 	}
 
