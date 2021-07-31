@@ -46,7 +46,7 @@ public abstract class ScreenLogic {
     // parentLogic, screen);
     // }
 
-    // *********** Dealing with the Screen *********** //
+    // *********** Hiding and closing Screens *********** //
 
     /**
      * Abstract method for creating Screen for this ScreenLogic class
@@ -58,6 +58,14 @@ public abstract class ScreenLogic {
     public abstract void createScreen();
 
     /**
+     * Handles closing of this screen
+     */
+    public void handleClosing() {
+        closeScreen();
+        showParent();
+    }
+
+    /**
      * Abstract method to handle closing of this screen In most cases, this means
      * that the current ScreenLogic needs to update the state of it's dependent
      * ScreenLogic objects
@@ -66,7 +74,7 @@ public abstract class ScreenLogic {
      * along with any special operations that need to be done (may be none) eg
      * update dependent ScreenLogic classes, close down gui etc
      */
-    public abstract void closeScreen();
+    protected abstract void closeScreen();
 
     /**
      * Handles deleting the screen of this ScreenLogic's Screen
@@ -82,6 +90,8 @@ public abstract class ScreenLogic {
         screen.hide();
     }
 
+    // ********** Showing Screens ************ /
+
     /**
      * Shows the Screen object for this class.
      * <p>
@@ -92,6 +102,28 @@ public abstract class ScreenLogic {
         if (appEnvironment.getGuiManager().newScreen(this)) {
             screen.show();
         }
+    }
+
+    /**
+     * Handles creating and showing a Screen for inputted ScreenLogic
+     * <p>
+     * Then calls method to hide this Screen
+     * <p>
+     * Screen is not the same Screen as this object's
+     * 
+     * @param screenLogic ScreenLogic object whose Screen will be shown
+     */
+    public void handleNewScreen(ScreenLogic screenLogic) {
+        screenLogic.createAndShowScreen();
+        hideScreen();
+    }
+
+    /**
+     * Handles creating and showing the Screen for this class
+     */
+    public void createAndShowScreen() {
+        createScreen();
+        showScreen();
     }
 
     // ************* Switching Between Screens *********************** //
@@ -109,17 +141,12 @@ public abstract class ScreenLogic {
     }
 
     /**
-     * Hides the parent Screen for this class
-     */
-    protected void hideParent() {
-        parentLogic.hideScreen();
-    }
-
-    /**
      * Shows the parent Screen for this class
      */
     protected void showParent() {
-        parentLogic.showScreen();
+        if (parentLogic != null) {
+            parentLogic.showScreen();
+        }
     }
 
     // ************** Setter and Getter methods ****************** //
