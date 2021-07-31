@@ -54,16 +54,16 @@ public abstract class Screen {
 	 *                 Screen
 	 */
 	protected Screen(String title, ScreenLogic logic, boolean willSave) {
+		this.title = title;
 		this.logic = logic;
 		this.willSave = willSave;
-		this.title = title;
 		createFrame(title);
 	}
 
-//	@Override
-//	public String toString() {
-//		return String.format("Screen: (title: %s, logic: %s)", title, logic);
-//	}
+	// @Override
+	// public String toString() {
+	// return String.format("Screen: (title: %s, logic: %s)", title, logic);
+	// }
 
 	/**
 	 * This is where the bounds of your frame will be set and methods which create
@@ -115,7 +115,7 @@ public abstract class Screen {
 				JOptionPane.QUESTION_MESSAGE);
 
 		if (selection == JOptionPane.YES_OPTION) {
-			logic.closeScreen();
+			logic.handleClosing();
 			return true;
 		} else {
 			return false;
@@ -133,7 +133,7 @@ public abstract class Screen {
 		if (willSave) {
 			return String.format(msg, title, "be");
 		} else {
-			return String.format(msg, title, "not");
+			return String.format(msg, title, "not be");
 		}
 	}
 
