@@ -103,8 +103,4 @@ class SetupTest {
 		assertTrue(Setup.sessionExists(testSetup.sessionFilePath(testName2)));
 	}
 
-	@Test
-	void saveSessionTest() {
-		fail("Implement!");
-	}
 }
