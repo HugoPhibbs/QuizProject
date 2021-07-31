@@ -61,7 +61,7 @@ public class CreateDeckScreenLogic extends ScreenLogic implements Updater {
     public void createDeck() {
         try {
             deckManager.createDeck(nameText(), descriptionText());
-            closeScreen();
+            handleClosing();
         } catch (IllegalArgumentException iae) {
             screen.displayError(iae.getMessage());
         }

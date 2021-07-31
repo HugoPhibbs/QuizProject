@@ -8,6 +8,7 @@ import core.coreLogic.DeckManager;
 import core.coreLogic.FlashCardQuiz;
 import core.coreObjects.Deck;
 import core.coreObjects.User;
+import gui.guiShell.EditFlashCardScreen;
 import gui.guiShell.MainScreen;
 
 /**
@@ -96,8 +97,7 @@ public class MainScreenLogic extends ScreenLogic implements Updateable {
 	public void createFlashCard() {
 		EditFlashCardScreenLogic editFlashCardScreenLogic = new EditFlashCardScreenLogic(this, null, chosenDeck,
 				getAppEnvironment(), this);
-		editFlashCardScreenLogic.createScreen();
-		editFlashCardScreenLogic.showScreen();
+		handleNewScreen(editFlashCardScreenLogic);
 	}
 
 	/**
@@ -111,7 +111,9 @@ public class MainScreenLogic extends ScreenLogic implements Updateable {
 			FlashCardQuiz newQuiz = new FlashCardQuiz(chosenDeck, user.getUserStats());
 			QuizzingScreenLogic quizzingScreenLogic = new QuizzingScreenLogic(newQuiz, this, this, chosenDeck,
 					getAppEnvironment());
-			quizzingScreenLogic.createScreen(); // May throw ise
+			handleNewScreen(quizzingScreenLogic);
+			quizzingScreenLogic.hideScreen(); // hide screen until quiz can actually be started!, may be insufficient
+												// cards to be quizzed on
 			quizzingScreenLogic.startQuiz();
 			quizzingScreenLogic.showScreen();
 		} catch (IllegalStateException ise) {
@@ -128,8 +130,7 @@ public class MainScreenLogic extends ScreenLogic implements Updateable {
 	 */
 	public void editDeck() {
 		EditDeckScreenLogic editDeckScreenLogic = new EditDeckScreenLogic(this, this, getAppEnvironment(), chosenDeck);
-		editDeckScreenLogic.createScreen();
-		editDeckScreenLogic.showScreen();
+		handleNewScreen(editDeckScreenLogic);
 	}
 
 	/**
@@ -137,8 +138,7 @@ public class MainScreenLogic extends ScreenLogic implements Updateable {
 	 */
 	public void createDeck() {
 		CreateDeckScreenLogic createDeckScreenLogic = new CreateDeckScreenLogic(this, getAppEnvironment(), this);
-		createDeckScreenLogic.createScreen();
-		createDeckScreenLogic.showScreen();
+		handleNewScreen(createDeckScreenLogic);
 	}
 
 	// *********** Methods to handle Listener events ********** //
@@ -185,7 +185,7 @@ public class MainScreenLogic extends ScreenLogic implements Updateable {
 	 * Finds and returns the row content for tableDecks
 	 * 
 	 * @return String[][] nested array containing info on decks contained in this
-	 *          application's DeckManager
+	 *         application's DeckManager
 	 */
 	public String[][] decksTableDetails() {
 		return getAppEnvironment().getDeckManager().deckCollectionInfo();

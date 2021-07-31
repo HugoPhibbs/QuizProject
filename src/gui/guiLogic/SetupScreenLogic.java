@@ -118,7 +118,7 @@ public class SetupScreenLogic extends ScreenLogic {
 		MainScreenLogic mainScreenLogic = new MainScreenLogic(setup.getAppEnvironment());
 		mainScreenLogic.createScreen();
 		mainScreenLogic.showScreen();
-		closeScreen();
+		handleClosing();
 	}
 
 	/**

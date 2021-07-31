@@ -151,7 +151,7 @@ public class EditFlashCardScreenLogic extends ScreenLogic implements Updater {
 			} else {
 				editFlashCard();
 			}
-			closeScreen();
+			handleClosing();
 		}
 		// Catch any exceptions to do with executing above code
 		catch (Exception e) {
