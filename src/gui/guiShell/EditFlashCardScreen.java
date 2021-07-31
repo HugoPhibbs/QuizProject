@@ -65,7 +65,7 @@ public class EditFlashCardScreen extends Screen {
 		initialize();
 	}
 
-	// *********** Configurating the Screen **************** //
+	// *********** Configuring the Screen **************** //
 
 	@Override
 	public void initialize() {
@@ -120,7 +120,7 @@ public class EditFlashCardScreen extends Screen {
 		lblFrontText.setBounds(15, 6, 64, 14);
 		panelChangeText.add(lblFrontText);
 
-		textFieldBackText = new JTextField(logic.currentFlashCardFrontText());
+		textFieldBackText = new JTextField(logic.currentFlashCardBackText());
 		textFieldBackText.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		textFieldBackText.setBounds(5, 103, 210, 50);
 		panelChangeText.add(textFieldBackText);

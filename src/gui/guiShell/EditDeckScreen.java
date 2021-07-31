@@ -85,7 +85,7 @@ public class EditDeckScreen extends Screen {
 	 * @param editDeckScreenLogic EditDeckScreenLogic object to control this Screen
 	 */
 	public EditDeckScreen(EditDeckScreenLogic editDeckScreenLogic) {
-		super(null, editDeckScreenLogic, false);
+		super("Editing a deck", editDeckScreenLogic, false);
 		this.logic = editDeckScreenLogic;
 		initialize();
 	}
