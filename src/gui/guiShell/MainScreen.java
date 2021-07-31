@@ -67,7 +67,9 @@ public class MainScreen extends Screen {
 	JLabel lblErrorMsg;
 
 	/**
-	 * Create the application.
+	 * Constructor for MainScreen
+	 * 
+	 * @param mainScreenLogic MainScreenLogic object to control this Screen
 	 */
 	public MainScreen(MainScreenLogic mainScreenLogic) {
 		super("Main options", mainScreenLogic, true);

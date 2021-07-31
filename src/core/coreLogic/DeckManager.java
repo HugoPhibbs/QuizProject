@@ -23,7 +23,7 @@ import core.coreObjects.FlashCard;
 public class DeckManager implements Serializable {
 
 	/**
-	 * ArrayList<Deck> containing the decks of this DeckManager
+	 * ArrayList containing the decks of this DeckManager
 	 */
 	private ArrayList<Deck> deckCollection = new ArrayList<Deck>();
 

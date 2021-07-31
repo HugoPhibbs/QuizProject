@@ -181,15 +181,30 @@ public class QuizzingScreen extends Screen {
 		return textPaneCurrentSide;
 	}
 
+	/**
+	 * Getter method for btnFlashCardAgain
+	 * 
+	 * @return JButton as described
+	 */
 	public JButton getBtnFlashCardAgain() {
 		return btnFlashCardAgain;
 	}
 
+	/**
+	 * Getter method for btnFlashCardOk
+	 * 
+	 * @return JButton as described
+	 */
 	public JButton getBtnFlashCardOk() {
 		return btnFlashCardOk;
 	}
 
-	public JButton getBtnFlashCardFlipFlashCard() {
+	/**
+	 * Getter method for btnFlipFlashCard
+	 * 
+	 * @return JButton as described
+	 */
+	public JButton getBtnFlipFlashCard() {
 		return btnFlipFlashCard;
 	}
 

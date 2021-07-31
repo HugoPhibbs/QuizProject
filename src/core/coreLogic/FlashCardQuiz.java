@@ -19,7 +19,7 @@ import core.stats.UserStats;
  * <p>
  * How the quiz algorithm works: <br>
  * - The user sees cards from one of the queues at once as long as they aren't
- * empty. However the priority is initial<-final<-again. the algorithm will tend
+ * empty. However the priority is (in order) initial, final, again. the algorithm will tend
  * to switch between the final and again queues <br>
  * - At the start of the quiz, a user will see all the cards from initialQueue
  * until this queue is empty. If the initialQueue is empty, then FlashCards are
@@ -110,6 +110,7 @@ public class FlashCardQuiz {
 	 * Constructor for FlashCardQuiz
 	 * 
 	 * @param deck Deck object for this quiz
+	 * @param userStats UserStats object for this Application. 
 	 */
 	public FlashCardQuiz(Deck deck, UserStats userStats) {
 		this.deck = deck;
@@ -380,7 +381,7 @@ public class FlashCardQuiz {
 	/**
 	 * Getter method for the initialQueue of this FlashCardQuiz
 	 * 
-	 * @return Queue<FlashCard> of the initialQueue of this flashCardQuiz
+	 * @return Queue of the initialQueue of this flashCardQuiz
 	 */
 	public Queue<FlashCard> getInitialQueue() {
 		return initialQueue;
@@ -389,7 +390,7 @@ public class FlashCardQuiz {
 	/**
 	 * Getter method for the againQueue of this FlashCardQuiz
 	 * 
-	 * @return Queue<FlashCard> of the againQueue of this flashCardQuiz
+	 * @return Queue of the againQueue of this flashCardQuiz
 	 */
 	public Queue<FlashCard> getAgainQueue() {
 		return againQueue;
@@ -398,7 +399,7 @@ public class FlashCardQuiz {
 	/**
 	 * Getter method for the finalQueue of this FlashCardQuiz
 	 * 
-	 * @return Queue<FlashCard> of the finalQueue of this flashCardQuiz
+	 * @return Queue of the finalQueue of this flashCardQuiz
 	 */
 	public Queue<FlashCard> getFinalQueue() {
 		return finalQueue;
@@ -429,7 +430,7 @@ public class FlashCardQuiz {
 	 * <p>
 	 * ONLY USED FOR TESTING
 	 * 
-	 * @param cardsToQuiz ArrayList<FlashCard> to be set as cardsToQuiz
+	 * @param cardsToQuiz ArrayList to be set as cardsToQuiz
 	 */
 	public void setCardsToQuiz(ArrayList<FlashCard> cardsToQuiz) {
 		this.cardsToQuiz = cardsToQuiz;
@@ -486,7 +487,7 @@ public class FlashCardQuiz {
 	 * ArrayList as a parameter, and sets this to the initialQueue using
 	 * Collections.addAll(Object)
 	 * 
-	 * @param initialQueueList ArrayList<FlashCard> to be converted into a linked
+	 * @param initialQueueList ArrayList to be converted into a linked
 	 *                         list queue
 	 */
 	public void setInitialQueue(ArrayList<FlashCard> initialQueueList) {
@@ -501,7 +502,7 @@ public class FlashCardQuiz {
 	 * takes an ArrayList as a parameter, and sets this to the againQueue using
 	 * Collections.addAll(Object)
 	 * 
-	 * @param againQueueList ArrayList<FlashCard> to be converted into a linked list
+	 * @param againQueueList ArrayList to be converted into a linked list
 	 *                       queue
 	 */
 	public void setAgainQueue(ArrayList<FlashCard> againQueueList) {
@@ -516,7 +517,7 @@ public class FlashCardQuiz {
 	 * ArrayList as a parameter, and sets this to the finalQueue using
 	 * Collections.addAll(Object)
 	 * 
-	 * @param initialQueueList ArrayList<FlashCard> to be converted into a linked
+	 * @param finalQueueList ArrayList to be converted into a linked
 	 *                         list queue
 	 */
 	public void setFinalQueue(ArrayList<FlashCard> finalQueueList) {

@@ -21,7 +21,7 @@ public class CreateDeckScreenLogic extends ScreenLogic implements Updater {
      */
     CreateDeckScreen screen;
     /**
-     * Updateable object dependent on this class
+     * Updatable object dependent on this class
      */
     Updatable updateable;
 
@@ -31,11 +31,12 @@ public class CreateDeckScreenLogic extends ScreenLogic implements Updater {
      * @param parentScreenLogic ScreenLogic object for the parent screen of this
      *                          ScreenLogic object
      * @param appEnvironment    AppEnvironment object for this application
+     * @param updatable Updatable object that can be updated by this class
      */
-    public CreateDeckScreenLogic(ScreenLogic parentScreenLogic, AppEnvironment appEnvironment, Updatable updateable) {
+    public CreateDeckScreenLogic(ScreenLogic parentScreenLogic, AppEnvironment appEnvironment, Updatable updatable) {
         super(parentScreenLogic, appEnvironment);
         this.deckManager = appEnvironment.getDeckManager();
-        this.updateable = updateable;
+        this.updateable = updatable;
     }
 
     // **************** Creating and closing the Screen ******************* //

@@ -203,6 +203,8 @@ public class FlashCard implements Serializable {
 
 	/**
 	 * Getter method for the number of times this card has been reviewed
+	 * 
+	 * @return int value as described
 	 */
 	public int getTimesReviewed() {
 		return timesReviewed;

@@ -13,6 +13,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import setup.Setup;
 
+/**
+ * Testing class for Screen
+ * 
+ * @author Hugo Phibbs
+ *
+ */
 public class ScreenTest {
     MainScreenLogic testMainScreenLogic;
     EditDeckScreenLogic testEditDeckScreenLogic;

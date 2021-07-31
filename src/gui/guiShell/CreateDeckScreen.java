@@ -41,7 +41,9 @@ public class CreateDeckScreen extends Screen {
 	private JButton btnCreateDeck;
 
 	/**
-	 * Create the application.
+	 * Constructor for CreateDeckScreen
+	 * 
+	 * @param createDeckScreenLogic CreateDeckScreenLogic to control this Screen
 	 */
 	public CreateDeckScreen(CreateDeckScreenLogic createDeckScreenLogic) {
 		super("Creating a deck", createDeckScreenLogic, false);

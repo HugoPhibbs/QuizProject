@@ -355,7 +355,7 @@ public class Deck implements Serializable {
 	/**
 	 * Getter method for the cards of deck
 	 * 
-	 * @return ArrayList<FlashCard> representation of the flash cards that a deck
+	 * @return ArrayList representation of the flash cards that a deck
 	 *         has
 	 */
 	public ArrayList<FlashCard> getFlashCards() {
@@ -402,7 +402,7 @@ public class Deck implements Serializable {
 	/**
 	 * Setter method for the flashCards of a deck. ONLY TO BE USED FOR TESTING
 	 * 
-	 * @param cards ArrayList<FlashCard> to be set as the cards for this deck
+	 * @param flashCards ArrayList to be set as the cards for this deck
 	 */
 	public void setFlashCards(ArrayList<FlashCard> flashCards) {
 		this.flashCards = flashCards;

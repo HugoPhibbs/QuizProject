@@ -42,7 +42,7 @@ public class Setup implements Serializable {
 	 * Sets the working directory for this application, i.e. where to load and write
 	 * files for serialization.
 	 * 
-	 * @param sessionsDirectory
+	 * @param workingDirectory String for the location where sessions will be stored and retrieved for this Application
 	 */
 	public Setup(String workingDirectory) {
 		this.workingDirectory = workingDirectory;
@@ -58,6 +58,7 @@ public class Setup implements Serializable {
 	 * @param userName String for a User's name, that a user wants to load a session
 	 *                 for
 	 * @return boolean if a session was successfully loaded
+	 * @throws FileNotFoundException if a file wasn't found for user with name userName
 	 */
 	public boolean loadSession(String userName) throws FileNotFoundException {
 		String sessionFilePath = sessionFilePath(userName);
@@ -212,7 +213,8 @@ public class Setup implements Serializable {
 	 * file defined by sessionFilePath(String)
 	 * <p>
 	 * 
-	 * @param userName String for the name a User's session to see if it exists
+	 * @param sessionFilePath String for the location of a file to see if it exists
+	 * @return boolean value if a session exists at sessionFilePath
 	 */
 	public static boolean sessionExists(String sessionFilePath) {
 		File newFile = new File(sessionFilePath);

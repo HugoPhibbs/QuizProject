@@ -137,7 +137,6 @@ public class MainScreenLogic extends ScreenLogic implements Updatable {
 	 * <p>
 	 * Takes logical code away from MainScreen
 	 * 
-	 * @param chosenDeck Deck object to be edited
 	 */
 	public void editDeck() {
 		EditDeckScreenLogic editDeckScreenLogic = new EditDeckScreenLogic(this, this, getAppEnvironment(), chosenDeck);

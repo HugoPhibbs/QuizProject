@@ -34,6 +34,7 @@ public class AppEnvironment implements Serializable {
 	 * Includes a parameter for a User
 	 * 
 	 * @param user User object for this AppEnvironment
+	 * @param setup Setup object that was used to load this Application instance
 	 */
 	public AppEnvironment(User user, Setup setup) {
 		this.user = user;

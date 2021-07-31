@@ -34,6 +34,7 @@ public abstract class ScreenLogic {
      * Constructor for ScreenLogic
      * 
      * @param parentScreenLogic ScreenLogic object to be set as this object's parent
+     * @param appEnvironment AppEnvironment application for the current Application session
      */
     public ScreenLogic(ScreenLogic parentScreenLogic, AppEnvironment appEnvironment) {
         this.parentLogic = parentScreenLogic;
@@ -170,7 +171,7 @@ public abstract class ScreenLogic {
     }
 
     /**
-     * Getter method for the appEnivironment
+     * Getter method for appEnivironment
      * 
      * @return AppEnvironment object as described
      */
@@ -179,9 +180,9 @@ public abstract class ScreenLogic {
     }
 
     /**
-     * Setter method for the Screen of this object
+     * Setter method for screen
      * 
-     * @param screen
+     * @param screen Screen object to be set
      */
     public void setScreen(Screen screen) {
         this.screen = screen;

@@ -44,7 +44,7 @@ public class QuizzingScreenLogic extends ScreenLogic implements Updater {
 	 * @param updatable         Updatable object that this class updates upon
 	 *                          closing of Quizzing Screen
 	 * @param chosenDeck        Deck object that is currently being quizzed on
-	 * @param AppEnvironment    AppEnvironment object for this application
+	 * @param appEnvironment    AppEnvironment object for this application
 	 */
 	public QuizzingScreenLogic(FlashCardQuiz flashCardQuiz, ScreenLogic parentScreenLogic, Updatable updatable,
 			Deck chosenDeck, AppEnvironment appEnvironment) {
@@ -198,7 +198,7 @@ public class QuizzingScreenLogic extends ScreenLogic implements Updater {
 	 */
 	public void configFlashCardButtons(boolean setting) {
 		screen.getBtnFlashCardAgain().setEnabled(setting);
-		screen.getBtnFlashCardFlipFlashCard().setEnabled(setting);
+		screen.getBtnFlipFlashCard().setEnabled(setting);
 		screen.getBtnFlashCardOk().setEnabled(setting);
 	}
 

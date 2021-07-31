@@ -139,6 +139,7 @@ public class GuiManager implements Serializable {
      * same class, then newScreen can be shown
      * </p>
      *
+     * @param existingScreen Screen object that is already contained in GuiManager that is to be compared to newScreen
      * @param newScreen Screen object that is to be checked if it can be shown
      *
      * @return boolean value if newScreen can be shown or not

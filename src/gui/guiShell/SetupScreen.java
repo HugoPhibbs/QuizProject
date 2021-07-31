@@ -71,7 +71,9 @@ public class SetupScreen extends Screen {
 	private SetupScreenLogic logic;
 
 	/**
-	 * Create the application.
+	 * Constructor for a SetupScreen
+	 * 
+	 * @param setupScreenLogic SetupScreenLogic object that controls this SetupScreen
 	 */
 	public SetupScreen(SetupScreenLogic setupScreenLogic) {
 		super("Setup", setupScreenLogic, false);
