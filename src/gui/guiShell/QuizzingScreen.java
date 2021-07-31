@@ -111,6 +111,7 @@ public class QuizzingScreen extends Screen {
 		textPaneCurrentSide.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		textPaneCurrentSide.setBounds(5, 6, 297, 107);
 		panelContent.add(textPaneCurrentSide);
+		textPaneCurrentSide.setEditable(false);
 	}
 
 	/**
