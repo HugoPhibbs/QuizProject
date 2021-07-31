@@ -11,7 +11,7 @@ There are a few options for starting this Application
 1. Download `RunableJAR.jar` from the top level of the project's directory
 2. Navigate to the location of `RunableJAR.jar` via your computer's command line
 3. Run command: `java -jar RunableJAR.jar` to start the application
-### Via Running Main.main.java
+### Via Running Main.main.java (Ensures latest version is run)
 1. Clone the repository onto your device
 2. Navigate to the location where the project is stored on your device (top level) on the command lie. Eg if I were to store QuizProject at `C:\Users\hugop\Documents\QuizProject`, then use `cd C:\Users\hugop\Documents\QuizProject` in command line to navigate to this location.
 3. Compile the project by typing and entering `javac -d bin -cp src src/setup/Main.java`
