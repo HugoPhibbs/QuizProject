@@ -58,8 +58,11 @@ public class QuizzingScreenLogic extends ScreenLogic implements Updater {
 
 	/**
 	 * Handles starting a Quiz
+	 * <p>
+	 * 
+	 * @throws IllegalStateException if a quiz cannot be started
 	 */
-	public void startQuiz() {
+	public void startQuiz() throws IllegalStateException {
 		flashCardQuiz.startQuiz(10); // TODO make maxNewCards adaptable!
 		updateFlashCardText();
 	}
@@ -74,18 +77,25 @@ public class QuizzingScreenLogic extends ScreenLogic implements Updater {
 	public void quizCompleted() {
 		configFlashCardButtons(false);
 		showText(flashCardQuiz.summary());
-		screen.setWillSave(true);
 		flashCardQuiz.endQuiz();
 		// TODO make text pane non editable
 	}
 
 	/**
-	 * Handles when a user wants to end a quiz. Since this just calls the dialogue
-	 * box to close the screen, the user is notified if closing this screen will
-	 * save any progress.
+	 * Handles when a user wants to end a quiz
+	 * <p>
+	 * If the quiz is finished, then the screen is closed without further input from
+	 * user
+	 * <p>
+	 * However, if the quiz is not finished, then the user is asked if they would
+	 * like to close the screen first
 	 */
 	public void finishQuiz() {
-		screen.confirmQuit();
+		if (flashCardQuiz.quizIsFinished()) {
+			handleClosing();
+		} else {
+			screen.confirmQuit();
+		}
 	}
 
 	// ********** Creating and closing the Screen *************** //
@@ -145,7 +155,6 @@ public class QuizzingScreenLogic extends ScreenLogic implements Updater {
 		try {
 			flashCardQuiz.nextFlashCard();
 			updateFlashCardText();
-			// TODO. implement more methods here if needed, may need to do more things here
 		} catch (QuizFinishedException qfe) {
 			quizCompleted();
 		}
