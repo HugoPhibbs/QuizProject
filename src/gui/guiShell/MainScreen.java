@@ -4,6 +4,7 @@ import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+
 import gui.guiLogic.MainScreenLogic;
 
 import javax.swing.JLabel;
@@ -12,6 +13,8 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Color;
+import java.awt.Font;
+
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
@@ -111,8 +114,9 @@ public class MainScreen extends Screen {
 	 * 
 	 */
 	public void updatePanelViewDecks() {
-		JLabel lblSelectDeck = new JLabel("Select a Deck!");
-		lblSelectDeck.setBounds(91, 25, 148, 9);
+		JLabel lblSelectDeck = new JLabel(logic.welcomeMsg());
+		lblSelectDeck.setBounds(75, 20, 300, 20);
+		lblSelectDeck.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		panelViewDecks.add(lblSelectDeck);
 
 		tableDecks = new JTable(logic.decksTableDetails(), logic.decksTableHeaders());
@@ -121,7 +125,7 @@ public class MainScreen extends Screen {
 		sp.setBounds(7, 49, 394, 236);
 		panelViewDecks.add(sp);
 
-		disableTableEditting(tableDecks);
+		disableTableEditing(tableDecks);
 
 		addDecksTableListener();
 	}
@@ -189,7 +193,7 @@ public class MainScreen extends Screen {
 		});
 	}
 
-	/** Adds a seletion listener to tableDecks */
+	/** Adds a selection listener to tableDecks */
 	private void addDecksTableListener() {
 		ListSelectionModel selectionModel = tableDecks.getSelectionModel();
 		selectionModel.addListSelectionListener(new ListSelectionListener() {

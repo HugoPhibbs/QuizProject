@@ -8,7 +8,6 @@ import core.coreLogic.DeckManager;
 import core.coreLogic.FlashCardQuiz;
 import core.coreObjects.Deck;
 import core.coreObjects.User;
-import gui.guiShell.EditFlashCardScreen;
 import gui.guiShell.MainScreen;
 
 /**
@@ -25,7 +24,7 @@ import gui.guiShell.MainScreen;
  * @version 13/7/21
  * @since 10/7/21
  */
-public class MainScreenLogic extends ScreenLogic implements Updateable {
+public class MainScreenLogic extends ScreenLogic implements Updatable {
 
 	/**
 	 * DeckManager object belonging to appEnvironment
@@ -104,7 +103,7 @@ public class MainScreenLogic extends ScreenLogic implements Updateable {
 	 * Creates a new quizzing Screen,
 	 * 
 	 * @throws IllegalArgumentException if deckName isn't the name of any deck in
-	 *                                  the deckManager of this AppEnviornment
+	 *                                  the deckManager of this AppEnvironment
 	 */
 	public void newQuiz() {
 		FlashCardQuiz newQuiz = new FlashCardQuiz(chosenDeck, user.getUserStats());
@@ -203,13 +202,23 @@ public class MainScreenLogic extends ScreenLogic implements Updateable {
 		return getAppEnvironment().getDeckManager().deckCollectionInfo();
 	}
 
+	// *************** General helper methods ****************** //
+	/**
+	 * Returns message to be displayed to user on the MainScreen
+	 * 
+	 * @return String as described
+	 */
+	public String welcomeMsg() {
+		return String.format("Hello %s, pick a deck to get started!", getAppEnvironment().getUser().getName());
+	}
+
 	// *********** Methods for refreshing the Screen and this class ********** //
 
 	/**
 	 * Resets the components for this screen
 	 * <p>
-	 * Instead of creating an entirely new Screen, it disables affectected buttons
-	 * and resets tableDecks in the Screen
+	 * Instead of creating an entirely new Screen, it disables affected buttons and
+	 * resets tableDecks in the Screen
 	 */
 	@Override
 	public void receiveUpdate() {
