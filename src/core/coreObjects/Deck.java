@@ -279,6 +279,15 @@ public class Deck implements Serializable {
 		return dueFlashCards(currentDate).size();
 	}
 
+	/**
+	 * Finds the number of new FlashCards in this Deck
+	 * 
+	 * @return int value of the number of new FlashCards due for this deck
+	 */
+	public int numNewFlashCards() {
+		return newFlashCards((int) Double.POSITIVE_INFINITY).size();
+	}
+
 	// ********************* Helper methods ***************************** //
 
 	/**
@@ -306,7 +315,8 @@ public class Deck implements Serializable {
 	 * @return String[] containing key info for this deck
 	 */
 	public String[] infoArray() {
-		String[] infoArray = { name, Integer.toString(size()), Integer.toString(numDueFlashCards(LocalDate.now())) };
+		String[] infoArray = { name, Integer.toString(size()), Integer.toString(numDueFlashCards(LocalDate.now())),
+				Integer.toString(numNewFlashCards()) };
 		return infoArray;
 	}
 
@@ -318,7 +328,7 @@ public class Deck implements Serializable {
 	 * @return String[] of the column headers for a Deck object
 	 */
 	public static String[] infoArrayHeaders() {
-		String[] headers = { "Name", "Size", "Due Cards" };
+		String[] headers = { "Name", "Size", "Due Cards", "New Cards" };
 		return headers;
 	}
 
