@@ -109,7 +109,7 @@ public class EditDeckScreenLogic extends ScreenLogic implements Updateable, Upda
      */
     public void deleteDeck() {
         deckManager.removeDeck(deck);
-        closeScreen();
+        handleClosing();
     }
 
     /**
@@ -119,7 +119,7 @@ public class EditDeckScreenLogic extends ScreenLogic implements Updateable, Upda
         try {
             editDeckName();
             editDeckDescription();
-            closeScreen();
+            handleClosing();
         } catch (Exception e) {
             screen.displayError(e.getMessage());
         }
@@ -185,9 +185,7 @@ public class EditDeckScreenLogic extends ScreenLogic implements Updateable, Upda
     private void newEditFlashCardScreen(FlashCard flashCard) {
         EditFlashCardScreenLogic editFlashCardScreenLogic = new EditFlashCardScreenLogic(this, flashCard, deck,
                 appEnvironment, this);
-        editFlashCardScreenLogic.createScreen();
-        editFlashCardScreenLogic.showScreen();
-        hideParent();
+        handleNewScreen(editFlashCardScreenLogic);
     }
 
     /**
@@ -252,19 +250,13 @@ public class EditDeckScreenLogic extends ScreenLogic implements Updateable, Upda
     // ************** Methods to update EditDeckScreen ******************** //
 
     /**
-     * Acts on recieving an update from an Updater object Instead of refereshing
-     * affected components, it creates a brand new screen, as this is simpler than
-     * configuring all of the components of and EditFlashCardScreen instance to be
-     * asnew
-     * <p>
-     * Also shows the parent to this screen, which would have been hidden upon
-     * creating another Screen from this Screen.
+     * Updates components for this Screen that may need to be updated due to changes
+     * made on another screen
      */
     @Override
     public void receiveUpdate() {
-        showParent();
-        screen.quit();
-        createScreen();
+        resetPanelFlashCards();
+        configScreenBtns(false);
     }
 
     /**
