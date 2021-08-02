@@ -102,8 +102,7 @@ public class FlashCard implements Serializable {
 				break;
 			case 5:
 				// Reviewed adequete number of times, no more reviews needed.
-				// Set review date for practically infinite days from now ~ 10 years
-				reviewInterval = 3000;
+				reviewInterval = (int) Double.POSITIVE_INFINITY;
 		}
 		nextReviewDate = nextReviewDate.plusDays(reviewInterval);
 		timesReviewed += 1;
