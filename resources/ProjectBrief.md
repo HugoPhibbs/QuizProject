@@ -91,7 +91,7 @@ Flash cards can be added and removed from a deck
 
 Every flash card in the deck must have a unique front and back text
 
-### Quizzing
+### FlashCard Quizzing
 
 User should be able to quiz themselves on one deck at a time
 
@@ -105,11 +105,17 @@ New cards that are being seen should be in random order.
 
 A max of 10 new cards will be shown to a user on a particular day
 
-### Flash Card Prioritizing
+#### Flash Card Prioritizing
 
 From the first time a card is shown to a user, it is then added to the queue to be shown 2 days later. Once the card has been seen again >= 2 days later, the card is then added to a queue to be seen 5 days later. Once it has been seen again >= 5 days later, it is added to a queue to be seen 10 days later. Once it has been seen a 4th time, then it isn't shown again. If a card isn't review on the day that is due, it is added to a backlog, and will need to be reviewed on top of any other cards that need to be reviewed.
 
 In terms of what the "AGAIN" and "OK" buttons do. In terms of flash cards, in order to finish a quiz, there has to be more "OK"s that "AGAIN"s. A good way to visualise is thinking of a particular flash card at the top of a stair case. If "OK" is pressed the first time a user (a new card) sees a flash card, then the card is put to the back of the priority queue and is seen once more before the end of the quiz. However, if "AGAIN" is pressed, then the card is seen twice more before the end of the quiz, each successive "AGAIN" adds the flash card to be seen once more. Until a user finally presses "OK" on it's final appearance. What this guarantees is that new cards that haven't been seen before appear at least once on their first quiz appearance. However, if a card is being reviewed, the same rules apply with "AGAIN" however, if a user selects "OK" the first time they see a card that they are reviewing, it isn't shown again at the end of the deck.
+
+### Multichoice quizzing
+
+- User will be quizzed on the cards in the deck in a multiple choice manner.
+- The options that they can choose should be a selection of cards from the Deck, with one option being the correct option
+- The user should be unable to start a multiple choice quiz if there is not enough cards in the deck.
 
 ### GUI
 

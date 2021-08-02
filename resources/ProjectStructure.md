@@ -44,16 +44,33 @@
 
 ## coreLogic
 
-- Logic to do with the quizzing application itself
+- Package to contain logic to do with the quizzing application itself
+
+### Quizzing Logic
+
+- Package containing classes relating to quizzing
+
+#### Quiz
+
+- Contains logic relating to the ordering of FlashCards within a quiz.
+- Should be used by both FlashCardQuiz and MultipleChoiceQuiz. This means that common functionality can be used by both classes, most importantly the FlashCard prioritizing algorithm.
+- Can use most of the code that already exists in FlashCardQuiz, just some refactoring that is needed.
+- Attributes for the current FlashCard that is being seen, the current Deck that is being seen, the initial, final and again queues
 
 #### FlashCardQuiz
 
+- Extends Quiz class
 - Class to hold methods and logic relating to the actual playing of a card game.
 - Firstly gets all the cards to be quizzed on from Deck.cardsToQuiz()
-- Has logic relating to iterating through cards when a user is quizzing themselves. Hold functions relating to "AGAIN" and "OK", i.e. with prioritising cards. For example, these methods could be nextCard(), cardOk(), cardAgain(), showCardBack(), showCardFront(), startQuiz(), endQuiz()
-- May hold functionality relating to sorting cards, will need to resolve this.
-- Has attributes for final and again stacks of FlashCards, these are continually updated throughout the course of a quiz
+- Has logic relating to iterating through cards when a user is quizzing themselves. Hold functions relating to "AGAIN" and "OK", i.e. with prioritizing cards. For example, these methods could be nextCard(), cardOk(), cardAgain(), showCardBack(), showCardFront(), startQuiz(), endQuiz()
 - At the end of a quiz, a QuizStats object is returned to AppEnvironment
+
+#### MultipleChoiceQuiz
+
+- Extends Quiz class
+- Class to contain logic to do with a multiple choice quiz.
+- For each question in the quiz, there should be 4 options. 3 of them incorrect, one of them correct. The order of these options should be randomised, and then added to buttons on the Screen.
+- Same format with again, final and intial queues as FlashCardQuiz. When a user gets a question incorrect, this will be equivalent to pressing again in FlashCardQuiz.
 
 #### AppEnvironment
 
@@ -207,14 +224,33 @@
 - Press button to save changes. If you are creating a flash card, button should be labelled "CREATE flashcard", otherwise "UPDATE" for editing a flash card. Press button... If there are any errors in doing an operation, then an error text should show up telling user what is wrong and what they can do to fix the problem. Message should should up in green otherwise to indicate that there was a success.
 - When you press close, the EditDeckScreen that led to this EditFlashCardScreen is shown.
 
-#### Quiz Screen
+#### QuizzingScreen
 
+- Abstract class for quizzing of a user
 - Screen for when a user wants to quiz themselves.
-- Has buttons for AGAIN, OK, NEXT and FLIP.
-- Has an instance of FlashCardQuiz.
-- Has button to start the quiz, this then calls startQuiz() in FlashCardQuiz()
-- At the end of the quiz, it shows a summary of the quiz, eg how many questions you got right, percentage of correct answers etc. This info is taken straight from the QuizStats object in FlashCardsQuiz.
+- Has an instance of the current Quiz object
+- At the end of the quiz, it shows a summary of the quiz, eg how many questions you got right, percentage of correct answers etc.
 - When the quiz is over, along with showing a quiz summary, there is a button to CONTINUE//CLOSE, i.e. just closes the Quizzing window.
+- Button to finish a quiz. If a user wants to finish a quiz before it is ended, then no progress should be saved.
+- TextPane to show content relating to the current flashcard.
+-  
+ methods for nextFlashCard(), flashCardAgain(), flashCardOk(), 
+
+#### FlashCardQuizScreen
+
+- Extends QuizzingScreen class
+- Screen for FlashCardQuiz
+- Buttons for again, ok and flipping a flashcard
+- Flipping a Flashcard should change the content in the content textpane
+
+#### MultipleChoiceQuizScreen
+
+- Extends QuizzingScreen
+- Screen for MultipleChoiceQuiz
+- Buttons for each of the 4 multiple choice options that they can choose
+- TextPane should change content to let user know if they got a question right or not. If they got it wrong, then it should tell them what was the correct answer.
+- When a user presses a multi choice button, then all the multi choice buttons should disabled, including the one that they just pressed.
+- Button Next to see the next question, this is so the user can read any feedback on the content textpane before continuing. 
 
 ## tests
 
