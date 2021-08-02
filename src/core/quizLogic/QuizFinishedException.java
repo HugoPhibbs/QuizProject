@@ -1,4 +1,4 @@
-package core.coreLogic;
+package core.quizLogic;
 
 /**
  * Exception to be thrown when a quiz is finished
