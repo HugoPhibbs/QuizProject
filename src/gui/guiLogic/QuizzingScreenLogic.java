@@ -1,9 +1,9 @@
 package gui.guiLogic;
 
 import core.coreLogic.AppEnvironment;
-import core.coreLogic.FlashCardQuiz;
-import core.coreLogic.QuizFinishedException;
 import core.coreObjects.Deck;
+import core.quizLogic.FlashCardQuiz;
+import core.quizLogic.QuizFinishedException;
 import gui.guiShell.QuizzingScreen;
 
 /**
@@ -90,7 +90,7 @@ public class QuizzingScreenLogic extends ScreenLogic implements Updater {
 	 * like to close the screen first
 	 */
 	public void finishQuiz() {
-		if (flashCardQuiz.quizIsFinished()) {
+		if (flashCardQuiz.getQuizIsFinished()) {
 			handleClosing();
 		} else {
 			screen.confirmQuit();

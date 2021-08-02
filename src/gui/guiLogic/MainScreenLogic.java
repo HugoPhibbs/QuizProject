@@ -5,9 +5,9 @@ import javax.swing.event.ListSelectionEvent;
 
 import core.coreLogic.AppEnvironment;
 import core.coreLogic.DeckManager;
-import core.coreLogic.FlashCardQuiz;
 import core.coreObjects.Deck;
 import core.coreObjects.User;
+import core.quizLogic.FlashCardQuiz;
 import gui.guiShell.MainScreen;
 
 /**
